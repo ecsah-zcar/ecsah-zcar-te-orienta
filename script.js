@@ -16,8 +16,8 @@ const contenidoEstudiantes = [
         titulo: "🎓 Opciones de grado",
         descripcion: "Conoce las diferentes opciones para tu trabajo de grado: proyecto aplicado, diplomado, artículo, etc.",
         enlaces: [
-            { texto: "📘 Opciones de Grado - Guía completa", ruta: "documentos/Opciones-de-Grado.pdf" }
-            { texto: "📖 Información General Sobre Grado - Guía completa", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/grados" }
+            { texto: "📘 Opciones de Grado - Guía completa", ruta: "documentos/Opciones-de-Grado.pdf" },
+            { texto: "📖 Información General Sobre Grado", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/grados" }
         ]
     },
     {
@@ -37,8 +37,8 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "📊 Saber Pro / TyT",
-        descripcion: "Fechas de eventos, preguntas frecuentes, contacto y preparación para las pruebas.",
+        titulo: "📰 Noticias Saber Pro / TyT",
+        descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos de preparación.",
         enlaces: [
             { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
             { texto: "❓ Preguntas frecuentes", ruta: "#" },
@@ -91,6 +91,7 @@ const contenidoEstudiantes = [
         ]
     }
 ];
+
 // 👩‍🏫 CONTENIDO PARA DOCENTES
 const contenidoDocentes = [
     {
@@ -178,7 +179,7 @@ function crearTarjeta(item) {
         link.href = enlace.ruta;
         link.className = 'btn-enlace';
         link.innerText = enlace.texto;
-        link.target = "_blank";  // Abre en nueva pestaña
+        link.target = "_blank";
         li.appendChild(link);
         lista.appendChild(li);
     });
