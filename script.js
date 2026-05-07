@@ -68,9 +68,28 @@ const contenidoEstudiantes = [
             { texto: "📋 Instructivo", ruta: "#" },
             { texto: "📅 Fechas de inscripción", ruta: "#" }
         ]
+    },
+    {
+        titulo: "🎪 Eventos de fortalecimiento disciplinar",
+        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Conferencias, talleres, seminarios y encuentros.",
+        enlaces: [
+            { texto: "📅 Calendario de eventos", ruta: "#" },
+            { texto: "📋 Próximos eventos", ruta: "#" },
+            { texto: "📸 Galería de eventos pasados", ruta: "#" },
+            { texto: "📝 Inscripción a eventos", ruta: "#" }
+        ]
+    },
+    {
+        titulo: "🎙️ Programas radiales",
+        descripcion: "Espacios de diálogo, entrevistas y contenido académico producido por la ECSAH Zona Caribe para toda la comunidad.",
+        enlaces: [
+            { texto: "📻 Escuchar programas grabados", ruta: "#" },
+            { texto: "📅 Próximas transmisiones", ruta: "#" },
+            { texto: "🎧 Podcasts disponibles", ruta: "#" },
+            { texto: "📝 Participar como invitado", ruta: "#" }
+        ]
     }
 ];
-
 // 👩‍🏫 CONTENIDO PARA DOCENTES
 const contenidoDocentes = [
     {
