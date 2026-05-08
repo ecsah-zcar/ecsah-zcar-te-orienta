@@ -42,7 +42,7 @@ const contenidoEstudiantes = [
         descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos de preparación.",
         enlaces: [
             { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
-            { texto: "📧 Contacto asesor", ruta: "documentos/Proceso de Inscripción Pruebas Saber Primer Semestre 2026.pdf" },
+            { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso de Inscripción Pruebas Saber Primer Semestre 2026.pdf" },
             { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
         ]
     },
