@@ -92,46 +92,30 @@ const contenidoDocentes = [
         descripcion: "Lineamientos, formato guía CIPAS para proyectos de investigación e innovación.",
         enlaces: [
             { texto: "📄 Lineamientos CIPAS", ruta: "#" },
-            { texto: "📋 Formato guía editable", ruta: "#" }
+            { texto: "📋 Formato guía editable", ruta: "#" },
+            { texto: "📖 Cipas Territoriales, ruta: "#"},
         ]
     },
     {
         titulo: "🔄 Sistema de Homologación (SIHO)",
         descripcion: "Construcción de procuradores e instructivo técnico y administrativo.",
         enlaces: [
-            { texto: "📖 Manual SIHO - Rol Estudiante", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" },
-            { texto: "📋 Formato procuradores", ruta: "#" },
+            { texto: "📋 Responsables", ruta: "#" },
             { texto: "🎥 Vídeo tutorial", ruta: "#" }
         ]
     },
     {
-        titulo: "✅ Pruebas finales - Microtest",
+        titulo: "✅ Ruta de admisión Psicología",
         descripcion: "Configuración, aplicación y reportes de pruebas finales Microtest.",
         enlaces: [
-            { texto: "📘 Guía de Microtest", ruta: "#" },
             { texto: "📅 Calendario de pruebas", ruta: "#" }
-        ]
-    },
-    {
-        titulo: "📦 Alistamiento de cursos",
-        descripcion: "Capacitaciones, lineamientos de internacionalización y recursos educativos OVAS/OVIS.",
-        enlaces: [
-            { texto: "🎓 Capacitaciones disponibles", ruta: "#" }
-        ]
-    },
-    {
-        titulo: "🌐 Redes académicas",
-        descripcion: "Lineamientos, matrices de red de curso y matrices curriculares.",
-        enlaces: [
-            { texto: "📊 Matriz de red de curso", ruta: "#" },
-            { texto: "📋 Matriz curricular", ruta: "#" }
         ]
     },
     {
         titulo: "🔍 Investigación",
         descripcion: "Microtest para investigación, convocatorias internas y semilleros.",
         enlaces: [
-            { texto: "📋 Formatos Microtest", ruta: "#" },
+            { texto: "📋 Semilleros de Investigación", ruta: "#" },
             { texto: "📢 Convocatorias vigentes", ruta: "#" }
         ]
     }
