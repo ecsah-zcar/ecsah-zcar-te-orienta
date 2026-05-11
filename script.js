@@ -88,15 +88,6 @@ const contenidoEstudiantes = [
 // 👩‍🏫 CONTENIDO PARA DOCENTES
 const contenidoDocentes = [
     {
-        titulo: "📖 Gestión del curso",
-        descripcion: "Organización de grupos, centralización de calificaciones, correo académico y recalificación.",
-        enlaces: [
-            { texto: "📘 Manual de calificaciones", ruta: "#" },
-            { texto: "👥 Grupos y aulas", ruta: "#" },
-            { texto: "📝 Formato de recalificación", ruta: "#" }
-        ]
-    },
-    {
         titulo: "🔬 CIPAS",
         descripcion: "Lineamientos, formato guía CIPAS para proyectos de investigación e innovación.",
         enlaces: [
