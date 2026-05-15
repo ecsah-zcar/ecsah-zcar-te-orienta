@@ -1,16 +1,13 @@
 // ============================================
 // ECSAH ZCAR Te Orienta - Micrositio
-// Contenido para estudiantes y docentes
 // ============================================
 
-// 📚 CONTENIDO PARA ESTUDIANTES
+// 📚 CONTENIDO ESTUDIANTES
 const contenidoEstudiantes = [
     {
         titulo: "📌 Matrícula 2026",
         descripcion: "Toda la información sobre el proceso de matrícula: fechas, requisitos, pasos y documentación necesaria.",
-        enlaces: [
-            { texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" }
-        ]
+        enlaces: [{ texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" }]
     },
     {
         titulo: "🎓 Opciones de grado",
@@ -56,7 +53,7 @@ const contenidoEstudiantes = [
     },
     {
         titulo: "🎫 Eventos de fortalecimiento disciplinar",
-        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Conferencias, talleres, seminarios y encuentros.",
+        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe.",
         enlaces: [
             { texto: "📅 Calendario de eventos", ruta: "#" },
             { texto: "📋 Próximos eventos", ruta: "#" },
@@ -66,7 +63,7 @@ const contenidoEstudiantes = [
     },
     {
         titulo: "🎙️ Programas radiales",
-        descripcion: "Espacios de diálogo, entrevistas y contenido académico producido por la ECSAH Zona Caribe para toda la comunidad.",
+        descripcion: "Espacios de diálogo, entrevistas y contenido académico producido por la ECSAH Zona Caribe.",
         enlaces: [
             { texto: "📻 Escuchar programas grabados", ruta: "#" },
             { texto: "📅 Próximas transmisiones", ruta: "#" },
@@ -76,7 +73,7 @@ const contenidoEstudiantes = [
     },
     {
         titulo: "🌐 Redes Sociales",
-        descripcion: "Síguenos en nuestras redes sociales oficiales y mantente conectado con la ECSAH Zona Caribe.",
+        descripcion: "Síguenos en nuestras redes sociales oficiales.",
         enlaces: [
             { texto: "📷 Instagram", ruta: "https://www.instagram.com/unad.zcar?igsh=d2llZGJmaTJlcnk=" },
             { texto: "📘 Facebook", ruta: "https://www.facebook.com/share/14fm1HT8Paf/" },
@@ -85,7 +82,7 @@ const contenidoEstudiantes = [
     }
 ];
 
-// 👩‍🏫 CONTENIDO PARA DOCENTES (CORREGIDO)
+// 👩‍🏫 CONTENIDO DOCENTES
 const contenidoDocentes = [
     {
         titulo: "🔬 CIPAS",
@@ -125,26 +122,22 @@ const contenidoDocentes = [
 ];
 
 // ============================================
-// FUNCIONES DEL MICROSITIO
+// FUNCIONES COMUNES
 // ============================================
 
 function crearTarjeta(item) {
     const card = document.createElement('div');
     card.className = 'card';
-    
     const header = document.createElement('div');
     header.className = 'card-header';
     header.innerText = item.titulo;
-    
     const body = document.createElement('div');
     body.className = 'card-body';
-    
     const desc = document.createElement('p');
     desc.innerText = item.descripcion;
     body.appendChild(desc);
-    
     const lista = document.createElement('ul');
-    if (item.enlaces && item.enlaces.length > 0) {
+    if (item.enlaces && item.enlaces.length) {
         item.enlaces.forEach(enlace => {
             const li = document.createElement('li');
             const link = document.createElement('a');
@@ -157,7 +150,6 @@ function crearTarjeta(item) {
         });
         body.appendChild(lista);
     }
-    
     card.appendChild(header);
     card.appendChild(body);
     return card;
@@ -167,10 +159,7 @@ function renderizarGrid(contenido, contenedorId) {
     const grid = document.getElementById(contenedorId);
     if (!grid) return;
     grid.innerHTML = '';
-    contenido.forEach(item => {
-        const tarjeta = crearTarjeta(item);
-        grid.appendChild(tarjeta);
-    });
+    contenido.forEach(item => grid.appendChild(crearTarjeta(item)));
 }
 
 function filtrarTarjetas(contenido, textoBusqueda) {
@@ -183,66 +172,22 @@ function filtrarTarjetas(contenido, textoBusqueda) {
     );
 }
 
+// ============================================
+// PROTECCIÓN PARA DOCENTES
+// ============================================
+
+const DOCENTE_PASSWORD = "docentesECSAH2026";  // Cambia la contraseña aquí
+let docenteUnlocked = false;
 let currentTab = 'estudiantes';
 let allEstudiantes = [...contenidoEstudiantes];
 let allDocentes = [...contenidoDocentes];
 
-function updateSearch() {
-    const searchTerm = document.getElementById('searchInput')?.value || '';
-    if (currentTab === 'estudiantes') {
-        const filtrados = filtrarTarjetas(allEstudiantes, searchTerm);
-        renderizarGrid(filtrados, 'gridEstudiantes');
-    } else {
-        const filtrados = filtrarTarjetas(allDocentes, searchTerm);
-        renderizarGrid(filtrados, 'gridDocentes');
-    }
-}
-
-function initTabs() {
-    const btns = document.querySelectorAll('.tab-btn');
-    const contents = document.querySelectorAll('.tab-content');
-    
-    btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.getAttribute('data-tab');
-            btns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            contents.forEach(content => content.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            currentTab = tabId;
-            updateSearch();
-        });
-    });
-}
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-    renderizarGrid(allEstudiantes, 'gridEstudiantes');
-    renderizarGrid(allDocentes, 'gridDocentes');
-    initTabs();
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', updateSearch);
-    }
-    currentTab = 'estudiantes';
-});
-// ============================================
-// PROTECCIÓN PARA SECCIÓN DOCENTES
-// ============================================
-
-// Cambia esta contraseña por la que quieras
-const DOCENTE_PASSWORD = "docentesECSAH2026";  // <-- MODIFICA AQUÍ LA CONTRASEÑA
-
-let docenteUnlocked = false;
-
 function checkDocenteAccess() {
     const docenteContent = document.getElementById('docenteContent');
     const lockScreen = document.getElementById('docenteLockScreen');
-    
     if (docenteUnlocked) {
         docenteContent.style.display = 'block';
         lockScreen.style.display = 'none';
-        // Renderizar contenido docente solo la primera vez
         if (document.getElementById('gridDocentes').children.length === 0) {
             renderizarGrid(allDocentes, 'gridDocentes');
         }
@@ -255,64 +200,19 @@ function checkDocenteAccess() {
 function unlockDocente() {
     const passwordInput = document.getElementById('passwordInput');
     const errorMsg = document.getElementById('errorMsg');
-    
     if (passwordInput.value === DOCENTE_PASSWORD) {
         docenteUnlocked = true;
         errorMsg.textContent = '';
         passwordInput.value = '';
         checkDocenteAccess();
-        // Limpiar búsqueda si estaba activa
-        updateSearch();
+        if (currentTab === 'docentes') updateSearch();
     } else {
         errorMsg.textContent = '❌ Contraseña incorrecta. Acceso denegado.';
         passwordInput.value = '';
     }
 }
 
-// Modificar la función initTabs para proteger la pestaña docentes
-const originalInitTabs = initTabs;
-function enhancedInitTabs() {
-    const btns = document.querySelectorAll('.tab-btn');
-    const contents = document.querySelectorAll('.tab-content');
-    
-    btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.getAttribute('data-tab');
-            
-            // Si intenta acceder a docentes sin desbloquear
-            if (tabId === 'docentes' && !docenteUnlocked) {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                contents.forEach(content => content.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                checkDocenteAccess();
-                currentTab = tabId;
-                return;
-            }
-            
-            // Si ya está desbloqueado o es estudiantes
-            if (tabId === 'docentes' && docenteUnlocked) {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                contents.forEach(content => content.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                currentTab = tabId;
-                updateSearch();
-            } else if (tabId === 'estudiantes') {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                contents.forEach(content => content.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                currentTab = tabId;
-                updateSearch();
-            }
-        });
-    });
-}
-
-// Modificar updateSearch para manejar docentes bloqueados
-const originalUpdateSearch = updateSearch;
-function enhancedUpdateSearch() {
+function updateSearch() {
     const searchTerm = document.getElementById('searchInput')?.value || '';
     if (currentTab === 'estudiantes') {
         const filtrados = filtrarTarjetas(allEstudiantes, searchTerm);
@@ -323,33 +223,51 @@ function enhancedUpdateSearch() {
     }
 }
 
-// Reemplazar funciones
-window.updateSearch = enhancedUpdateSearch;
-window.initTabs = enhancedInitTabs;
-
-// Evento para el botón de desbloqueo
-document.addEventListener('DOMContentLoaded', () => {
-    renderizarGrid(allEstudiantes, 'gridEstudiantes');
-    enhancedInitTabs();
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', enhancedUpdateSearch);
-    }
-    currentTab = 'estudiantes';
-    
-    const unlockBtn = document.getElementById('unlockBtn');
-    if (unlockBtn) {
-        unlockBtn.addEventListener('click', unlockDocente);
-    }
-    
-    const passwordInput = document.getElementById('passwordInput');
-    if (passwordInput) {
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                unlockDocente();
+function initTabs() {
+    const btns = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            if (tabId === 'docentes' && !docenteUnlocked) {
+                // Cambiar visualmente pero mostrar pantalla de bloqueo
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                contents.forEach(content => content.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                currentTab = tabId;
+                checkDocenteAccess();
+                return;
+            }
+            if ((tabId === 'docentes' && docenteUnlocked) || tabId === 'estudiantes') {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                contents.forEach(content => content.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                currentTab = tabId;
+                updateSearch();
+                if (tabId === 'docentes') checkDocenteAccess();
             }
         });
-    }
-    
+    });
+}
+
+// ============================================
+// INICIALIZACIÓN ÚNICA
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarGrid(allEstudiantes, 'gridEstudiantes');
+    initTabs();
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.addEventListener('input', updateSearch);
+    // Configurar evento de desbloqueo
+    const unlockBtn = document.getElementById('unlockBtn');
+    if (unlockBtn) unlockBtn.addEventListener('click', unlockDocente);
+    const passwordInput = document.getElementById('passwordInput');
+    if (passwordInput) passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') unlockDocente();
+    });
     checkDocenteAccess();
+    currentTab = 'estudiantes';
 });
