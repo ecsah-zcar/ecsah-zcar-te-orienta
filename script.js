@@ -50,7 +50,7 @@ const contenidoEstudiantes = [
         titulo: "🔄 Cambios de malla curricular",
         descripcion: "Resoluciones, planes de transición y equivalencias entre mallas antiguas y nuevas.",
         enlaces: [
-            { texto: "📄 Cursos sin oferta y sus equivalencias Psicología 16-04", ruta: "documentos/Equivalencias-3443-para-1604.pdf" },
+            { texto: "📄 Cursos sin oferta y sus equivalencias Psicología 16-04", ruta: "documentos/Equivalencias-3443-para-16-04.pdf" },
             { texto: "⚖️ Resolución vigente", ruta: "#" }
         ]
     },
