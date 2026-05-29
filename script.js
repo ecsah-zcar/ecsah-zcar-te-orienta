@@ -7,8 +7,10 @@ const contenidoEstudiantes = [
     {
         titulo: "📌 Matrícula 2026",
         descripcion: "Toda la información sobre el proceso de matrícula: fechas, requisitos, pasos y documentación necesaria.",
-        enlaces: [{ texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" }
-                  { texto: "📋 Oferta Académica 16-04", ruta: "documentos/Cursos-Ofertados-ECSAH-Periodo-1604" }]
+        enlaces: [
+            { texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" },
+            { texto: "📋 Oferta Académica 16-04", ruta: "documentos/Cursos-Ofertados-ECSAH-Periodo-1604.pdf" }
+        ]
     },
     {
         titulo: "🎓 Opciones de grado",
@@ -177,7 +179,7 @@ function filtrarTarjetas(contenido, textoBusqueda) {
 // PROTECCIÓN PARA DOCENTES
 // ============================================
 
-const DOCENTE_PASSWORD = "docentesECSAH2026";  // Cambia la contraseña aquí
+const DOCENTE_PASSWORD = "docentesECSAH2026";
 let docenteUnlocked = false;
 let currentTab = 'estudiantes';
 let allEstudiantes = [...contenidoEstudiantes];
@@ -231,7 +233,6 @@ function initTabs() {
         btn.addEventListener('click', () => {
             const tabId = btn.getAttribute('data-tab');
             if (tabId === 'docentes' && !docenteUnlocked) {
-                // Cambiar visualmente pero mostrar pantalla de bloqueo
                 btns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 contents.forEach(content => content.classList.remove('active'));
@@ -254,7 +255,7 @@ function initTabs() {
 }
 
 // ============================================
-// INICIALIZACIÓN ÚNICA
+// INICIALIZACIÓN
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -262,7 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTabs();
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.addEventListener('input', updateSearch);
-    // Configurar evento de desbloqueo
     const unlockBtn = document.getElementById('unlockBtn');
     if (unlockBtn) unlockBtn.addEventListener('click', unlockDocente);
     const passwordInput = document.getElementById('passwordInput');
