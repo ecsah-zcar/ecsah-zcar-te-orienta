@@ -40,7 +40,7 @@ const contenidoEstudiantes = [
         descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos de preparación.",
         enlaces: [
             { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
-            { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso de Inscripción Pruebas Saber Primer Semestre 2026.pdf" },
+            { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso-de-Inscripción-Pruebas-Saber-Primer-Semestre-2026.pdf" },
             { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
         ]
     },
@@ -48,7 +48,7 @@ const contenidoEstudiantes = [
         titulo: "🔄 Cambios de malla curricular",
         descripcion: "Resoluciones, planes de transición y equivalencias entre mallas antiguas y nuevas.",
         enlaces: [
-            { texto: "📄 Documento de transición 16-04", ruta: "documentos/Equivalencias 3443 para 16-04.pdf" },
+            { texto: "📄 Documento de transición 16-04", ruta: "documentos/Equivalencias-3443-para-1604.pdf" },
             { texto: "⚖️ Resolución vigente", ruta: "#" }
         ]
     },
