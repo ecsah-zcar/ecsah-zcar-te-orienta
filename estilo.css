@@ -274,3 +274,56 @@ footer {
     margin-top: 1rem;
     font-size: 0.9rem;
 }
+
+/* ===== Acordeón para infografías ===== */
+.accordion-container {
+    margin-top: 1rem;
+    border-top: 1px solid #FFE082;
+    padding-top: 0.8rem;
+}
+
+.accordion-btn {
+    background: #FFF3E0;
+    border: none;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #5D4037;
+    width: 100%;
+    text-align: left;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.accordion-btn:hover {
+    background: #FFC107;
+}
+
+.accordion-content {
+    margin-top: 0.8rem;
+    padding-left: 0.5rem;
+    border-left: 3px solid #FFC107;
+}
+
+.accordion-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.accordion-content li {
+    margin: 0.5rem 0;
+}
+
+.accordion-content .btn-enlace {
+    background: #FFF8E1;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
+}
+
+.accordion-content .btn-enlace:hover {
+    background: #FFC107;
+}
