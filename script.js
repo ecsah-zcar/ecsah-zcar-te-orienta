@@ -9,7 +9,8 @@ const contenidoEstudiantes = [
         descripcion: "Toda la información sobre el proceso de matrícula: fechas, requisitos, pasos y documentación necesaria.",
         enlaces: [
             { texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" },
-            { texto: "📋 Oferta Académica 16-04", ruta: "documentos/Cursos-Ofertados-ECSAH-Periodo-1604.pdf" }
+            { texto: "📋 Oferta Académica 16-04", ruta: "documentos/Cursos-Ofertados-ECSAH-Periodo-1604.pdf" },
+            { texto: "📘 Planea tu matrícula", ruta: "documentos/Infografía General.pdf" }
         ]
     },
     {
