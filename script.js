@@ -12,7 +12,7 @@ const contenidoEstudiantes = [
         { texto: "📋 Oferta Académica 16-04", ruta: "documentos/Cursos-Ofertados-ECSAH-Periodo-1604.pdf" }
     ],
     desplegable: {
-        titulo: "📘 Planea tu matrícula",
+        titulo: "Planea tu matrícula",
         enlaces: [
             { texto: "📄 Infografía 1: Consulta tu malla", ruta: "documentos/Infografía-1-Consulta-tu-malla.pdf" },
             { texto: "📄 Infografía 2: Descarga tu historial académico", ruta: "documentos/Infografía-2-Descarga-tu-historial-académico.pdf" },
@@ -233,32 +233,25 @@ function abrirModal(enlaces, titulo) {
     
     if (!overlay || !grid) return;
     
-    // Actualizar título
-    titleEl.innerText = titulo || '📘 Infografías';
-    
-    // Limpiar grid
+    titleEl.innerText = `📘 ${titulo}`;
     grid.innerHTML = '';
     
-    // Generar cada ítem
     enlaces.forEach(enlace => {
         const div = document.createElement('div');
         div.className = 'modal-item';
         
-        // Extraer el emoji del texto o usar 📄 por defecto
-        const emojiMatch = enlace.texto.match(/[📄📘📋📅📝📖📊📰📷🎓]/);
-        const icono = emojiMatch ? emojiMatch[0] : '📄';
-        const textoLimpio = enlace.texto.replace(/[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
+        // Limpia el texto eliminando cualquier emoji al inicio
+        const textoLimpio = enlace.texto.replace(/^[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
         
         div.innerHTML = `
-            <span class="emoji">${icono}</span>
+            <span class="emoji">📄</span>
             <a href="${enlace.ruta}" target="_blank">${textoLimpio}</a>
         `;
         grid.appendChild(div);
     });
     
-    // Mostrar modal
     overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Evita scroll detrás
+    document.body.style.overflow = 'hidden';
 }
 
 function cerrarModal() {
