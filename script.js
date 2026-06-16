@@ -164,7 +164,7 @@ function crearTarjeta(item) {
     desc.innerText = item.descripcion;
     body.appendChild(desc);
     
-    // Enlaces normales (si existen)
+    // Enlaces normales
     if (item.enlaces && item.enlaces.length > 0) {
         const lista = document.createElement('ul');
         item.enlaces.forEach(enlace => {
@@ -180,42 +180,25 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
-    // NUEVO: Desplegable (acordeón) si existe
+    // Botón para abrir el modal (en lugar de acordeón)
     if (item.desplegable) {
-        const accordionContainer = document.createElement('div');
-        accordionContainer.className = 'accordion-container';
+        const wrapper = document.createElement('div');
+        wrapper.style.marginTop = '1rem';
         
-        const accordionBtn = document.createElement('button');
-        accordionBtn.className = 'accordion-btn';
-        accordionBtn.innerText = `▶️ ${item.desplegable.titulo}`;
+        const btn = document.createElement('button');
+        btn.className = 'btn-enlace';
+        btn.style.background = '#FFC107';
+        btn.style.color = '#1a2c3e';
+        btn.style.fontWeight = 'bold';
+        btn.innerText = `📘 ${item.desplegable.titulo}`;
         
-        const accordionContent = document.createElement('div');
-        accordionContent.className = 'accordion-content';
-        accordionContent.style.display = 'none'; // Oculto por defecto
-        
-        const subLista = document.createElement('ul');
-        item.desplegable.enlaces.forEach(enlace => {
-            const li = document.createElement('li');
-            const link = document.createElement('a');
-            link.href = enlace.ruta;
-            link.className = 'btn-enlace';
-            link.innerText = enlace.texto;
-            link.target = "_blank";
-            li.appendChild(link);
-            subLista.appendChild(li);
-        });
-        accordionContent.appendChild(subLista);
-        
-        // Evento toggle (abrir/cerrar)
-        accordionBtn.addEventListener('click', () => {
-            const isOpen = accordionContent.style.display === 'block';
-            accordionContent.style.display = isOpen ? 'none' : 'block';
-            accordionBtn.innerText = isOpen ? `▶️ ${item.desplegable.titulo}` : `◀️ ${item.desplegable.titulo}`;
+        // Al hacer clic, abre el modal
+        btn.addEventListener('click', () => {
+            abrirModal(item.desplegable.enlaces, item.desplegable.titulo);
         });
         
-        accordionContainer.appendChild(accordionBtn);
-        accordionContainer.appendChild(accordionContent);
-        body.appendChild(accordionContainer);
+        wrapper.appendChild(btn);
+        body.appendChild(wrapper);
     }
     
     card.appendChild(body);
@@ -238,6 +221,80 @@ function filtrarTarjetas(contenido, textoBusqueda) {
         (item.enlaces && item.enlaces.some(e => e.texto.toLowerCase().includes(lowerQuery)))
     );
 }
+
+// ============================================
+// FUNCIONES DEL MODAL
+// ============================================
+
+function abrirModal(enlaces, titulo) {
+    const overlay = document.getElementById('modalInfografias');
+    const grid = document.getElementById('modalGrid');
+    const titleEl = document.getElementById('modalTitle');
+    
+    if (!overlay || !grid) return;
+    
+    // Actualizar título
+    titleEl.innerText = titulo || '📘 Infografías';
+    
+    // Limpiar grid
+    grid.innerHTML = '';
+    
+    // Generar cada ítem
+    enlaces.forEach(enlace => {
+        const div = document.createElement('div');
+        div.className = 'modal-item';
+        
+        // Extraer el emoji del texto o usar 📄 por defecto
+        const emojiMatch = enlace.texto.match(/[📄📘📋📅📝📖📊📰📷🎓]/);
+        const icono = emojiMatch ? emojiMatch[0] : '📄';
+        const textoLimpio = enlace.texto.replace(/[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
+        
+        div.innerHTML = `
+            <span class="emoji">${icono}</span>
+            <a href="${enlace.ruta}" target="_blank">${textoLimpio}</a>
+        `;
+        grid.appendChild(div);
+    });
+    
+    // Mostrar modal
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Evita scroll detrás
+}
+
+function cerrarModal() {
+    const overlay = document.getElementById('modalInfografias');
+    if (overlay) {
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restaura scroll
+    }
+}
+
+// Configurar eventos del modal (se ejecuta al cargar la página)
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('modalInfografias');
+    const closeBtn = document.getElementById('modalCloseBtn');
+    
+    if (overlay) {
+        // Cerrar al hacer clic fuera del cuadro (en el fondo oscuro)
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                cerrarModal();
+            }
+        });
+        
+        // Cerrar con la X
+        if (closeBtn) {
+            closeBtn.addEventListener('click', cerrarModal);
+        }
+        
+        // Cerrar con la tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                cerrarModal();
+            }
+        });
+    }
+});
 
 // ============================================
 // PROTECCIÓN PARA DOCENTES
