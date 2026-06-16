@@ -34,7 +34,7 @@ const contenidoEstudiantes = [
         descripcion: "Proceso de homologación de asignaturas a través del Sistema SIHO.",
         enlaces: [
             { texto: "📖 Manual SIHO - Rol Estudiante", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" },
-            { texto: "📝 Pruebas de suficiencia", ruta: "#" }
+            { texto: "📝 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
         ]
     },
     {
