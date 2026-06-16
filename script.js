@@ -25,7 +25,7 @@ const contenidoEstudiantes = [
         descripcion: "Documentación, seguimiento, convenios, informe final y carta de presentación para tu práctica.",
         enlaces: [
             { texto: "📋 Protocolo de práctica profesional 3443", ruta: "documentos/Protocolo_Practicas_Psicología_Resolución_3443.pdf" },
-            { texto: "📝 Formatos de seguimiento", ruta: "#" },
+            { texto: "📝 Requisitos de Practicas Profesionales", ruta: "documentos/Requisitos_Prácticas_Profesionales.pdf" },
             { texto: "🤝 Convenios activos", ruta: "#" }
         ]
     },
