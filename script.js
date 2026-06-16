@@ -151,16 +151,22 @@ const contenidoDocentes = [
 function crearTarjeta(item) {
     const card = document.createElement('div');
     card.className = 'card';
+    
     const header = document.createElement('div');
     header.className = 'card-header';
     header.innerText = item.titulo;
+    card.appendChild(header);
+    
     const body = document.createElement('div');
     body.className = 'card-body';
+    
     const desc = document.createElement('p');
     desc.innerText = item.descripcion;
     body.appendChild(desc);
-    const lista = document.createElement('ul');
-    if (item.enlaces && item.enlaces.length) {
+    
+    // Enlaces normales (si existen)
+    if (item.enlaces && item.enlaces.length > 0) {
+        const lista = document.createElement('ul');
         item.enlaces.forEach(enlace => {
             const li = document.createElement('li');
             const link = document.createElement('a');
@@ -173,7 +179,45 @@ function crearTarjeta(item) {
         });
         body.appendChild(lista);
     }
-    card.appendChild(header);
+    
+    // NUEVO: Desplegable (acordeón) si existe
+    if (item.desplegable) {
+        const accordionContainer = document.createElement('div');
+        accordionContainer.className = 'accordion-container';
+        
+        const accordionBtn = document.createElement('button');
+        accordionBtn.className = 'accordion-btn';
+        accordionBtn.innerText = `▶️ ${item.desplegable.titulo}`;
+        
+        const accordionContent = document.createElement('div');
+        accordionContent.className = 'accordion-content';
+        accordionContent.style.display = 'none'; // Oculto por defecto
+        
+        const subLista = document.createElement('ul');
+        item.desplegable.enlaces.forEach(enlace => {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = enlace.ruta;
+            link.className = 'btn-enlace';
+            link.innerText = enlace.texto;
+            link.target = "_blank";
+            li.appendChild(link);
+            subLista.appendChild(li);
+        });
+        accordionContent.appendChild(subLista);
+        
+        // Evento toggle (abrir/cerrar)
+        accordionBtn.addEventListener('click', () => {
+            const isOpen = accordionContent.style.display === 'block';
+            accordionContent.style.display = isOpen ? 'none' : 'block';
+            accordionBtn.innerText = isOpen ? `▶️ ${item.desplegable.titulo}` : `◀️ ${item.desplegable.titulo}`;
+        });
+        
+        accordionContainer.appendChild(accordionBtn);
+        accordionContainer.appendChild(accordionContent);
+        body.appendChild(accordionContainer);
+    }
+    
     card.appendChild(body);
     return card;
 }
