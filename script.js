@@ -50,11 +50,16 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "🔄 Homologaciones - SIHO",
-        descripcion: "Proceso de homologación de asignaturas a través del Sistema SIHO.",
+        titulo: "📋 Procesos académico-administrativos",
+        descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más. Cada botón abre una guía con la información necesaria.",
         enlaces: [
-            { texto: "📖 Manual SIHO - Rol Estudiante", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" },
-            { texto: "📝 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
+            { texto: "📄 Descargar FUS en PDF", ruta: "documentos/FUS-Formato-Unico-Solicitudes.pdf" }
+        ],
+        // Botones para abrir modales específicos
+        botonesModal: [
+            { texto: "🔄 Homologaciones - SIHO", modalId: "modalHomologaciones" },
+            { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
+            { texto: "📋 Guía FUS", modalId: "modalFUS" }
         ]
     },
     {
