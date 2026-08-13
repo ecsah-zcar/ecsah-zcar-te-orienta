@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>ECSAH ZCAR Te Orienta | Estudiantes y Docentes</title>
+    
+    <!-- Estilos principales -->
     <link rel="stylesheet" href="estilo.css">
+    
+    <!-- Fuente Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (íconos profesionales) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- ======== HEADER ======== -->
     <header>
         <div class="logo-titulo">
             <img src="logo-ecsah.jpg" alt="Logo ECSAH" class="logo-ecsah">
@@ -21,15 +30,13 @@
         </div>
     </header>
 
-    <!-- Pestañas -->
+    <!-- ======== PESTAÑAS ======== -->
     <div class="tabs">
         <button class="tab-btn active" data-tab="estudiantes">🎓 Estudiantes</button>
         <button class="tab-btn" data-tab="docentes" id="btnDocentes">👩‍🏫 Docentes</button>
     </div>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- CONTENIDO ESTUDIANTES (libre) -->
+    <!-- ======== CONTENIDO ESTUDIANTES (libre) ======== -->
     <div id="estudiantes" class="tab-content active">
         <section class="intro">
             <h2>📘 Bienvenido, estudiante</h2>
@@ -38,8 +45,7 @@
         <div class="grid-cards" id="gridEstudiantes"></div>
     </div>
 
-   
-    <!-- CONTENIDO DOCENTES (protegido) -->
+    <!-- ======== CONTENIDO DOCENTES (protegido) ======== -->
     <div id="docentes" class="tab-content">
         <!-- Pantalla de bloqueo -->
         <div id="docenteLockScreen" class="lock-screen">
@@ -61,16 +67,11 @@
         </div>
     </div>
 
-    <footer>
-        <p>📧 ¿Dudas no resueltas? Escríbenos a <strong>ecsah.zcar@unad.edu.co</strong></p>
-        <p>ECSAH Zona Caribe – Universidad Nacional Abierta y a Distancia</p>
-    </footer>
-    
-    <!-- MODAL PARA INFOGRAFÍAS -->
+    <!-- ======== MODAL PARA INFOGRAFÍAS ======== -->
     <div id="modalInfografias" class="modal-overlay" style="display: none;">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="modalTitle">📘 Planea tu matrícula</h2>
+                <h2 id="modalTitle">Planea tu matrícula</h2>
                 <span class="modal-close" id="modalCloseBtn">&times;</span>
             </div>
             <div class="modal-body">
@@ -80,7 +81,14 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- ======== FOOTER ======== -->
+    <footer>
+        <p>📧 ¿Dudas no resueltas? Escríbenos a <strong>ecsah.zcar@unad.edu.co</strong></p>
+        <p>ECSAH Zona Caribe – Universidad Nacional Abierta y a Distancia</p>
+    </footer>
+
+    <!-- ======== SCRIPTS ======== -->
     <script src="script.js"></script>
 </body>
 </html>
