@@ -5,33 +5,33 @@
 // 📚 CONTENIDO ESTUDIANTES
 const contenidoEstudiantes = [
     {
-    titulo: "📌 Matrícula 2026",
-    descripcion: "Toda la información sobre el proceso de matrícula: fechas, requisitos, pasos y documentación necesaria.",
-    enlaces: [
-        { texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" },
-        { texto: "📋 Oferta Académica 16-05", ruta: "documentos/Oferta_Academica_ECSAH_16-05_2026.pdf" }
-    ],
-    desplegable: {
-        titulo: "Planea tu matrícula",
+        titulo: "📌 Matrícula 2026",
+        descripcion: "Toda la información sobre el proceso de matrícula: fechas, requisitos, pasos y documentación necesaria.",
         enlaces: [
-            { texto: "📄 Infografía 1: Consulta tu malla", ruta: "documentos/Infografía-1-Consulta-tu-malla.pdf" },
-            { texto: "📄 Infografía 2: Descarga tu historial académico", ruta: "documentos/Infografía-2-Descarga-tu-historial-académico.pdf" },
-            { texto: "📄 Infografía 3: Define los cursos a matricular", ruta: "documentos/Infografía-3-Define-los-cursos-a-matricular.pdf" },
-            { texto: "📄 Infografía 4: Formaliza tu matrícula", ruta: "documentos/Infografía-4-Formaliza-tu-matricula.pdf" },
-            { texto: "📄 Infografía 5: Conoce los periodos académicos", ruta: "documentos/Infografía-5-Conoce-los-periodos-académicos.pdf" },
-            { texto: "📄 Infografía 6: No recibiste tu enlace para matricular", ruta: "documentos/Infografía-6-No-recibiste-tu-enlace-para-matricular.pdf" },
-            { texto: "📄 Infografía 7: Trámites SAI", ruta: "documentos/Infografía-7-Tramites-SAI.pdf" },
-            { texto: "📄 Infografía 8: Pago de matrícula", ruta: "documentos/Infografía-8-Pago-de-matricula.pdf" },
-            { texto: "📄 Infografía 9: Confirmación del pago", ruta: "documentos/Infografía-9-Confirmación-del-pago.pdf" },
-            { texto: "📄 Infografía 10: Solicitud de descuentos", ruta: "documentos/Infografía-10-Solicitud-de-descuentos.pdf" },
-            { texto: "📄 Infografía 11: Imprimir factura", ruta: "documentos/Infografía-11-Imprimir-factura.pdf" },
-            { texto: "📄 Infografía 12: Legalizar matrícula", ruta: "documentos/Infografía-12-Legalizar-matricula.pdf" },
-            { texto: "📄 Infografía 13: Créditos Adicionales", ruta: "documentos/Infografía-13-Creditos-Adicionales.pdf" },
-            { texto: "📄 Infografía 14: Continuidad Académica", ruta: "documentos/Infografía-14-Continuidad-Académica.pdf" },
-            { texto: "📄 Infografía 15: Mínimo de créditos", ruta: "documentos/Infografía-15-Minimo-de-creditos.pdf" }
-        ]
-    }
-},
+            { texto: "📅 Calendario Académico 2026", ruta: "documentos/Calendario-Académico-2026.pdf" },
+            { texto: "📋 Oferta Académica 16-05", ruta: "documentos/Oferta_Academica_ECSAH_16-05_2026.pdf" }
+        ],
+        desplegable: {
+            titulo: "Planea tu matrícula",
+            enlaces: [
+                { texto: "📄 Infografía 1: Consulta tu malla", ruta: "documentos/Infografía-1-Consulta-tu-malla.pdf" },
+                { texto: "📄 Infografía 2: Descarga tu historial académico", ruta: "documentos/Infografía-2-Descarga-tu-historial-académico.pdf" },
+                { texto: "📄 Infografía 3: Define los cursos a matricular", ruta: "documentos/Infografía-3-Define-los-cursos-a-matricular.pdf" },
+                { texto: "📄 Infografía 4: Formaliza tu matrícula", ruta: "documentos/Infografía-4-Formaliza-tu-matricula.pdf" },
+                { texto: "📄 Infografía 5: Conoce los periodos académicos", ruta: "documentos/Infografía-5-Conoce-los-periodos-académicos.pdf" },
+                { texto: "📄 Infografía 6: No recibiste tu enlace para matricular", ruta: "documentos/Infografía-6-No-recibiste-tu-enlace-para-matricular.pdf" },
+                { texto: "📄 Infografía 7: Trámites SAI", ruta: "documentos/Infografía-7-Tramites-SAI.pdf" },
+                { texto: "📄 Infografía 8: Pago de matrícula", ruta: "documentos/Infografía-8-Pago-de-matricula.pdf" },
+                { texto: "📄 Infografía 9: Confirmación del pago", ruta: "documentos/Infografía-9-Confirmación-del-pago.pdf" },
+                { texto: "📄 Infografía 10: Solicitud de descuentos", ruta: "documentos/Infografía-10-Solicitud-de-descuentos.pdf" },
+                { texto: "📄 Infografía 11: Imprimir factura", ruta: "documentos/Infografía-11-Imprimir-factura.pdf" },
+                { texto: "📄 Infografía 12: Legalizar matrícula", ruta: "documentos/Infografía-12-Legalizar-matricula.pdf" },
+                { texto: "📄 Infografía 13: Créditos Adicionales", ruta: "documentos/Infografía-13-Creditos-Adicionales.pdf" },
+                { texto: "📄 Infografía 14: Continuidad Académica", ruta: "documentos/Infografía-14-Continuidad-Académica.pdf" },
+                { texto: "📄 Infografía 15: Mínimo de créditos", ruta: "documentos/Infografía-15-Minimo-de-creditos.pdf" }
+            ]
+        }
+    },
     {
         titulo: "🎓 Opciones de grado",
         descripcion: "Conoce las diferentes opciones para tu trabajo de grado: proyecto aplicado, diplomado, artículo, etc.",
@@ -68,7 +68,7 @@ const contenidoEstudiantes = [
     },
     {
         titulo: "📚 Programas de la ECSAH",
-        descripcion: "Conoce la oferta académica de la Escuela de Ciencias Sociales, Artes y Humanidades. Pregrado, especializaciones, maestrías y doctorado.",
+        descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
         enlaces: [
             { texto: '<i class="fas fa-music-note"></i> Música', ruta: "https://estudios.unad.edu.co/musica" },
             { texto: '<i class="fas fa-brain"></i> Psicología', ruta: "https://estudios.unad.edu.co/psicologia" },
@@ -77,10 +77,7 @@ const contenidoEstudiantes = [
             { texto: '<i class="fas fa-users"></i> Sociología', ruta: "https://estudios.unad.edu.co/sociologia" },
             { texto: '<i class="fas fa-palette"></i> Artes Visuales', ruta: "https://estudios.unad.edu.co/artes-visuales" },
             { texto: '<i class="fas fa-landmark"></i> Historia', ruta: "https://estudios.unad.edu.co/historia" },
-            { texto: '<i class="fas fa-heartbeat"></i> Especialización en Salud Mental Comunitaria', ruta: "https://estudios.unad.edu.co/especializacion-en-salud-mental-comunitaria" },
-            { texto: '<i class="fas fa-gavel"></i> Especialización en Psicología Jurídica', ruta: "https://estudios.unad.edu.co/especializacion-en-psicologia-juridica" },
-            { texto: '<i class="fas fa-seedling"></i> Maestría en Desarrollo Alternativo Sostenible y Solidario', ruta: "https://estudios.unad.edu.co/maestria-en-desarrollo-alternativo-sostenible-y-solidario" },
-            { texto: '<i class="fas fa-globe-americas"></i> Doctorado en Cliodinámica', ruta: "https://estudios.unad.edu.co/doctorado-en-cliodinamica" }
+            { texto: '<i class="fas fa-hands-helping"></i> Trabajo Social', ruta: "https://estudios.unad.edu.co/trabajo-social" }
         ]
     },
     {
@@ -181,7 +178,8 @@ function crearTarjeta(item) {
             const link = document.createElement('a');
             link.href = enlace.ruta;
             link.className = 'btn-enlace';
-            link.innerText = enlace.texto;
+            // 🔥 CAMBIO IMPORTANTE: innerHTML para que renderice los íconos de Font Awesome
+            link.innerHTML = enlace.texto;
             link.target = "_blank";
             li.appendChild(link);
             lista.appendChild(li);
@@ -267,7 +265,7 @@ function cerrarModal() {
     const overlay = document.getElementById('modalInfografias');
     if (overlay) {
         overlay.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Restaura scroll
+        document.body.style.overflow = 'auto';
     }
 }
 
@@ -277,19 +275,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('modalCloseBtn');
     
     if (overlay) {
-        // Cerrar al hacer clic fuera del cuadro (en el fondo oscuro)
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 cerrarModal();
             }
         });
         
-        // Cerrar con la X
         if (closeBtn) {
             closeBtn.addEventListener('click', cerrarModal);
         }
         
-        // Cerrar con la tecla ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 cerrarModal();
