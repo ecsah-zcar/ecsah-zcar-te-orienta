@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // PROTECCIÓN PARA DOCENTES
 // ============================================
 
-const DOCENTE_PASSWORD = "docentesECSAH2026";
+const DOCENTE_PASSWORD = "ECSAH.ZCAR";
 let docenteUnlocked = false;
 let currentTab = 'estudiantes';
 let allEstudiantes = [...contenidoEstudiantes];
