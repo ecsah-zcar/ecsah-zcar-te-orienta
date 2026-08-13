@@ -50,19 +50,6 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "📋 Procesos académico-administrativos",
-        descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más. Cada botón abre una guía con la información necesaria.",
-        enlaces: [
-            { texto: "📄 Descargar FUS en PDF", ruta: "documentos/FUS-Formato-Unico-Solicitudes.pdf" }
-        ],
-        // Botones para abrir modales específicos
-        botonesModal: [
-            { texto: "🔄 Homologaciones - SIHO", modalId: "modalHomologaciones" },
-            { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
-            { texto: "📋 Guía FUS", modalId: "modalFUS" }
-        ]
-    },
-    {
         titulo: "📰 Noticias Saber Pro / TyT",
         descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos de preparación.",
         enlaces: [
@@ -83,6 +70,18 @@ const contenidoEstudiantes = [
             { texto: '<i class="fas fa-palette"></i> Artes Visuales', ruta: "https://estudios.unad.edu.co/artes-visuales" },
             { texto: '<i class="fas fa-landmark"></i> Historia', ruta: "https://estudios.unad.edu.co/historia" },
             { texto: '<i class="fas fa-hands-helping"></i> Trabajo Social', ruta: "https://estudios.unad.edu.co/trabajo-social" }
+        ]
+    },
+    {
+        titulo: "📋 Procesos académico-administrativos",
+        descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más.",
+        enlaces: [
+            { texto: "📄 Descargar FUS en PDF", ruta: "documentos/FUS-Formato-Unico-Solicitudes.pdf" }
+        ],
+        botonesModal: [
+            { texto: "🔄 Homologaciones - SIHO", modalId: "modalHomologaciones" },
+            { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
+            { texto: "📋 Guía FUS", modalId: "modalFUS" }
         ]
     },
     {
@@ -116,7 +115,25 @@ const contenidoEstudiantes = [
     }
 ];
 
-// 👩‍🏫 CONTENIDO DOCENTES
+// ============================================
+// CONTENIDO PARA MODALES DE PROCESOS
+// ============================================
+
+const contenidoHomologaciones = [
+    { texto: "📖 Manual SIHO - Rol Estudiante", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" },
+    { texto: "📝 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
+];
+
+const contenidoAplazamientos = [
+    { texto: "📋 Formato solicitud aplazamiento", ruta: "documentos/Formato-Aplazamiento.pdf" },
+    { texto: "📅 Calendario de fechas límite", ruta: "documentos/Calendario-Aplazamientos.pdf" },
+    { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Instructivo-Aplazamiento.pdf" }
+];
+
+// ============================================
+// CONTENIDO DOCENTES
+// ============================================
+
 const contenidoDocentes = [
     {
         titulo: "🔬 CIPAS",
@@ -183,7 +200,6 @@ function crearTarjeta(item) {
             const link = document.createElement('a');
             link.href = enlace.ruta;
             link.className = 'btn-enlace';
-            // 🔥 CAMBIO IMPORTANTE: innerHTML para que renderice los íconos de Font Awesome
             link.innerHTML = enlace.texto;
             link.target = "_blank";
             li.appendChild(link);
@@ -192,7 +208,7 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
-    // Botón para abrir el modal (en lugar de acordeón)
+    // Botón para abrir modal de infografías (Planea tu matrícula)
     if (item.desplegable) {
         const wrapper = document.createElement('div');
         wrapper.style.marginTop = '1rem';
@@ -204,12 +220,37 @@ function crearTarjeta(item) {
         btn.style.fontWeight = 'bold';
         btn.innerText = `📘 ${item.desplegable.titulo}`;
         
-        // Al hacer clic, abre el modal
         btn.addEventListener('click', () => {
             abrirModal(item.desplegable.enlaces, item.desplegable.titulo);
         });
         
         wrapper.appendChild(btn);
+        body.appendChild(wrapper);
+    }
+    
+    // Botones para abrir modales de procesos (Homologaciones, Aplazamientos, FUS)
+    if (item.botonesModal && item.botonesModal.length > 0) {
+        const wrapper = document.createElement('div');
+        wrapper.style.marginTop = '1rem';
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.gap = '0.5rem';
+        
+        item.botonesModal.forEach(boton => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-enlace';
+            btn.style.background = '#FFF3E0';
+            btn.style.color = '#5D4037';
+            btn.style.fontWeight = 'bold';
+            btn.innerText = boton.texto;
+            
+            btn.addEventListener('click', () => {
+                abrirModalProceso(boton.modalId);
+            });
+            
+            wrapper.appendChild(btn);
+        });
+        
         body.appendChild(wrapper);
     }
     
@@ -235,7 +276,7 @@ function filtrarTarjetas(contenido, textoBusqueda) {
 }
 
 // ============================================
-// FUNCIONES DEL MODAL
+// FUNCIONES DEL MODAL (Infografías)
 // ============================================
 
 function abrirModal(enlaces, titulo) {
@@ -251,10 +292,7 @@ function abrirModal(enlaces, titulo) {
     enlaces.forEach(enlace => {
         const div = document.createElement('div');
         div.className = 'modal-item';
-        
-        // Limpia el texto eliminando cualquier emoji al inicio
         const textoLimpio = enlace.texto.replace(/^[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
-        
         div.innerHTML = `
             <span class="emoji">📄</span>
             <a href="${enlace.ruta}" target="_blank">${textoLimpio}</a>
@@ -274,29 +312,61 @@ function cerrarModal() {
     }
 }
 
-// Configurar eventos del modal (se ejecuta al cargar la página)
-document.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.getElementById('modalInfografias');
-    const closeBtn = document.getElementById('modalCloseBtn');
+// ============================================
+// FUNCIONES PARA MODALES DE PROCESOS
+// ============================================
+
+function abrirModalProceso(modalId) {
+    const overlay = document.getElementById(modalId);
+    if (!overlay) return;
     
-    if (overlay) {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                cerrarModal();
-            }
-        });
-        
-        if (closeBtn) {
-            closeBtn.addEventListener('click', cerrarModal);
-        }
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                cerrarModal();
-            }
-        });
+    // Si es el modal FUS, usar su lógica especial (ya tiene contenido estático)
+    if (modalId === 'modalFUS') {
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        return;
     }
-});
+    
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    // Llenar el grid según el modal
+    if (modalId === 'modalHomologaciones') {
+        const grid = document.getElementById('gridHomologaciones');
+        if (grid && grid.children.length === 0) {
+            contenidoHomologaciones.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                div.innerHTML = `
+                    <span class="emoji">📄</span>
+                    <a href="${item.ruta}" target="_blank">${item.texto}</a>
+                `;
+                grid.appendChild(div);
+            });
+        }
+    } else if (modalId === 'modalAplazamientos') {
+        const grid = document.getElementById('gridAplazamientos');
+        if (grid && grid.children.length === 0) {
+            contenidoAplazamientos.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                div.innerHTML = `
+                    <span class="emoji">📄</span>
+                    <a href="${item.ruta}" target="_blank">${item.texto}</a>
+                `;
+                grid.appendChild(div);
+            });
+        }
+    }
+}
+
+function cerrarModalProceso(modalId) {
+    const overlay = document.getElementById(modalId);
+    if (overlay) {
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
 
 // ============================================
 // PROTECCIÓN PARA DOCENTES
@@ -382,10 +452,15 @@ function initTabs() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Renderizar contenido inicial
     renderizarGrid(allEstudiantes, 'gridEstudiantes');
     initTabs();
+    
+    // Buscador
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.addEventListener('input', updateSearch);
+    
+    // Desbloqueo docentes
     const unlockBtn = document.getElementById('unlockBtn');
     if (unlockBtn) unlockBtn.addEventListener('click', unlockDocente);
     const passwordInput = document.getElementById('passwordInput');
@@ -394,4 +469,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     checkDocenteAccess();
     currentTab = 'estudiantes';
+    
+    // ============================================
+    // EVENTOS PARA MODALES
+    // ============================================
+    
+    // Modal de infografías
+    const modalOverlay = document.getElementById('modalInfografias');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) cerrarModal();
+        });
+        if (modalCloseBtn) modalCloseBtn.addEventListener('click', cerrarModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') cerrarModal();
+        });
+    }
+    
+    // Modales de procesos (Homologaciones, Aplazamientos, FUS)
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-modal');
+            cerrarModalProceso(modalId);
+        });
+    });
+    
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                const modalId = this.id;
+                // Si es el modal de infografías, usar su función específica
+                if (modalId === 'modalInfografias') {
+                    cerrarModal();
+                } else {
+                    cerrarModalProceso(modalId);
+                }
+            }
+        });
+    });
+    
+    // Acordeón del FUS
+    document.querySelectorAll('.fus-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const panel = this.nextElementSibling;
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+            } else {
+                panel.style.display = 'block';
+            }
+        });
+    });
 });
