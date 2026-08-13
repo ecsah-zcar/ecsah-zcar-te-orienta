@@ -67,11 +67,21 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "🔄 Cambios de malla curricular",
-        descripcion: "Resoluciones, planes de transición y equivalencias entre mallas antiguas y nuevas.",
+        titulo: "📚 Programas de la ECSAH",
+        descripcion: "Conoce la oferta académica de la Escuela de Ciencias Sociales, Artes y Humanidades. Pregrado, especializaciones, maestrías y doctorado.",
         enlaces: [
-            { texto: "📄 Cursos Res. 3443 sin oferta y sus equivalencias - Psicología 16-04", ruta: "documentos/Equivalencias-3443-para-16-04.pdf" },
-            { texto: "⚖️ Resolución vigente", ruta: "#" }
+            { texto: '<i class="fas fa-brain"></i> Psicología', ruta: "#" },
+            { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social', ruta: "#" },
+            { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía', ruta: "#" },
+            { texto: '<i class="fas fa-users"></i> Sociología', ruta: "#" },
+            { texto: '<i class="fas fa-palette"></i> Artes Visuales', ruta: "#" },
+            { texto: '<i class="fas fa-landmark"></i> Historia', ruta: "#" },
+            { texto: '<i class="fas fa-heartbeat"></i> Especialización en Salud Mental Comunitaria', ruta: "#" },
+            { texto: '<i class="fas fa-gavel"></i> Especialización en Psicología Jurídica', ruta: "#" },
+            { texto: '<i class="fas fa-hand-holding-heart"></i> Maestría en Psicología Comunitaria', ruta: "#" },
+            { texto: '<i class="fas fa-seedling"></i> Maestría en Desarrollo Alternativo Sostenible y Solidario', ruta: "#" },
+            { texto: '<i class="fas fa-comments"></i> Maestría en Comunicación', ruta: "#" },
+            { texto: '<i class="fas fa-globe-americas"></i> Doctorado en Cliodinámica', ruta: "#" }
         ]
     },
     {
