@@ -70,18 +70,17 @@ const contenidoEstudiantes = [
         titulo: "📚 Programas de la ECSAH",
         descripcion: "Conoce la oferta académica de la Escuela de Ciencias Sociales, Artes y Humanidades. Pregrado, especializaciones, maestrías y doctorado.",
         enlaces: [
-            { texto: '<i class="fas fa-brain"></i> Psicología', ruta: "#" },
-            { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social', ruta: "#" },
-            { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía', ruta: "#" },
-            { texto: '<i class="fas fa-users"></i> Sociología', ruta: "#" },
-            { texto: '<i class="fas fa-palette"></i> Artes Visuales', ruta: "#" },
-            { texto: '<i class="fas fa-landmark"></i> Historia', ruta: "#" },
-            { texto: '<i class="fas fa-heartbeat"></i> Especialización en Salud Mental Comunitaria', ruta: "#" },
-            { texto: '<i class="fas fa-gavel"></i> Especialización en Psicología Jurídica', ruta: "#" },
-            { texto: '<i class="fas fa-hand-holding-heart"></i> Maestría en Psicología Comunitaria', ruta: "#" },
-            { texto: '<i class="fas fa-seedling"></i> Maestría en Desarrollo Alternativo Sostenible y Solidario', ruta: "#" },
-            { texto: '<i class="fas fa-comments"></i> Maestría en Comunicación', ruta: "#" },
-            { texto: '<i class="fas fa-globe-americas"></i> Doctorado en Cliodinámica', ruta: "#" }
+            { texto: '<i class="fas fa-music-note"></i> Música', ruta: "https://estudios.unad.edu.co/musica" },
+            { texto: '<i class="fas fa-brain"></i> Psicología', ruta: "https://estudios.unad.edu.co/psicologia" },
+            { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
+            { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía', ruta: "https://estudios.unad.edu.co/filosofia" },
+            { texto: '<i class="fas fa-users"></i> Sociología', ruta: "https://estudios.unad.edu.co/sociologia" },
+            { texto: '<i class="fas fa-palette"></i> Artes Visuales', ruta: "https://estudios.unad.edu.co/artes-visuales" },
+            { texto: '<i class="fas fa-landmark"></i> Historia', ruta: "https://estudios.unad.edu.co/historia" },
+            { texto: '<i class="fas fa-heartbeat"></i> Especialización en Salud Mental Comunitaria', ruta: "https://estudios.unad.edu.co/especializacion-en-salud-mental-comunitaria" },
+            { texto: '<i class="fas fa-gavel"></i> Especialización en Psicología Jurídica', ruta: "https://estudios.unad.edu.co/especializacion-en-psicologia-juridica" },
+            { texto: '<i class="fas fa-seedling"></i> Maestría en Desarrollo Alternativo Sostenible y Solidario', ruta: "https://estudios.unad.edu.co/maestria-en-desarrollo-alternativo-sostenible-y-solidario" },
+            { texto: '<i class="fas fa-globe-americas"></i> Doctorado en Cliodinámica', ruta: "https://estudios.unad.edu.co/doctorado-en-cliodinamica" }
         ]
     },
     {
