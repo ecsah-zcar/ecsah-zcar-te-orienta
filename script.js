@@ -70,7 +70,7 @@ const contenidoEstudiantes = [
         titulo: "📚 Programas de la ECSAH",
         descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
         enlaces: [
-            { texto: '<i class="fas fa-music-note"></i> Música', ruta: "https://estudios.unad.edu.co/musica" },
+            { texto: '<i class="fas fa-guitar"></i> Música', ruta: "https://estudios.unad.edu.co/musica" },
             { texto: '<i class="fas fa-brain"></i> Psicología', ruta: "https://estudios.unad.edu.co/psicologia" },
             { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
             { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía', ruta: "https://estudios.unad.edu.co/filosofia" },
