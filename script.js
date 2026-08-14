@@ -104,7 +104,7 @@ const contenidoEstudiantes = [
             { texto: "📄 Descargar instructivo de Homologaciones - SIHO", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" }
         ],
         botonesModal: [
-            { texto: "🔄 Acuerdos de Homologaciones - SIHO", modalId: "modalHomologaciones" },
+            { texto: "🔄 Acuerdos de Homologaciones - ECSAH", modalId: "modalHomologaciones" },
             { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
             { texto: "📋 Guía para diligenciar el FUS", modalId: "modalFUS" }
         ]
