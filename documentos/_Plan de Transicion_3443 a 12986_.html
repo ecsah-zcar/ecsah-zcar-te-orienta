@@ -1,0 +1,2958 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Transición - Psicología UNAD</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+/* Carga resiliente de pdf.js: si cdnjs está bloqueado (redes corporativas, filtros de
+   la universidad, etc.) se intentan espejos alternativos. El workerSrc se fija en
+   cuanto la librería está disponible, sin esperar al evento onload de la página. */
+window.PDFJS_SOURCES=[
+  {lib:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',        worker:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'},
+  {lib:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',        worker:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'},
+  {lib:'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js',                   worker:'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js'}
+];
+window.__pdfjsWorkerSet=false;
+window.__setPdfWorker=function(url){
+  try{
+    if(typeof pdfjsLib!=='undefined' && pdfjsLib.GlobalWorkerOptions){
+      pdfjsLib.GlobalWorkerOptions.workerSrc=url;
+      window.__pdfjsWorkerSet=true;
+      return true;
+    }
+  }catch(e){}
+  return false;
+};
+window.__setPdfWorker(window.PDFJS_SOURCES[0].worker);
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+body{font-family:'Inter',sans-serif;background-color:#f8fafc;}
+.fade-in{animation:fadeIn .3s ease-in-out;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+.custom-scroll::-webkit-scrollbar{width:6px;}
+.custom-scroll::-webkit-scrollbar-track{background:#f1f5f9;border-radius:4px;}
+.custom-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px;}
+.custom-scroll::-webkit-scrollbar-thumb:hover{background:#94a3b8;}
+.custom-scroll-x::-webkit-scrollbar{height:8px;}
+.custom-scroll-x::-webkit-scrollbar-track{background:#f1f5f9;border-radius:4px;}
+.custom-scroll-x::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:4px;}
+.custom-scroll-x::-webkit-scrollbar-thumb:hover{background:#64748b;}
+.warn-badge{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;}
+.dup-badge{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;}
+</style>
+</head>
+<body class="text-gray-800 min-h-screen flex flex-col">
+<header class="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-4 shadow-lg shrink-0 border-b-4 border-amber-500">
+  <div class="container mx-auto flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight">UNAD - Transición Psicología</h1>
+      <p class="text-sm text-blue-200 font-medium mt-0.5">Plan antiguo (Res. 3443 del 2014) ➔ Plan nuevo (Res. 12986 del 2022)</p>
+    </div>
+    <div class="text-right hidden sm:block">
+      <span class="bg-blue-950 bg-opacity-50 text-blue-100 text-xs font-bold px-3 py-1.5 rounded-full border border-blue-700">Acuerdo 017 de 2023</span>
+    </div>
+  </div>
+</header>
+
+<main class="container mx-auto flex-grow flex flex-col gap-6 p-4 lg:p-6 max-w-5xl">
+  <div class="bg-white p-5 lg:p-6 rounded-2xl shadow-sm border border-gray-200">
+    <h2 class="text-lg font-extrabold text-gray-800 mb-1 flex items-center gap-2">
+      <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+      Cargar Plan de Estudios Individual - PEI
+    </h2>
+    <p class="text-[11px] text-gray-500 font-medium mb-3">Carga el PDF del Plan de Estudios Individual - PEI del estudiante. El aplicativo detecta automáticamente el nombre, la cédula y todos los cursos aprobados, y genera las equivalencias de inmediato. La lista de abajo es solo informativa, para que puedas verificar el reconocimiento.</p>
+
+    <label id="pdfDropZone" for="pdfFileInput" class="block cursor-pointer border-2 border-dashed border-blue-300 hover:border-blue-500 hover:bg-blue-50 rounded-2xl px-4 py-7 text-center transition-colors">
+      <svg class="w-9 h-9 mx-auto text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6H16a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+      <p class="text-sm font-black text-blue-700">Cargar Plan de Estudios Individual - PEI</p>
+      <p class="text-[11px] text-gray-500 font-medium mt-1">Haz clic aquí o arrastra el archivo. El análisis es local: el PDF nunca sale de tu navegador.</p>
+    </label>
+    <input type="file" id="pdfFileInput" accept="application/pdf,.pdf" class="hidden" onchange="handlePdfFiles(this.files)">
+    <div id="pdfParseStatus" class="mt-3"></div>
+  </div>
+
+  <div class="bg-white p-5 lg:p-6 rounded-2xl shadow-sm border border-gray-200">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-extrabold text-gray-800 flex items-center gap-2">
+        <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
+        Datos del estudiante y cursos aprobados
+      </h2>
+      <button onclick="resetSimulation()" class="shrink-0 flex items-center justify-center h-9 w-9 bg-white hover:bg-red-50 text-gray-500 hover:text-red-600 rounded-xl transition-colors border border-gray-200 shadow-sm" title="Reiniciar">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+      </button>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div>
+        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Nombre completo</label>
+        <input type="text" id="studentName" placeholder="Se detecta al cargar el PEI" readonly class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl text-sm font-medium outline-none shadow-sm mt-1 cursor-default">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Cédula</label>
+        <input type="text" id="studentId" placeholder="Se detecta al cargar el PEI" readonly class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl text-sm font-medium outline-none shadow-sm mt-1 cursor-default">
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between mb-2 mt-4 pt-3 border-t border-gray-100">
+      <h3 class="text-xs font-black text-gray-600 uppercase tracking-wide">Cursos aprobados detectados</h3>
+      <div class="flex items-center gap-2 text-[11px] font-bold">
+        <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded-lg border border-blue-100"><span id="addedCoursesCount">0</span> cursos</span>
+        <span class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-lg border border-emerald-100"><span id="addedCoursesCredits">0</span> créditos</span>
+      </div>
+    </div>
+    <div id="addedCoursesList" class="space-y-2 max-h-72 overflow-y-auto custom-scroll pr-1">
+      <div class="text-gray-400 text-center font-medium py-6 text-xs">Aún no se ha cargado ningún plan de estudios.</div>
+    </div>
+  </div>
+
+  <div class="bg-white p-5 lg:p-6 rounded-2xl shadow-sm border border-gray-200" id="equivalencesTableWrapper">
+    <div id="equivalencesExportHeader" class="hidden mb-3 pb-3 border-b border-gray-100 text-sm font-bold text-gray-700 flex flex-wrap gap-x-6 gap-y-1"></div>
+    <h2 class="text-xl font-extrabold text-gray-800 mb-1 flex items-center gap-2">
+      <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
+      Equivalencias realizadas
+    </h2>
+    <p class="text-sm text-gray-500 font-medium mb-4">Detalle de cada equivalencia que el simulador ya reconoció: curso(s) del plan anterior a la izquierda, curso equivalente del plan nuevo a la derecha, y la diferencia de créditos entre ambos.</p>
+    <div id="equivalencesTableContainer"></div>
+    <div class="mt-5 pt-4 border-t border-gray-100">
+      <button id="reportBtn" onclick="openEquivalenceReport()" class="bg-gray-800 hover:bg-gray-900 text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-md shrink-0">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Generar informe de equivalencias
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-white p-5 lg:p-6 rounded-2xl shadow-sm border border-gray-200 relative flex flex-col" id="exportContainerWrapper">
+    <div id="exportStudentInfo" class="hidden mb-3 pb-3 border-b border-gray-100 text-sm font-bold text-gray-700 flex flex-wrap gap-x-6 gap-y-1"></div>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-4">
+      <div>
+        <h2 class="text-xl font-extrabold text-gray-800 mb-1 flex items-center gap-2">
+          <span class="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">4</span>
+          Plan de estudios (Resolución 12986 del 2022)
+        </h2>
+        <p class="text-sm text-gray-500 font-medium" id="exportSubtitle">Haz clic en los cursos pendientes para sugerir la próxima matrícula.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="bg-emerald-50 px-6 py-2 rounded-xl border border-emerald-200 shadow-inner min-w-[170px] text-center">
+          <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider block mb-0.5 leading-none text-center">Créditos Equivalentes</span>
+          <div class="text-xl font-black text-emerald-600 leading-none block text-center whitespace-nowrap" id="totalEquivCredits">0 / 160</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-4 mb-5 text-[11px] font-bold bg-gray-50 p-3 rounded-xl border border-gray-100">
+      <span class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-emerald-50 border border-emerald-200"></div> Aprobado / Eq.</span>
+      <span class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-amber-50 border border-amber-200"></div> Nuevo (Sin Equiv.)</span>
+      <span class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-white border border-gray-200"></div> Pendiente</span>
+      <span class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-blue-50 border border-blue-200"></div> Sugerido Matricular</span>
+      <span class="flex items-center gap-2"><div class="w-3 h-3 rounded border-dashed border-2 border-indigo-300 bg-white"></div> Electivo (ver detalle en punto 4)</span>
+    </div>
+
+    <div id="exportContainer" class="w-full flex-grow relative bg-white">
+      <div id="newPlanGrid" class="overflow-x-auto pb-4 custom-scroll-x w-full"></div>
+    </div>
+  </div>
+
+  <!-- Electivos y Líneas de Profundización -->
+  <div class="bg-white p-5 lg:p-6 rounded-2xl shadow-sm border border-gray-200" id="electivesWrapper">
+    <div id="electivesExportHeader" class="hidden mb-3 pb-3 border-b border-gray-100 text-sm font-bold text-gray-700 flex flex-wrap gap-x-6 gap-y-1"></div>
+    <h2 class="text-xl font-extrabold text-gray-800 mb-1 flex items-center gap-2">
+      <span class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-sm">5</span>
+      Electivos y Líneas de Profundización
+    </h2>
+    <p class="text-sm text-gray-500 font-medium mb-4">Componentes con varias opciones de equivalencia. Se marca visto el electivo si alguna opción tiene equivalencia.</p>
+    <div id="electivesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+  </div>
+
+  <!-- Resumen de Sugerencia -->
+  <div class="bg-blue-50 p-5 rounded-2xl shadow-sm border border-blue-200">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-extrabold text-blue-900 flex items-center gap-2">
+        <span class="bg-blue-200 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-sm">6</span>
+        Proyección de Matrícula
+      </h2>
+      <div class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-md">
+        Total a Matricular: <span id="simulatedCredits" class="text-blue-100">0</span> cr.
+      </div>
+    </div>
+    <div id="simulatedList" class="bg-white rounded-xl border border-blue-200 p-3 text-sm max-h-48 overflow-y-auto custom-scroll mb-4 shadow-inner min-h-[80px]">
+      <div class="text-gray-400 text-center font-medium py-4 text-xs" id="emptySimMsg">Haz clic en la malla sobre los cursos pendientes para armar tu matrícula.</div>
+    </div>
+    <button onclick="copyToClipboard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors shadow-md active:scale-[0.99]">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+      Copiar Proyección al Portapapeles
+    </button>
+  </div>
+</main>
+
+<footer class="container mx-auto p-4 mt-auto mb-4">
+  <p class="text-[11px] text-gray-400 font-medium max-w-4xl mx-auto leading-relaxed border-t border-gray-200 pt-4 text-justify">
+    <strong class="text-gray-500">Nota Legal y de Privacidad:</strong> Desarrollado por <span class="font-bold text-gray-500">Erika Julieth Salcedo y John Acevedo Trujillo</span> como apoyo al proceso de transición de malla curricular del programa de Psicología. Esta herramienta es de uso exclusivamente operativo y <span class="underline">no constituye un documento oficial</span> de la Universidad Nacional Abierta y a Distancia (UNAD). Este simulador funciona de manera local en su navegador, no recopila, no almacena ni transmite ningún tipo de dato personal. Toda la lógica está basada en información de carácter público (Acuerdo 017 de 2023). Las ubicaciones por periodo se derivaron de la lectura de la malla oficial; ante cualquier discrepancia visual, prevalece el documento oficial de la Universidad.
+  </p>
+</footer>
+
+<div id="reportModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-50 backdrop-blur-sm fade-in p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-auto border border-gray-100 flex flex-col" style="max-height:90vh">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+      <div>
+        <h3 class="text-lg font-black text-gray-800 flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          Informe de equivalencias
+        </h3>
+        <p class="text-[11px] text-gray-500 font-medium mt-0.5">Puedes editar el texto directamente antes de descargarlo.</p>
+      </div>
+      <button onclick="closeEquivalenceReport()" class="text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg p-1.5 transition-colors" title="Cerrar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <div class="px-6 py-4 grow overflow-hidden flex flex-col">
+      <textarea id="reportText" spellcheck="false" class="w-full grow min-h-[46vh] resize-none border border-gray-200 rounded-xl p-4 text-[12.5px] leading-relaxed font-mono text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none custom-scroll"></textarea>
+    </div>
+    <div class="px-6 py-4 border-t border-gray-100 shrink-0 flex flex-col sm:flex-row gap-2">
+      <button onclick="downloadReportTxt()" class="grow bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-2.5 font-bold text-sm transition-colors flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        Descargar texto (.txt)
+      </button>
+      <button id="copyReportBtn" onclick="copyReport()" class="grow bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl py-2.5 font-bold text-sm transition-colors">Copiar al portapapeles</button>
+    </div>
+  </div>
+</div>
+
+<div id="diagModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-50 backdrop-blur-sm fade-in p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl mx-auto border border-gray-100 flex flex-col" style="max-height:88vh">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+      <h3 class="text-lg font-black text-gray-800 flex items-center gap-2">
+        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Diagnóstico de lectura del PEI
+      </h3>
+      <button onclick="closeDiag()" class="text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg p-1.5 transition-colors" title="Cerrar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <div id="diagBody" class="overflow-y-auto custom-scroll px-6 py-5 grow"></div>
+    <div class="px-6 py-4 border-t border-gray-100 shrink-0">
+      <button onclick="closeDiag()" class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-2.5 font-bold transition-colors">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="alertModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-50 backdrop-blur-sm fade-in">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-4 border border-gray-100 transform transition-all">
+    <h3 class="text-lg font-black text-gray-800 mb-2 flex items-center gap-2" id="alertTitle">
+      <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      Atención
+    </h3>
+    <p class="text-gray-600 text-sm font-medium mb-6 whitespace-pre-line" id="alertMessage">Mensaje.</p>
+    <button onclick="closeAlert()" class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-2.5 font-bold transition-colors">Entendido</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   DATOS: CURSOS PLAN ANTIGUO (RES. 3443)
+   ========================================================================= */
+const oldCourses = [
+ {code:"403002",name:"Epistemología de la psicología",cred:3},
+ {code:"80017",name:"Cátedra unadista",cred:3},
+ {code:"200610",name:"Herramientas digitales",cred:3},
+ {code:"40003",name:"Competencias comunicativas",cred:3},
+ {code:"40002",name:"Ética y ciudadanía",cred:3},
+ {code:"40004",name:"Inclusión social",cred:3},
+ {code:"40005",name:"Sujeto, comunidad e interacción social",cred:3},
+ {code:"40006",name:"Sostenibilidad, desarrollo y calidad de vida",cred:3},
+ {code:"403001",name:"Historia de la psicología",cred:3},
+ {code:"200611",name:"Pensamiento lógico y matemático",cred:3},
+ {code:"403013",name:"Psicobiología",cred:3},
+ {code:"201101",name:"Biología",cred:3},
+ {code:"150001",name:"Fundamentos y grales. de investigación",cred:3},
+ {code:"900001",name:"Inglés A1",cred:3},
+ {code:"900002",name:"Inglés A2",cred:3},
+ {code:"900003",name:"Inglés B1",cred:3},
+ {code:"900004",name:"Inglés B1+",cred:3},
+ {code:"403003",name:"Procesos cognoscitivos",cred:3},
+ {code:"403040",name:"Inteligencia y creatividad",cred:3},
+ {code:"403041",name:"Procesos cognoscitivos superiores",cred:3},
+ {code:"403012",name:"Psicología evolutiva",cred:3},
+ {code:"204040",name:"Estadística descriptiva",cred:3},
+ {code:"202107095",name:"Estadística",cred:3},
+ {code:"403005",name:"Psicofisiología",cred:3},
+ {code:"403004",name:"Personalidad",cred:3},
+ {code:"403006",name:"Aprendizaje",cred:3},
+ {code:"403011",name:"Observación y entrevista",cred:3},
+ {code:"403024",name:"Diagnósticos psicológicos",cred:3},
+ {code:"403016",name:"Psicometría",cred:3},
+ {code:"403025",name:"Neuropsicología",cred:3},
+ {code:"400001",name:"Investigación ciencias sociales",cred:3},
+ {code:"403008",name:"Psicopatología de la adultez y la vejez",cred:3},
+ {code:"403015",name:"Psicopatología y contextos",cred:3},
+ {code:"403009",name:"Psicopatología de la niñez y la adolescencia",cred:3},
+ {code:"403007",name:"Comunidad, sociedad y cultura",cred:3},
+ {code:"403039",name:"Construcción de subjetividades",cred:3},
+ {code:"403020",name:"Psicología de los grupos",cred:3},
+ {code:"403017",name:"Ecología humana",cred:3},
+ {code:"403023",name:"Paradigmas de investigación",cred:3},
+ {code:"403019",name:"Psicología social",cred:3},
+ {code:"404037105",name:"La ciudad como propuesta cultural",cred:3},
+ {code:"403038",name:"Etnopsicología",cred:3},
+ {code:"403022",name:"Psicología comunitaria",cred:3},
+ {code:"403018",name:"Antropología psicológica",cred:3},
+ {code:"400002",name:"Diseño de proyectos sociales",cred:3},
+ {code:"403026",name:"Acción psicosocial y educación",cred:3},
+ {code:"403031",name:"Acción psicosocial y trabajo",cred:3},
+ {code:"403030",name:"Acción psicosocial y contexto jurídico",cred:3},
+ {code:"403028",name:"Acción psicosocial y comunidad",cred:3},
+ {code:"403027",name:"Acción psicosocial y familia",cred:3},
+ {code:"403032",name:"Acción psicosocial y salud",cred:3},
+ {code:"403010",name:"Prosocialidad",cred:3},
+ {code:"404437081",name:"Competencias ciudadanas",cred:3},
+ {code:"404437080",name:"Ética",cred:3},
+ {code:"403033",name:"Psicología política",cred:3},
+ {code:"403029",name:"Políticas públicas y desarrollo humano",cred:3},
+ {code:"112001",name:"Fundamentos en gestión integral",cred:3},
+ {code:"403037",name:"Cibercultura",cred:3},
+ {code:"403021",name:"Modelos de intervención en psicología",cred:3},
+ {code:"403035",name:"Práctica profesional esc 1",cred:4},
+ {code:"403036",name:"Práctica profesional esc 2",cred:4},
+ {code:"403034",name:"Seminario de investigación",cred:2},
+ {code:"80005",name:"Guitarra",cred:1},
+ {code:"80007",name:"Protocolo",cred:1},
+ {code:"80010",name:"Teatro",cred:1},
+ {code:"400004",name:"Acondicionamiento físico y bienestar",cred:1},
+ {code:"700004",name:"Servicio Social Unadista",cred:0},
+ {code:"402539410",name:"Gestión Emocional y Bienestar",cred:2}
+];
+
+/* =========================================================================
+   DATOS: MALLA NUEVA (RES. 12986) - solo cursos "de línea recta" (no electivos)
+   Periodos, créditos y prerrequisitos tomados del documento oficial
+   "CURSOS_POR_PERIODO" (verificado: la suma de créditos por periodo coincide
+   exactamente con el total oficial: 15,18,17,18,17,19,16,16,17,7).
+   ========================================================================= */
+const newCourses = [
+ // PERIODO I (15 cr)
+ {code:"402537677",name:"Generalidades de la Psicología",cred:2,isNew:true,period:1,row:1,prereqs:[]},
+ {code:"80017",name:"Cátedra Unadista",cred:3,isNew:false,period:1,row:2,prereqs:[]},
+ {code:"200610",name:"Herramientas Digitales para la Gestión del Conocimiento",cred:3,isNew:false,period:1,row:3,prereqs:[]},
+ {code:"40003",name:"Competencias Comunicativas",cred:3,isNew:false,period:1,row:4,prereqs:[]},
+ {code:"40002",name:"Ética y Ciudadanía",cred:3,isNew:false,period:1,row:5,prereqs:[]},
+
+ // PERIODO II (18 cr)
+ {code:"402537616",name:"Antecedentes de la Psicología",cred:2,isNew:true,period:2,row:1,prereqs:["402537677"]},
+ {code:"402537617",name:"Psicología y Curso de Vida",cred:3,isNew:false,period:2,row:2,prereqs:[]},
+ {code:"402537618",name:"Historia Crítica de la Colombia Contemporánea",cred:2,isNew:true,period:2,row:3,prereqs:[]},
+ {code:"402537619",name:"Enfoques Clásicos de la Psicología",cred:3,isNew:false,period:2,row:4,prereqs:[]},
+ {code:"150001",name:"Fundamentos y Generalidades de Investigación",cred:3,isNew:false,period:2,row:5,prereqs:[]},
+ {code:"200611",name:"Pensamiento Lógico Matemático",cred:3,isNew:false,period:2,row:6,prereqs:[]},
+ {code:"700004",name:"Servicio Social Unadista",cred:0,isNew:false,period:2,row:9,prereqs:[]},
+
+ // PERIODO III (17 cr)
+ {code:"402537620",name:"Fundamentos de Psicobiología",cred:2,isNew:false,period:3,row:1,prereqs:[]},
+ {code:"402537621",name:"Aplicación de Psicobiología",cred:1,isNew:true,period:3,row:2,prereqs:[]},
+ {code:"402537519",name:"Orígenes de la Psicología Social, Política y Comunitaria",cred:3,isNew:false,period:3,row:3,prereqs:[]},
+ {code:"402537622",name:"Enfoques Contemporáneos de la Psicología",cred:3,isNew:true,period:3,row:4,prereqs:["402537619"]},
+ {code:"402537624",name:"Psicología de la Personalidad",cred:2,isNew:false,period:3,row:5,prereqs:[]},
+ {code:"202107095",name:"Estadística",cred:3,isNew:false,period:3,row:6,prereqs:["200611"]},
+ {code:"402537623",name:"Procesos Psicológicos",cred:3,isNew:false,period:3,row:7,prereqs:[]},
+
+ // PERIODO IV (18 cr)
+ {code:"402537625",name:"Fundamentos de Psicofisiología",cred:2,isNew:false,period:4,row:1,prereqs:["402537620"]},
+ {code:"402537626",name:"Aplicación de Psicofisiología",cred:1,isNew:true,period:4,row:2,prereqs:["402537621"]},
+ {code:"402537523",name:"Fundamentos de Evaluación en Psicología",cred:2,isNew:false,period:4,row:3,prereqs:[]},
+ {code:"402537628",name:"Campos Emergentes de la Psicología",cred:2,isNew:true,period:4,row:4,prereqs:["402537622"]},
+ {code:"402537627",name:"Campos Tradicionales de la Psicología",cred:2,isNew:false,period:4,row:5,prereqs:["402537622"]},
+ {code:"400001",name:"Investigación Ciencias Sociales",cred:3,isNew:false,period:4,row:6,prereqs:[]},
+ {code:"402537630",name:"Aplicación de Psicometría",cred:1,isNew:true,period:4,row:7,prereqs:[]},
+ {code:"402537629",name:"Fundamentos de Psicometría",cred:2,isNew:false,period:4,row:8,prereqs:[]},
+ {code:"900001",name:"Inglés A1",cred:3,isNew:false,period:4,row:9,prereqs:[]},
+
+ // PERIODO V (17 cr) - hueco en fila 8
+ {code:"402537631",name:"Fundamentos de Aprendizaje",cred:2,isNew:false,period:5,row:1,prereqs:["402537625"]},
+ {code:"402537632",name:"Aplicación de Aprendizaje",cred:1,isNew:true,period:5,row:2,prereqs:["402537626"]},
+ {code:"402537633",name:"Aplicación de Evaluación en Psicología",cred:2,isNew:false,period:5,row:3,prereqs:["402537523"]},
+ {code:"402537634",name:"Técnicas e Instrumentos de Investigación en CC. Sociales",cred:3,isNew:false,period:5,row:6,prereqs:["400001"]},
+ {code:"402537635",name:"Manifestaciones Psicopatológicas en la Infancia y la Adolescencia",cred:2,isNew:false,period:5,row:7,prereqs:[]},
+ {code:"900002",name:"Inglés A2",cred:3,isNew:false,period:5,row:9,prereqs:["900001"]},
+
+ // PERIODO VI (19 cr)
+ {code:"402537521",name:"Fundamentos de Neuropsicología",cred:2,isNew:false,period:6,row:1,prereqs:["402537631"]},
+ {code:"402537522",name:"Aplicación de Neuropsicología",cred:1,isNew:true,period:6,row:2,prereqs:["402537632"]},
+ {code:"402537636",name:"Procesos Comunicacionales de Evaluación en Psicología",cred:2,isNew:true,period:6,row:3,prereqs:["402537633"]},
+ {code:"402537637",name:"Fundamentos para la Acción Psicosocial",cred:2,isNew:true,period:6,row:6,prereqs:[]},
+ {code:"402537638",name:"Manifestaciones Psicopatológicas en la Adultez y la Vejez",cred:2,isNew:false,period:6,row:7,prereqs:["402537635"]},
+ {code:"900003",name:"Inglés B1",cred:3,isNew:false,period:6,row:9,prereqs:["900002"]},
+
+ // PERIODO VII (16 cr) - hueco en fila 1 y fila 6
+ {code:"402537639",name:"Fundamentos de la Psicología Clínica y de la Salud",cred:2,isNew:true,period:7,row:2,prereqs:[]},
+ {code:"402537520",name:"Psicología Latinoamericana",cred:2,isNew:true,period:7,row:3,prereqs:[]},
+ {code:"402487455",name:"Métodos Cuantitativos",cred:3,isNew:true,period:7,row:7,prereqs:[]},
+ {code:"402537640",name:"Psicología y Praxis Liberadora",cred:2,isNew:false,period:7,row:8,prereqs:[]},
+ {code:"900004",name:"Inglés B1+",cred:3,isNew:false,period:7,row:9,prereqs:["900003"]},
+
+ // PERIODO VIII (16 cr)
+ {code:"402537641",name:"Ética y Deontología en Psicología",cred:2,isNew:true,period:8,row:1,prereqs:[]},
+ {code:"402537646",name:"Profundización en Psicología Clínica y de la Salud",cred:2,isNew:true,period:8,row:2,prereqs:["402537639"]},
+ {code:"402537642",name:"Psicología Socio Antropológica",cred:2,isNew:false,period:8,row:3,prereqs:[]},
+ {code:"402537647",name:"Acción Psicosocial en Psicología Comunitaria",cred:2,isNew:false,period:8,row:4,prereqs:[]},
+ {code:"402537643",name:"Acción en Grupos y Colectivos",cred:2,isNew:false,period:8,row:6,prereqs:[]},
+ {code:"402537645",name:"Aplicación en Investigación Psicológica",cred:2,isNew:false,period:8,row:7,prereqs:["402487455"]},
+ {code:"402537644",name:"Subjetividad e Intersubjetividad",cred:2,isNew:false,period:8,row:8,prereqs:[]},
+
+ // PERIODO IX (17 cr) - hueco en fila 5
+ {code:"402537648",name:"Autorreferencia",cred:1,isNew:true,period:9,row:1,prereqs:[]},
+ {code:"402537524",name:"Acción Psicosocial en Psicología Clínica y de la Salud",cred:2,isNew:true,period:9,row:2,prereqs:["402537646"]},
+ {code:"402537649",name:"Ecología, Bienestar y Desarrollo",cred:3,isNew:false,period:9,row:3,prereqs:[]},
+ {code:"402537529",name:"Práctica en Campo Profesional 1",cred:4,isNew:false,period:9,row:4,prereqs:["402537647"]},
+ {code:"400002",name:"Diseño de Proyectos Sociales",cred:3,isNew:false,period:9,row:7,prereqs:[]},
+
+ // PERIODO X (7 cr)
+ {code:"402537530",name:"Práctica en Campo Profesional 2",cred:4,isNew:true,period:10,row:2,prereqs:["402537524"]}
+];
+const knownNewCodes = new Set(newCourses.map(c=>c.code));
+
+/* =========================================================================
+   REGLAS DE EQUIVALENCIA - Acuerdo 017 (con corrección de errores de "corte de
+   página" en tablas y de combinaciones Y/O). Cada regla: requiredAll (todos
+   los códigos antiguos que deben estar aprobados) + orGroup (opcional: al
+   menos uno de estos códigos también debe estar aprobado). familyId agrupa
+   reglas que compiten por el MISMO curso nuevo, para detectar duplicidad.
+   ========================================================================= */
+const mappingRules = [
+ /* =======================================================================
+    REGLAS DE EQUIVALENCIA - Documento oficial
+    "Plan de estudios de Psicología Res. 3 agosto 2026"
+    (Plan 3443 de 2014  ->  Plan Renovado 12986 de 2022)
+    -----------------------------------------------------------------------
+    Convenciones:
+      requiredAll  : cursos del plan 3443 que deben estar TODOS aprobados.
+      familyId     : marca un grupo "O" (cursos alternativos entre si). Varias
+                     reglas con el mismo familyId y el mismo newCode significan
+                     "A O B": basta aprobar uno; si se aprueba mas de uno, el
+                     curso equivalente se reconoce una sola vez.
+      alsoNewCodes : cursos nuevos ADICIONALES que otorga la misma equivalencia
+                     (relacion "Y" en el lado del plan 12986: p. ej.
+                     Fundamentos de X + Aplicacion de X).
+    ======================================================================= */
+
+ // ---- Nucleo comun / transversales ----
+ {requiredAll:["403002"],orGroup:[],newCode:"402537619"},                 // Epistemologia de la psicologia -> Enfoques clasicos de la psicologia
+ {requiredAll:["80017"],orGroup:[],newCode:"80017"},                      // Catedra unadista
+ {requiredAll:["200610"],orGroup:[],newCode:"200610"},                    // Herramientas digitales para la gestion del conocimiento
+ {requiredAll:["40003"],orGroup:[],newCode:"40003"},                      // Competencias comunicativas
+ {requiredAll:["40002"],orGroup:[],newCode:"40002"},                      // Etica y ciudadania
+ {requiredAll:["403001"],orGroup:[],newCode:"402537677"},                 // Historia de la psicologia -> Generalidades de la psicologia
+ {requiredAll:["200611"],orGroup:[],newCode:"200611"},                    // Pensamiento logico y matematico
+ {requiredAll:["150001"],orGroup:[],newCode:"150001"},                    // Fundamentos y generalidades de investigacion
+ {requiredAll:["400001"],orGroup:[],newCode:"400001"},                    // Investigacion ciencias sociales
+ {requiredAll:["400002"],orGroup:[],newCode:"400002"},                    // Diseno de proyectos sociales
+ {requiredAll:["900001"],orGroup:[],newCode:"900001"},                    // Ingles A1
+ {requiredAll:["900002"],orGroup:[],newCode:"900002"},                    // Ingles A2
+ {requiredAll:["900003"],orGroup:[],newCode:"900003"},                    // Ingles B1
+ {requiredAll:["900004"],orGroup:[],newCode:"900004"},                    // Ingles B1+
+
+ // ---- Psicobiologia: (Psicobiologia O Biologia) -> Fundamentos Y Aplicacion ----
+ {requiredAll:["403013"],orGroup:[],newCode:"402537620",alsoNewCodes:["402537621"],familyId:"fam_psicobiologia"},
+ {requiredAll:["201101"],orGroup:[],newCode:"402537620",alsoNewCodes:["402537621"],familyId:"fam_psicobiologia"},
+
+ // ---- Estadistica: (Estadistica descriptiva O Estadistica) -> Estadistica ----
+ {requiredAll:["204040"],orGroup:[],newCode:"202107095",familyId:"fam_estadistica"},
+ {requiredAll:["202107095"],orGroup:[],newCode:"202107095",familyId:"fam_estadistica"},
+
+ // ---- Procesos, personalidad y curso de vida ----
+ {requiredAll:["403003"],orGroup:[],newCode:"402537623"},                 // Procesos cognoscitivos -> Procesos psicologicos
+ {requiredAll:["403012"],orGroup:[],newCode:"402537617"},                 // Psicologia evolutiva -> Psicologia y curso de vida
+ {requiredAll:["403004"],orGroup:[],newCode:"402537624"},                 // Personalidad -> Psicologia de la personalidad
+
+ // ---- Pares Fundamentos + Aplicacion ----
+ {requiredAll:["403005"],orGroup:[],newCode:"402537625",alsoNewCodes:["402537626"]}, // Psicofisiologia
+ {requiredAll:["403006"],orGroup:[],newCode:"402537631",alsoNewCodes:["402537632"]}, // Aprendizaje
+ {requiredAll:["403016"],orGroup:[],newCode:"402537629",alsoNewCodes:["402537630"]}, // Psicometria
+ {requiredAll:["403025"],orGroup:[],newCode:"402537521",alsoNewCodes:["402537522"]}, // Neuropsicologia
+
+ // ---- Evaluacion psicologica ----
+ {requiredAll:["403011"],orGroup:[],newCode:"402537523"},                 // Observacion y entrevista -> Fundamentos de evaluacion psicologica
+ {requiredAll:["403024"],orGroup:[],newCode:"402537636"},                 // Diagnosticos psicologicos -> Procesos comunicacionales de evaluacion
+ {requiredAll:["403015"],orGroup:[],newCode:"402537633"},                 // Psicopatologia y contextos -> Aplicacion de evaluacion en psicologia
+
+ // ---- Psicopatologia ----
+ {requiredAll:["403009"],orGroup:[],newCode:"402537635"},                 // Psicopatologia ninez y adolescencia -> Manifestaciones infancia y adolescencia
+ {requiredAll:["403008"],orGroup:[],newCode:"402537638"},                 // Psicopatologia adultez y vejez -> Manifestaciones adultez y vejez
+
+ // ---- Subjetividad: (Comunidad, sociedad y cultura O Construccion de subjetividades) ----
+ {requiredAll:["403007"],orGroup:[],newCode:"402537644",familyId:"fam_subjetividad"},
+ {requiredAll:["403039"],orGroup:[],newCode:"402537644",familyId:"fam_subjetividad"},
+
+ // ---- Campos y accion psicosocial ----
+ {requiredAll:["403021"],orGroup:[],newCode:"402537628"},                 // Modelos de intervencion -> Campos emergentes de la psicologia
+ {requiredAll:["403028"],orGroup:[],newCode:"402537637"},                 // Accion psicosocial y comunidad -> Fundamentos para la accion psicosocial
+ {requiredAll:["403020"],orGroup:[],newCode:"402537647"},                 // Psicologia de los grupos -> Accion psicosocial en psicologia comunitaria
+ {requiredAll:["403019"],orGroup:[],newCode:"402537643"},                 // Psicologia social -> Accion en grupos y colectivos
+ {requiredAll:["403022"],orGroup:[],newCode:"402537640"},                 // Psicologia comunitaria -> Psicologia y praxis liberadora
+ // (Accion psicosocial y familia O Accion psicosocial y salud) -> Campos tradicionales
+ {requiredAll:["403027"],orGroup:[],newCode:"402537627",familyId:"fam_camposTradicionales"},
+ {requiredAll:["403032"],orGroup:[],newCode:"402537627",familyId:"fam_camposTradicionales"},
+
+ // ---- Sociales, cultura y contexto ----
+ {requiredAll:["403017"],orGroup:[],newCode:"402537649"},                 // Ecologia humana -> Ecologia, bienestar y desarrollo
+ {requiredAll:["403023"],orGroup:[],newCode:"402537634"},                 // Paradigmas de investigacion -> Tecnicas e instrumentos de investigacion
+ {requiredAll:["403018"],orGroup:[],newCode:"402537642"},                 // Antropologia psicologica -> Psicologia socioantropologica
+ {requiredAll:["403033"],orGroup:[],newCode:"402537519"},                 // Psicologia politica -> Origenes de la psicologia social politica y comunitaria
+ {requiredAll:["403029"],orGroup:[],newCode:"402537520"},                 // Politicas publicas y desarrollo humano -> Psicologia latinoamericana
+ {requiredAll:["404437080"],orGroup:[],newCode:"402537641"},              // Etica -> Etica y deontologia en psicologia
+ // (Prosocialidad O Competencias ciudadanas) -> Historia critica de la Colombia contemporanea
+ {requiredAll:["403010"],orGroup:[],newCode:"402537618",familyId:"fam_historiacritica"},
+ {requiredAll:["404437081"],orGroup:[],newCode:"402537618",familyId:"fam_historiacritica"},
+
+ // ---- Practica e investigacion final ----
+ {requiredAll:["403035"],orGroup:[],newCode:"402537529"},                 // Practica profesional escenario 1 -> Practica en campo profesional 1
+ {requiredAll:["403034"],orGroup:[],newCode:"402537645"},                 // Seminario de investigacion -> Aplicacion en investigacion psicologica
+
+ // ---- Electivos con equivalencia ----
+ {requiredAll:["403037"],orGroup:[],newCode:"402537660"},                 // Cibercultura -> Electivo Modelos teoricos (Dinamicas psicologicas en entornos digitales)
+ {requiredAll:["40004"],orGroup:[],newCode:"404009"},                     // Inclusion social -> Electivo Disciplinar Comun investigacion (Investigar en comunidad)
+ {requiredAll:["404037105"],orGroup:[],newCode:"402537654"},              // La ciudad como propuesta cultural -> Bases socioculturales (Psicologia cultural)
+ {requiredAll:["403038"],orGroup:[],newCode:"402537655"},                 // Etnopsicologia -> Bases socioculturales (Psicologia de la ancestralidad)
+ {requiredAll:["112001"],orGroup:[],newCode:"112001"},                    // Fundamentos en gestion integral -> Electivo IBC economico administrativo
+ {requiredAll:["80005"],orGroup:[],newCode:"80005"},                      // Guitarra
+ {requiredAll:["80007"],orGroup:[],newCode:"80007"},                      // Protocolo
+ {requiredAll:["80010"],orGroup:[],newCode:"80010"},                      // Teatro
+ {requiredAll:["400004"],orGroup:[],newCode:"400004"},                    // Acondicionamiento fisico y bienestar
+ {requiredAll:["402539410"],orGroup:[],newCode:"402539410"},              // Gestion emocional y bienestar
+
+ // ---- Electivo fundamentos campo profesional tradicional ----
+ // Nota del documento: el estudiante debe elegir UNO de estos cursos, segun la
+ // linea de profundizacion que elija en el plan 12986 de 2022.
+ {requiredAll:["403026"],orGroup:[],newCode:"402537650",familyId:"fam_tradField"}, // Accion psicosocial y educacion
+ {requiredAll:["403031"],orGroup:[],newCode:"402537651",familyId:"fam_tradField"}, // Accion psicosocial y trabajo
+ {requiredAll:["403030"],orGroup:[],newCode:"402537653",familyId:"fam_tradField"}, // Accion psicosocial y contexto juridico
+
+ // ---- Requisito de grado ----
+ // No aparece en el documento de equivalencias porque no otorga creditos, pero
+ // es el mismo requisito con el mismo codigo en ambos planes.
+ {requiredAll:["700004"],orGroup:[],newCode:"700004"}
+];
+
+// Indica si el destino de una familia "O" es un curso concreto o un componente
+// electivo, para redactar las observaciones con el término correcto.
+const familyKind = { fam_tradField:'componente' };   // el resto son cursos
+const familyLabels = {
+ fam_subjetividad:"Subjetividad e intersubjetividad",
+ fam_historiacritica:"Historia crítica de la Colombia contemporánea",
+ fam_tradField:"Electivo Fundamentos Campo Profesional Tradicional (Periodo V)",
+ fam_camposTradicionales:"Campos tradicionales de la psicología",
+ fam_psicobiologia:"Fundamentos de Psicobiología",
+ fam_estadistica:"Estadística"
+};
+
+/* =========================================================================
+   ELECTIVOS Y LÍNEAS DE PROFUNDIZACIÓN (Res. 12986)
+   ========================================================================= */
+const electiveGroups = {
+ tradicional:{
+   title:"Líneas de Profundización — Campo Profesional Tradicional",
+   sub:"Se debe elegir una de las tres (3) líneas de profundización.",
+   lines:[
+     {id:"educativa",name:"Psicología Educativa",steps:[
+       {period:5,label:"Fundamentos",oldCode:"403026",newCode:"402537650",newName:"Fundamentos en psicología educativa",cred:2},
+       {period:6,label:"Profundización",oldCode:null,newCode:"402537656",newName:"Profundización en psicología educativa",cred:2},
+       {period:7,label:"Acción psicosocial",oldCode:null,newCode:"402537661",newName:"Acción psicosocial en psicología educativa",cred:2}
+     ]},
+     {id:"trabajo",name:"Psicología del Trabajo y las Organizaciones",steps:[
+       {period:5,label:"Fundamentos",oldCode:"403031",newCode:"402537651",newName:"Fundamentos en psicología del trabajo y las organizaciones",cred:2},
+       {period:6,label:"Profundización",oldCode:null,newCode:"402537657",newName:"Profundización en psicología del trabajo y las organizaciones",cred:2},
+       {period:7,label:"Acción psicosocial",oldCode:null,newCode:"402537663",newName:"Acción psicosocial en psicología del trabajo y las organizaciones",cred:2}
+     ]},
+     {id:"juridica",name:"Psicología Jurídica",steps:[
+       {period:5,label:"Fundamentos",oldCode:"403030",newCode:"402537653",newName:"Fundamentos en psicología jurídica",cred:2},
+       {period:6,label:"Profundización",oldCode:null,newCode:"402537659",newName:"Profundización en psicología jurídica",cred:2},
+       {period:7,label:"Acción psicosocial",oldCode:null,newCode:"402537666",newName:"Acción psicosocial en psicología jurídica",cred:2}
+     ]}
+   ]
+ },
+ emergente:{
+   title:"Líneas de Profundización — Campo Profesional Emergente",
+   sub:"Estos cursos NO tienen equivalencia (son cursos nuevos).",
+   lines:[
+     {id:"riesgo",name:"Gestión del Riesgo en Emergencias y Desastres",steps:[
+       {period:5,label:"Fundamentos",oldCode:null,newCode:"402537526",newName:"Fundamentos en psicología de la gestión del riesgo en emergencias y desastres",cred:2},
+       {period:6,label:"Profundización",oldCode:null,newCode:"402537527",newName:"Profundización en psicología de la gestión del riesgo en emergencias y desastres",cred:2},
+       {period:7,label:"Acción psicosocial",oldCode:null,newCode:"402537528",newName:"Acción psicosocial en psicología de la gestión del riesgo en emergencias y desastres",cred:2}
+     ]},
+     {id:"transito",name:"Psicología del Tránsito",steps:[
+       {period:5,label:"Fundamentos",oldCode:null,newCode:"402537652",newName:"Fundamentos en psicología del tránsito",cred:2},
+       {period:6,label:"Profundización",oldCode:null,newCode:"402537658",newName:"Profundización en psicología del tránsito",cred:2},
+       {period:7,label:"Acción psicosocial",oldCode:null,newCode:"402537664",newName:"Acción psicosocial en psicología del tránsito",cred:2}
+     ]}
+   ]
+ },
+ disciplinarInvestigacion:{
+   title:"Electivo Disciplinar Común Investigación",
+   sub:"Periodo VI. Se requiere aprobar una (1) opción.",
+   period:6,
+   options:[
+     {oldCode:null,newCode:"401122",newName:"Investigación cualitativa",cred:3},
+     {oldCode:"40004",newCode:"404009",newName:"Investigar en comunidad",cred:3}
+   ]
+ },
+ ibc:{
+   title:"Electivo IBC Económico Administrativo",
+   sub:"Periodo X. Se requiere aprobar una (1) opción.",
+   period:10,
+   options:[
+     {oldCode:"112001",newCode:"112001",newName:"Fundamentos en gestión integral",cred:3},
+     {oldCode:null,newCode:"105020",newName:"Emprendimiento solidario",cred:3}
+   ]
+ },
+ complementaria:{
+   title:"Formación Complementaria",
+   sub:"Periodos I-II. Se deben aprobar 3 créditos entre las opciones disponibles.",
+   required:3,
+   requiredCredits:3,
+   options:[
+     {oldCode:"80005",newCode:"80005",newName:"Guitarra",cred:1},
+     {oldCode:"80007",newCode:"80007",newName:"Protocolo",cred:1},
+     {oldCode:"80010",newCode:"80010",newName:"Teatro",cred:1},
+     {oldCode:"400004",newCode:"400004",newName:"Acondicionamiento físico y bienestar",cred:1},
+     {oldCode:"402539410",newCode:"402539410",newName:"Gestión Emocional y Bienestar",cred:2}
+   ]
+ },
+ disciplinarCS:{
+   title:"Electivo Disciplinar Común Ciencias Sociales",
+   sub:"Periodo IX. Se requiere aprobar una (1) opción. Sin equivalencia en el plan 3443 (cursos nuevos).",
+   period:9,
+   options:[
+     {oldCode:null,newCode:"402537662",newName:"Derechos humanos y derecho internacional humanitario",cred:2},
+     {oldCode:null,newCode:"402537665",newName:"Epistemologías del sur",cred:2}
+   ]
+ },
+ bases:{
+   title:"Bases Socioculturales del Comportamiento",
+   sub:"Periodo VIII. Se requiere aprobar una (1) opción.",
+   period:8,
+   options:[
+     {oldCode:"404037105",newCode:"402537654",newName:"Psicología cultural",cred:2},
+     {oldCode:"403038",newCode:"402537655",newName:"Psicología de la ancestralidad",cred:2}
+   ]
+ },
+ modelosTeoricos:{
+   title:"Electivo Modelos Teóricos y Metodológicos de la Psicología",
+   sub:"Se requiere aprobar una (1) opción.",
+   period:9,
+   options:[
+     {oldCode:null,newCode:"402537525",newName:"Telepsicología",cred:2},
+     {oldCode:"403037",newCode:"402537660",newName:"Dinámicas psicológicas en entornos digitales",cred:2}
+   ]
+ }
+};
+
+// Cursos del plan 3443 de 2014 sin ningún equivalente en el plan 12986 de 2022.
+// Esta lista debe corresponder exactamente con los cursos que no aparecen en el
+// documento oficial de equivalencias (ni en mappingRules ni en electiveGroups).
+const noEquivalenceCourses = [
+ {code:"40005",name:"Sujeto, comunidad e interacción social",cred:3},
+ {code:"40006",name:"Sostenibilidad, desarrollo y calidad de vida",cred:3},
+ {code:"403040",name:"Inteligencia y creatividad",cred:3},
+ {code:"403041",name:"Procesos cognoscitivos superiores",cred:3},
+ {code:"403036",name:"Práctica profesional escenario 2",cred:4}
+];
+
+// Busca un curso por su código tanto en la malla principal (newCourses) como en las
+// opciones/pasos de los grupos de electivos. Necesario para poder sugerir matrícula
+// (Proyección de Matrícula) de un curso electivo, que no vive en newCourses.
+function findAnyCourseByCode(code){
+  const c=newCourses.find(x=>x.code===code);
+  if(c) return c;
+  for(const g of Object.values(electiveGroups)){
+    if(g.options){
+      const o=g.options.find(x=>x.newCode===code);
+      if(o) return {code:o.newCode, name:o.newName, cred:o.cred, period:g.period||null, prereqs:[]};
+    }
+    if(g.lines){
+      for(const line of g.lines){
+        const s=line.steps.find(x=>x.newCode===code);
+        if(s) return {code:s.newCode, name:s.newName, cred:s.cred, period:s.period, prereqs:[]};
+      }
+    }
+  }
+  return null;
+}
+
+// Determina, para un slot de electivo mostrado en la malla, cuál curso concreto se
+// sugeriría matricular (la primera opción aún no aprobada de esa categoría).
+function getSlotRepresentativeCode(kind, idx){
+  const st=electiveState;
+  if(!st || !st.complementaria) return null;
+  switch(kind){
+    case "compl": {
+      // Cada uno de los 3 slots (Periodo I, Periodo II-a, Periodo II-b) debe referirse a
+      // una opción DISTINTA entre las 4 disponibles, no siempre a la misma.
+      const approvedCodes=new Set(st.complementaria.approved.map(o=>o.newCode));
+      const availableOptions=electiveGroups.complementaria.options.filter(o=>!approvedCodes.has(o.newCode));
+      const approvedCount=Math.min(st.complementaria.creditsCounted||0,3);
+      const pendingRank=idx-approvedCount; // posición de este slot entre los pendientes
+      if(pendingRank<0 || pendingRank>=availableOptions.length) return null;
+      return availableOptions[pendingRank].newCode;
+    }
+    case "trad_fund": return electiveGroups.tradicional.lines[0].steps[0].newCode;
+    case "trad_prof": case "trad_accion": {
+      const stepIdx=kind==="trad_prof"?1:2;
+      const approvedLines=st.tradicional.lines.filter(l=>l.steps[0].fulfilled);
+      const refLineId=approvedLines.length>0?approvedLines[0].id:electiveGroups.tradicional.lines[0].id;
+      const line=electiveGroups.tradicional.lines.find(l=>l.id===refLineId)||electiveGroups.tradicional.lines[0];
+      return line.steps[stepIdx].newCode;
+    }
+    case "emerg_fund": return electiveGroups.emergente.lines[0].steps[0].newCode;
+    case "emerg_prof": return electiveGroups.emergente.lines[0].steps[1].newCode;
+    case "emerg_accion": return electiveGroups.emergente.lines[0].steps[2].newCode;
+    case "disc_invest": return electiveGroups.disciplinarInvestigacion.options[0].newCode;
+    case "bases": {
+      const approvedCodes=new Set(st.bases.approved.map(o=>o.newCode));
+      const next=electiveGroups.bases.options.find(o=>!approvedCodes.has(o.newCode));
+      return next?next.newCode:electiveGroups.bases.options[0].newCode;
+    }
+    case "disc_cs": {
+      const approvedCodes=new Set(st.disciplinarCS.approved.map(o=>o.newCode));
+      const next=electiveGroups.disciplinarCS.options.find(o=>!approvedCodes.has(o.newCode));
+      return next?next.newCode:electiveGroups.disciplinarCS.options[0].newCode;
+    }
+    case "modelos": return electiveGroups.modelosTeoricos.options[0].newCode;
+    case "ibc": {
+      const approvedCodes=new Set(st.ibc.approved.map(o=>o.newCode));
+      const next=electiveGroups.ibc.options.find(o=>!approvedCodes.has(o.newCode));
+      return next?next.newCode:electiveGroups.ibc.options[0].newCode;
+    }
+    default: return null;
+  }
+}
+
+function toggleElectiveSim(kind, idx){
+  const slotState=getElectiveSlotState(kind, idx);
+  if(slotState.fulfilled) return;
+  const code=getSlotRepresentativeCode(kind, idx);
+  if(!code) return;
+  const missingRefs=getPrereqRefsFor({type:'elective',kind}).filter(ref=>!isRefFulfilledByEquivalence(ref));
+  if(missingRefs.length>0 && !simulatedCodes.has(code)){
+    const reqNames=missingRefs.map(ref=>getRefName(ref)).join('\n• ');
+    const slotLabel=gridElectiveSlots.find(s=>s.kind===kind)?.label||kind;
+    return showAlert("Faltan Prerrequisitos",`Para cursar "${slotLabel}", primero debes haber aprobado (por equivalencia) los siguientes cursos. No es posible sugerir a la vez un curso y el curso que lo requiere como prerrequisito:\n\n• ${reqNames}`);
+  }
+  if(simulatedCodes.has(code)) simulatedCodes.delete(code);
+  else simulatedCodes.add(code);
+  calculateNewPlan();
+}
+
+/* =========================================================================
+   ESTADO
+   ========================================================================= */
+let approvedOldCodes = new Set();
+let fulfilledNewCodes = new Set();
+let simulatedCodes = new Set();
+let equivalenceReasons = {};
+let equivalenceOldCodesByNewCode = {}; // newCode -> ["40002+40004", ...] (mismos datos que ya calcula el motor)
+let familyMatches = {}; // familyId -> [{oldCode,name}]
+let electiveState = {}; // resultado calculado por grupo
+let equivalencesGenerated = false; // true en cuanto se analiza correctamente un plan de estudios
+let lostCourses = []; // cursos aprobados que no alcanzaron a generar equivalencia (falta el curso pareja, o duplicidad)
+
+/* =========================================================================
+   LECTOR AUTOMÁTICO DEL "PLAN DE ESTUDIOS INDIVIDUAL" (PDF de AUREA)
+   -------------------------------------------------------------------------
+   El reconocimiento NO depende de un único patrón: se aplican varios filtros
+   independientes y complementarios sobre el texto del PDF, de modo que si un
+   formato cambia o una fila sale mal extraída, otro filtro la recupera.
+
+   FILTRO 1 - Reconstrucción de líneas por coordenadas: pdf.js entrega
+     fragmentos sueltos; se agrupan por coordenada Y (con tolerancia) y se
+     ordenan por X para rehacer cada fila tal como se ve impresa.
+   FILTRO 2 - Descarte de ruido: encabezados, pies de página, marcas de agua,
+     "Cursos equivalentes:", y MUY IMPORTANTE la leyenda de abreviaturas
+     ("APRO: Aprobado"), que contiene la palabra APRO sin ser un curso.
+   FILTRO 3 - Fila estricta de curso: código + nombre + SI/NO + componente
+     (BA/ES/EDES/EFC/IBC/EDCU/RG) + resto. Del resto se deduce el estado
+     tomando el token final válido, lo que cubre tanto "3 1 3.1 APRO" como
+     "2 APRO REQU" (Servicio Social con requisito cumplido).
+   FILTRO 4 - Sección "Cursos aprobados en el historial que no llegan al plan
+     de estudios": filas con otro formato (código, nombre, créditos, nota) que
+     también son cursos aprobados y que el filtro 3 no vería.
+   FILTRO 5 - Rescate por catálogo: cualquier línea que empiece por un código
+     conocido del plan 3443 y contenga APRO/REQU como token independiente se
+     acepta aunque el filtro 3 no la haya podido estructurar.
+   FILTRO 6 - Datos del estudiante: nombre y cédula desde el encabezado.
+   FILTRO 7 - Normalización y deduplicación: un mismo curso puede aparecer en
+     varias páginas o en el historial; se consolida en una sola entrada.
+   FILTRO 8 - Verificación cruzada contra el "Resumen por Componente": se
+     comparan los créditos detectados con los que el propio PDF declara como
+     aplicados, y se avisa al usuario si hay diferencia.
+   ========================================================================= */
+
+// Componentes conocidos del PEI. La lista se usa solo para dar preferencia a una
+// coincidencia "segura"; el lector NO se limita a ella: cualquier sigla de
+// componente (2 a 6 letras mayúsculas) se acepta, de modo que si la Universidad
+// crea un componente nuevo, o el curso no existe en el catálogo del plan 3443,
+// la fila se sigue reconociendo y el curso se envía a "Electivos sin tipología
+// identificada" en lugar de perderse.
+const PDF_COMPONENTS = ['EDES','EDCU','EFC','IBC','BA','ES','RG'];
+
+/* Vocabulario de ESTADOS del PEI.
+   El aplicativo no se limita a "APRO": la Universidad usa varios estados que también
+   significan curso superado. El más importante es "TRAN" (Plan de Transición), con el
+   que aparecen los cursos homologados al trasladar al estudiante; también "REQU"
+   (requisito cumplido) y las homologaciones.
+   Para no quedar nunca corto ante un estado NUEVO que aún no exista, se aplica además
+   una regla semántica (filtro 15): si la fila trae NOTA, el curso se superó; si no trae
+   nota, no. Los estados explícitamente NO aprobatorios mandan sobre esa regla. */
+const PDF_APPROVED_STATUSES     = new Set(['APRO','REQU','TRAN','TRANS','HOME','HOMO','HOMOL','VALI','SUFI','APRB']);
+const PDF_NOT_APPROVED_STATUSES = new Set(['DISP','MATR','PREQ','REPR','CANC','RETI','ANUL','PERD','NEGA','APLZ']);
+const PDF_ALL_STATUSES = new Set([...PDF_APPROVED_STATUSES, ...PDF_NOT_APPROVED_STATUSES]);
+
+/* REGISTRO DE ESTADOS NUEVOS.
+   Si un PEI trae un estado que el aplicativo no conoce, no se descarta ni se
+   ignora: se APRENDE en caliente a partir de la leyenda "Abreviaturas de estado"
+   del propio documento y queda registrado para el resto de la sesión.
+   La clasificación (aprobatorio o no) se deduce del texto de la leyenda; si la
+   leyenda no lo aclara, se resuelve fila por fila según haya nota o no.
+   Todo lo aprendido se muestra en el diagnóstico para que quede a la vista. */
+const PDF_LEARNED_STATUSES={};   // ABR -> {nombre, aprobatorio, origen}
+
+// Palabras de la leyenda que indican que un estado SÍ significa curso superado.
+const PDF_APPROVED_HINTS=/(aprobad|homolog|convalid|reconocid|superad|cumplid|transici[oó]n|suficienc|valida)/i;
+// Palabras que indican explícitamente que NO lo es.
+const PDF_NOT_APPROVED_HINTS=/(disponible|matricul|pendiente|prerequisit|reprobad|cancelad|retirad|anulad|perdid|negad|aplazad|en estudio|inscrit|desert|abandon|suspend|insuficien|incomplet|no aprobad|sin aprobar|no cursad|reintegr|repit|fallid|rechazad|en tr[aá]mite|en curso|pendient)/i;
+
+function pdfLearnStatuses(legend){
+  if(!legend) return;
+  Object.keys(legend).forEach(abbr=>{
+    if(PDF_ALL_STATUSES.has(abbr)) return;          // ya catalogado de fábrica
+    const desc=legend[abbr]||'';
+    let aprobatorio=null;
+    if(PDF_NOT_APPROVED_HINTS.test(desc)) aprobatorio=false;
+    else if(PDF_APPROVED_HINTS.test(desc)) aprobatorio=true;
+    PDF_LEARNED_STATUSES[abbr]={nombre:desc||'Estado no catalogado', aprobatorio, origen:'leyenda del PEI'};
+    // Si la leyenda no permite decidir, el estado queda SIN clasificar a propósito:
+    // cada fila se resolverá por la presencia de nota (filtro 15) y el diagnóstico
+    // lo señalará para que una persona lo revise.
+    if(aprobatorio===true) PDF_APPROVED_STATUSES.add(abbr);
+    else if(aprobatorio===false) PDF_NOT_APPROVED_STATUSES.add(abbr);
+    if(aprobatorio!==null) PDF_ALL_STATUSES.add(abbr);
+  });
+}
+
+let pdfUnknownApproved = [];   // aprobados que no están en el catálogo del plan 3443
+let pdfApprovedOrdered = [];   // todos los aprobados en el MISMO orden del PDF
+let pdfApprovedNewPlanCodes = new Set(); // aprobados que YA son del plan 12986 de 2022
+let pdfDiagnostics = null;     // resultado del análisis (para el panel de estado)
+
+// FILTRO 1: reconstruye las líneas impresas a partir de los fragmentos de pdf.js.
+// Garantiza que pdf.js esté disponible. Si el CDN principal está bloqueado, prueba
+// espejos alternativos; si el worker no se puede descargar, cae a modo sin worker
+// (más lento, pero funciona igual). Esto evita que el aplicativo quede inutilizable
+// en redes que filtran ciertos dominios.
+function pdfLoadScript(url){
+  return new Promise((resolve,reject)=>{
+    const el=document.createElement('script');
+    el.src=url; el.async=true;
+    el.onload=()=>resolve(true);
+    el.onerror=()=>reject(new Error('No se pudo cargar '+url));
+    document.head.appendChild(el);
+  });
+}
+
+async function ensurePdfJs(){
+  if(typeof pdfjsLib!=='undefined' && pdfjsLib.getDocument){
+    if(!window.__pdfjsWorkerSet) window.__setPdfWorker(window.PDFJS_SOURCES[0].worker);
+    return true;
+  }
+  for(const src of (window.PDFJS_SOURCES||[])){
+    try{
+      await pdfLoadScript(src.lib);
+      if(typeof pdfjsLib!=='undefined' && pdfjsLib.getDocument){
+        window.__setPdfWorker(src.worker);
+        return true;
+      }
+    }catch(e){ /* se intenta el siguiente espejo */ }
+  }
+  return false;
+}
+
+// Abre el documento. Si el worker no está disponible (bloqueado o caído), reintenta
+// con el worker desactivado para no perder la funcionalidad.
+async function pdfOpenDocument(arrayBuffer){
+  const opts={data:arrayBuffer, isEvalSupported:false};
+  try{
+    return await pdfjsLib.getDocument(opts).promise;
+  }catch(err){
+    try{
+      return await pdfjsLib.getDocument({...opts, disableWorker:true, useWorkerFetch:false}).promise;
+    }catch(err2){
+      throw err;
+    }
+  }
+}
+
+/* FILTRO 1 - Reconstrucción de líneas.
+   pdf.js entrega fragmentos sueltos con su posición; hay que rehacer los renglones.
+   En lugar de confiar en un solo criterio, se generan VARIAS reconstrucciones con
+   distintos criterios de agrupación vertical y se elige la que mejor puntúa
+   (filtro 13). Así, si una versión de pdf.js o un PEI concreto reparte el texto de
+   otra forma, alguna de las variantes lo resuelve. */
+function pdfBuildLinesFromItems(pages, mode){
+  const lines=[];
+  pages.forEach(items=>{
+    const buckets=[];
+    items.forEach(it=>{
+      if(!it.str || !it.str.trim()) return;
+      const y=it.transform[5];
+      const h=Math.abs(it.transform[3])||10;
+      let tol;
+      if(mode==='fixed') tol=2.5;
+      else if(mode==='tight') tol=1.0;
+      else if(mode==='loose') tol=4.5;
+      else tol=Math.max(1.5, h*0.45);   // proporcional al tamaño de fuente
+      let b=null;
+      for(const bb of buckets){ if(Math.abs(bb.y-y)<=tol){ b=bb; break; } }
+      if(!b){ b={y, items:[]}; buckets.push(b); }
+      b.items.push({x:it.transform[4], s:it.str, w:it.width||0});
+    });
+    buckets.sort((a,b)=>b.y-a.y);
+    buckets.forEach(b=>{
+      b.items.sort((a,c)=>a.x-c.x);
+      // Se inserta espacio cuando hay separación horizontal real entre fragmentos,
+      // para que dos columnas contiguas nunca queden pegadas.
+      let text='';
+      b.items.forEach((it,i)=>{
+        if(i>0){
+          const prev=b.items[i-1];
+          const gap=it.x-(prev.x+(prev.w||0));
+          text += (gap>0.5 || !/\s$/.test(text)) ? ' ' : '';
+        }
+        text+=it.s;
+      });
+      text=text.replace(/\s+/g,' ').trim();
+      if(text) lines.push(text);
+    });
+  });
+  return lines;
+}
+
+// FILTRO 13: puntúa una reconstrucción. Gana la que reconoce más cursos aprobados y,
+// a igualdad, la que más se acerca a los créditos que el propio PEI declara aplicados.
+function pdfScoreLines(lines){
+  let res;
+  try{ res=pdfAnalyzeLines(lines); }catch(e){ return {score:-1, res:null}; }
+  const found=res.ordered.length;
+  const rows=res.rowsSeen;
+  let creditPenalty=0;
+  if(res.declared && res.declared.aprobados>0){
+    const planCredits=res.planCredits||0;
+    creditPenalty=Math.abs(planCredits-res.declared.aprobados);
+  }
+  const score=(found*100)+(rows*2)-(creditPenalty*10);
+  return {score, res, found, rows, creditPenalty};
+}
+
+async function pdfExtractLines(arrayBuffer){
+  const pdf=await pdfOpenDocument(arrayBuffer);
+  const pages=[];
+  for(let p=1;p<=pdf.numPages;p++){
+    const page=await pdf.getPage(p);
+    const tc=await page.getTextContent();
+    pages.push(tc.items);
+  }
+  return pages;
+}
+
+// Ejecuta todas las variantes y devuelve la mejor, junto con el detalle para el
+// panel de diagnóstico.
+function pdfBestAnalysis(pages){
+  const modes=['fixed','auto','tight','loose'];
+  const attempts=[];
+  let best=null;
+  modes.forEach(mode=>{
+    const lines=pdfBuildLinesFromItems(pages,mode);
+    const scored=pdfScoreLines(lines);
+    attempts.push({mode, lines:lines.length, found:scored.found||0, score:scored.score});
+    if(scored.res && (!best || scored.score>best.score)) best={...scored, mode, lines};
+  });
+  return {best, attempts};
+}
+
+// FILTRO 2: descarta líneas que no son filas de curso.
+function pdfIsNoiseLine(line){
+  const l=line.trim();
+  if(l.length<4) return true;
+  if(/^Cursos equivalentes\s*:/i.test(l)) return true;
+  if(/^(DISP|PREQ|MATR|APRO|REQU)\s*:/i.test(l)) return true;         // leyenda de estados
+  if(/^(BA|ES|EDES|EFC|IBC|EDCU|RG)\s*:/i.test(l)) return true;        // leyenda de componentes
+  if(/:\s*(Aprobado|Disponible Para Matricula|Matriculado|Pendiente de Prerequisito|Requisto Cumplido|Requisito Cumplido)/i.test(l)) return true;
+  if(/^Abreviaturas/i.test(l)) return true;
+  if(/^(Nota|Periodo|Programa|Estudiante|Resumen por Componente|Curso\s+Obl|TOTAL|Página|Versión del Plan|Fecha de impresión|Plan de estudios individual|Sistema Integrado|Plataforma AUREA|Universidad Nacional|Abierta y a Distancia|DOCUMENTO INFORMATIVO)/i.test(l)) return true;
+  if(/^https?:\/\//i.test(l)) return true;
+  if(/^(Básico|Específico|Electivo (Disciplinar|Formación|Interdisciplinar))\b/i.test(l) && /\d+\s*%?\s*$/.test(l)) return true;
+  if(/^Cursos aprobados en el historial/i.test(l)) return true;
+  return false;
+}
+
+// FILTRO 3: fila de curso del plan de estudios.
+// Columnas del PEI:  Código | Nombre | Obl | Com | N° Cr | Niv | Nota | Estado
+// Se intenta primero con los componentes conocidos y, si no encaja, con un patrón
+// genérico que admite cualquier sigla de componente.
+function pdfParseCourseRow(line){
+  let m=line.match(new RegExp('^(\\d{3,12})\\s+(.+?)\\s+(SI|NO)\\s+('+PDF_COMPONENTS.join('|')+')\\b\\s*(.*)$'));
+  if(!m) m=line.match(/^(\d{3,12})\s+(.+?)\s+(SI|NO)\s+([A-ZÁÉÍÓÚÑ]{2,6})\b\s*(.*)$/);
+  if(!m) return null;
+  const [,code,rawName,,component,restRaw]=m;
+  const rest=(restRaw||'').trim();
+  // Los códigos entre corchetes de "PREQ [403021]" no son columnas: se retiran antes
+  // de analizar los números, para no confundirlos con la nota o los créditos.
+  const restNoBrackets=rest.replace(/\[[^\]]*\]/g,' ');
+  const tokens=restNoBrackets.split(/\s+/).filter(Boolean);
+
+  // Estado: último token que sea un estado conocido; si ninguno lo es, se toma el
+  // último token puramente alfabético como estado "desconocido".
+  let status=null;
+  for(let i=tokens.length-1;i>=0;i--){
+    const t=tokens[i].toUpperCase().replace(/[^A-Z]/g,'');
+    if(PDF_ALL_STATUSES.has(t)){ status=t; break; }
+  }
+  if(!status){
+    for(let i=tokens.length-1;i>=0;i--){
+      const t=tokens[i].toUpperCase().replace(/[^A-ZÁÉÍÓÚÑ]/g,'');
+      if(t.length>=3 && !/\d/.test(tokens[i])){ status=t; break; }
+    }
+  }
+  if(/\bPREQ\b/i.test(rest) && !PDF_APPROVED_STATUSES.has(status)) status='PREQ';
+  if(!status) return null;
+
+  // Números de la fila: [N° Cr, Niv, Nota?]. Con tres o más, la fila trae NOTA.
+  const nums=tokens.filter(t=>/^\d+(?:[.,]\d+)?$/.test(t));
+  const ints=tokens.filter(t=>/^\d+$/.test(t)).map(Number);
+  const hasDecimal=tokens.some(t=>/^\d+[.,]\d+$/.test(t));
+  // Caso especial del Servicio Social: la nota es la palabra "APRO".
+  const literalApro=/\bAPRO\b/i.test(rest) && status!=='APRO';
+  const hasGrade = hasDecimal || nums.length>=3 || literalApro;
+
+  const cred=ints.length>=2?ints[0]:0;
+
+  // FILTRO 15: decisión de aprobación.
+  let approved;
+  if(PDF_APPROVED_STATUSES.has(status)) approved=true;
+  else if(PDF_NOT_APPROVED_STATUSES.has(status)) approved=false;
+  else approved=hasGrade;   // estado desconocido: manda la presencia de nota
+
+  return {code, name:rawName.trim(), component, cred, status, hasGrade, approved};
+}
+
+// FILTRO 4: sección "Cursos aprobados en el historial que no llegan al plan de estudios".
+function pdfParseHistorialRow(line){
+  const m=line.match(/^(\d{4,10})\s+(.+?)\s+(\d+)\s+(\d+(?:[.,]\d+)?)\s*$/);
+  if(!m) return null;
+  return {code:m[1], name:m[2].trim(), cred:parseInt(m[3],10), status:'APRO', approved:true, component:null};
+}
+
+// FILTRO 6: nombre y cédula del encabezado.
+function pdfParseStudent(lines){
+  const out={name:'', id:''};
+  for(const l of lines){
+    const m=l.match(/Estudiante\s*:\s*(?:C\.?C\.?|T\.?I\.?|C\.?E\.?|NIT)?\s*([\d.\-]{5,20})\s*[-–—]\s*(.+?)\s*$/i);
+    if(m){ out.id=m[1].replace(/[.\-]/g,'').trim(); out.name=m[2].trim(); break; }
+  }
+  if(!out.name){
+    for(const l of lines){
+      const m=l.match(/Estudiante\s*:\s*(.+?)\s*$/i);
+      if(m){ out.name=m[1].replace(/^(?:C\.?C\.?|T\.?I\.?|C\.?E\.?)\s*[\d.\-]*\s*[-–—]?\s*/i,'').trim(); break; }
+    }
+  }
+  return out;
+}
+
+// FILTRO 8: créditos aplicados que el propio PDF declara, para verificación cruzada.
+function pdfParseDeclaredCredits(lines){
+  for(const l of lines){
+    const m=l.match(/^TOTAL\s+(\d+)\s+(\d+)\s+(\d+)/i);
+    if(m) return {aprobados:parseInt(m[1],10), necesarios:parseInt(m[2],10), aplicados:parseInt(m[3],10)};
+  }
+  return null;
+}
+
+// Orquestador: aplica todos los filtros y consolida el resultado.
+// Se lleva un ESTADO DE SECCIÓN persistente ('plan' | 'situaciones' | 'historial')
+// porque el PEI puede repartir una misma sección a lo largo de varias páginas: el
+// encabezado y el pie que se repiten en cada salto de página NO deben cerrar la
+// sección en curso. Este era el motivo por el que, en un PEI largo, se perdían los
+// cursos del historial a partir de su segunda página.
+function pdfAnalyzeLines(lines){
+  // Se aprende primero la leyenda de estados del documento, para que cualquier
+  // estado nuevo ya esté catalogado cuando se recorran las filas de curso.
+  pdfLearnStatuses(pdfParseStatusLegend(lines));
+  const approvedMap=new Map();   // code -> {code,name,cred,component,via}
+  const seenAnyRow=[];
+  // Cursos por estado: se acumulan los CÓDIGOS de curso (no las filas) para que el
+  // diagnóstico informe cuántos cursos hay en cada estado sin contar dos veces un
+  // mismo curso que aparezca repetido.
+  const statusCodes={};
+  const unclassifiedStatuses=new Set();
+  let section='plan';
+
+  const merged=pdfMergeWrappedNames(lines);
+
+  merged.forEach(rawLine=>{
+    const line=rawLine.trim();
+
+    // --- Cambios de sección (prioridad sobre cualquier otro filtro) ---
+    if(/^Cursos aprobados en el historial/i.test(line)){ section='historial'; return; }
+    if(/^Situaciones Acad[eé]micas/i.test(line)){ section='situaciones'; return; }
+    if(/^Total cr[eé]ditos homologados/i.test(line)) return;
+
+    // FILTRO 10: encabezado/pie repetidos en cada página. Se saltan SIN cerrar la
+    // sección lógica en curso.
+    if(pdfIsPageFurniture(line)) return;
+
+    // FILTRO 12: en "Situaciones Académicas" no hay aprobaciones, sino solicitudes en
+    // trámite ("En estudio", "Negado luego de estudio"). Nunca deben contarse.
+    if(section==='situaciones'){
+      if(/^(Nota\s*:|Abreviaturas)/i.test(line)) section='plan';
+      return;
+    }
+
+    if(pdfIsNoiseLine(line)) return;
+
+    // FILTRO 3: fila de curso del plan.
+    const row=pdfParseCourseRow(line);
+    if(row){
+      seenAnyRow.push(row);
+      if(!statusCodes[row.status]) statusCodes[row.status]=new Set();
+      statusCodes[row.status].add(row.code);
+      if(!PDF_ALL_STATUSES.has(row.status)) unclassifiedStatuses.add(row.status);
+      if(row.approved) pdfAddApproved(approvedMap,row,'plan');
+      return;
+    }
+
+    // FILTRO 4: fila del historial (formato de columnas distinto: código, nombre,
+    // créditos y nota, sin columna de estado).
+    if(section==='historial'){
+      const h=pdfParseHistorialRow(line);
+      if(h) pdfAddApproved(approvedMap,h,'historial');
+      return;
+    }
+
+    // FILTRO 5 (rescate): código conocido de cualquiera de los dos planes + estado
+    // aprobado suelto en la línea, para filas que quedaron mal estructuradas.
+    const cm=line.match(/^(\d{3,12})\b/);
+    if(cm && /(^|\s)(APRO|REQU)(\s|$)/.test(line)){
+      const cat=oldCourses.find(o=>o.code===cm[1])||findAnyCourseByCode(cm[1]);
+      if(cat) pdfAddApproved(approvedMap,{code:cm[1], name:cat.name, cred:cat.cred, component:null, status:'APRO', approved:true},'rescate');
+    }
+  });
+
+  // FILTRO 7: clasificación final, conservando el ORDEN DE APARICIÓN en el PDF.
+  //  - known   : curso del plan 3443 de 2014 → alimenta el motor de equivalencias.
+  //  - newPlan : curso que YA pertenece al plan 12986 de 2022. Ocurre cuando el
+  //              estudiante fue trasladado y su PEI es del plan nuevo; se marca
+  //              directamente como cumplido, sin pasar por equivalencia.
+  //  - unknown : no pertenece a ninguno de los dos planes → "Electivos sin tipología".
+  const known=[], unknown=[], newPlan=[], ordered=[], discarded=[];
+  approvedMap.forEach(v=>{
+    const cat=oldCourses.find(o=>o.code===v.code);
+    if(cat){
+      const item={code:cat.code, name:cat.name, cred:cat.cred};
+      known.push(item); ordered.push({...item, kind:'old', isKnown:true});
+      return;
+    }
+    const nc=findAnyCourseByCode(v.code);
+    if(nc){
+      const item={code:nc.code, name:nc.name, cred:nc.cred};
+      newPlan.push(item); ordered.push({...item, kind:'new', isKnown:true});
+      return;
+    }
+    const item={code:v.code, name:v.name, cred:v.cred||0};
+    // FILTRO 17: cursos NO HOMOLOGADOS. La sección "Cursos aprobados en el historial
+    // que no llegan al plan de estudios" recoge, como su propio título indica, cursos
+    // que el estudiante aprobó (normalmente en otro programa) y que NO se homologaron
+    // a este plan. Si además no pertenecen ni al plan 3443 ni al 12986, no aportan
+    // nada a la transición y deben omitirse por completo, en vez de engrosar la lista
+    // de cursos sin tipología. Un curso del historial que SÍ está en alguno de los dos
+    // planes sí se conserva (arriba), porque en ese caso sí es del programa.
+    if(v.via==='historial'){ discarded.push(item); return; }
+    unknown.push(item); ordered.push({...item, kind:'unknown', isKnown:false});
+  });
+
+  const declared=pdfParseDeclaredCredits(lines);
+  const declaredByComponent=pdfParseComponentSummary(lines);
+
+  // FILTRO 14: contabilidad por componente. Solo se suman los cursos leídos en el
+  // cuerpo del plan (no los del historial), para poder contrastarlos con el
+  // "Resumen por Componente" del propio PEI.
+  //
+  // IMPORTANTE: la comparación se hace contra la columna "Aprobados", NO contra
+  // "Aplicados". Son cosas distintas: un estudiante puede aprobar más créditos de
+  // los que el programa exige en un componente (p. ej. cuatro electivos de formación
+  // complementaria cuando solo se piden tres); en ese caso el PEI reporta Aprobados=4
+  // y Aplicados=3, y el excedente no cuenta para el título. El aplicativo detecta
+  // cursos APROBADOS, así que la cifra correcta para verificar es "Aprobados".
+  const detectedByComponent={};
+  let planCredits=0;
+  approvedMap.forEach(v=>{
+    if(v.via!=='plan' || !v.component) return;
+    const comp=v.component.toUpperCase();
+    const cat=oldCourses.find(o=>o.code===v.code)||findAnyCourseByCode(v.code);
+    const cred=cat?cat.cred:(v.cred||0);
+    detectedByComponent[comp]=(detectedByComponent[comp]||0)+cred;
+    planCredits+=cred;
+  });
+
+  const componentIssues=[];
+  const componentExcess=[];
+  if(declaredByComponent){
+    Object.keys(declaredByComponent).forEach(comp=>{
+      const d=declaredByComponent[comp];
+      const det=detectedByComponent[comp]||0;
+      if(d.aprobados!==det) componentIssues.push({comp, declarado:d.aprobados, detectado:det, aplicados:d.aplicados});
+      // Excedente declarado por el propio PEI: aprobó más de lo que se le aplica.
+      if(d.aplicados!==null && d.aprobados>d.aplicados) componentExcess.push({comp, aprobados:d.aprobados, aplicados:d.aplicados});
+    });
+  }
+
+  const detectedCredits=ordered.reduce((a,c)=>a+(c.cred||0),0);
+
+  return {
+    student: pdfParseStudent(lines),
+    plan: pdfParsePlan(lines),
+    known, unknown, newPlan, ordered, discarded,
+    rowsSeen: seenAnyRow.length,
+    declared, declaredByComponent, detectedByComponent, componentIssues, componentExcess,
+    planCredits,
+    detectedCredits,
+    statusCounts: Object.fromEntries(Object.keys(statusCodes).map(k=>[k, statusCodes[k].size])),
+    statusLegend: pdfParseStatusLegend(lines),
+    unclassifiedStatuses:[...unclassifiedStatuses]
+  };
+}
+
+// FILTRO 14 (apoyo): lee el "Resumen por Componente" del encabezado del PEI.
+// Columnas: Componente | Abr | Aprobados | Necesarios | Aplicados | Avance
+// Ej.: "Electivo Formación Complementaria EFC 4 3 3 100.00 %" → aprobados 4, aplicados 3.
+// Algunos componentes vienen sin las dos últimas columnas ("Específico ES 0 84").
+function pdfParseComponentSummary(lines){
+  const out={}; let found=false;
+  for(const l of lines){
+    const m=l.match(/^(.+?)\s+(BA|ES|EDES|EFC|IBC|EDCU|RG)\s+(\d+)\s+(\d+)(?:\s+(\d+))?/);
+    if(m && /^(B[aá]sico|Espec[ií]fico|Electivo|Requisito)/i.test(m[1].trim())){
+      out[m[2]]={
+        aprobados: parseInt(m[3],10),
+        necesarios: parseInt(m[4],10),
+        aplicados: m[5]!==undefined?parseInt(m[5],10):null
+      };
+      found=true;
+    }
+  }
+  return found?out:null;
+}
+
+// FILTRO 9: descarta las continuaciones de nombres de curso partidos en dos renglones
+// (p. ej. "HERRAMIENTAS DIGITALES PARA LA GESTIÓN DEL" / "CONOCIMIENTO"), para que
+// nunca se confundan con una fila de curso. El nombre oficial se toma del catálogo.
+function pdfMergeWrappedNames(lines){
+  const out=[];
+  for(let i=0;i<lines.length;i++){
+    const l=String(lines[i]||'').trim();
+    if(!l) continue;
+    if(out.length && !/^\d{3,12}\b/.test(l) && /^[A-ZÁÉÍÓÚÑ(]/.test(l)
+       && l.split(/\s+/).length<=6 && !/\d/.test(l) && !/[.:]$/.test(l)
+       && pdfParseCourseRow(out[out.length-1])){
+      continue;
+    }
+    out.push(l);
+  }
+  return out;
+}
+
+// FILTRO 10: encabezado y pie que se repiten en todas las páginas del PEI.
+function pdfIsPageFurniture(line){
+  return /^(Sistema Integrado|Plataforma AUREA|Plan de estudios individual|Estudiante\s*:|Programa\s*:|Universidad Nacional|Abierta y a Distancia|DOCUMENTO INFORMATIVO|Versi[oó]n del Plan|P[aá]gina\s*\d|Fecha de impresi[oó]n|https?:\/\/)/i.test(line);
+}
+
+// FILTRO 16: lee la propia leyenda "Abreviaturas de estado" del PEI
+// (p. ej. "TRAN: Plan de Transición"). Sirve para avisar en el diagnóstico si el
+// documento trae un estado que el aplicativo todavía no clasifica.
+function pdfParseStatusLegend(lines){
+  const legend={};
+  lines.forEach(l=>{
+    if(!/[A-Z]{3,5}\s*:\s*[A-ZÁÉÍÓÚÑa-z]/.test(l)) return;
+    if(!/(Disponible Para Matricula|Aprobado|Matriculado|Pendiente de Prerequisito|Cumplido|Transici[oó]n|Homolog)/i.test(l)) return;
+    const re=/([A-Z]{3,5})\s*:\s*([^,]+)/g; let m;
+    while((m=re.exec(l))!==null){ legend[m[1].toUpperCase()]=m[2].trim(); }
+  });
+  return Object.keys(legend).length?legend:null;
+}
+
+// FILTRO 11: plan y resolución a los que corresponde el PEI cargado.
+function pdfParsePlan(lines){
+  for(const l of lines){
+    const m=l.match(/Programa\s*:\s*(\d+)\s*[-–—]\s*(.+?)\s*[-–—]\s*N[°º]\s*Res\s*(\d+)/i);
+    if(m) return {code:m[1], name:m[2].trim(), res:m[3]};
+  }
+  return null;
+}
+
+function pdfAddApproved(map,row,via){
+  const prev=map.get(row.code);
+  if(prev){ if(!prev.cred && row.cred) prev.cred=row.cred; return; }
+  map.set(row.code,{code:row.code,name:row.name,cred:row.cred,component:row.component,via});
+}
+
+/* ---------- Interfaz de carga ---------- */
+async function handlePdfFiles(files){
+  if(!files || files.length===0) return;
+  const file=files[0];
+  const status=document.getElementById('pdfParseStatus');
+  status.innerHTML=`<div class="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 rounded-xl px-3 py-2.5">Analizando "${file.name}"…</div>`;
+  try{
+    const libOk=await ensurePdfJs();
+    if(!libOk) throw new Error('No se pudo cargar el lector de PDF desde ninguno de los servidores disponibles. Revisa tu conexión a internet (o el filtro de red de tu institución) y recarga la página.');
+
+    const buf=await file.arrayBuffer();
+    const pages=await pdfExtractLines(buf);
+    const totalItems=pages.reduce((a,p)=>a+p.length,0);
+    if(totalItems===0){
+      throw new Error('El PDF no contiene texto seleccionable (parece ser una imagen escaneada). Descarga nuevamente el PEI desde AUREA en formato PDF.');
+    }
+
+    const {best,attempts}=pdfBestAnalysis(pages);
+    const res=best&&best.res;
+
+    if(!res || res.ordered.length===0){
+      status.innerHTML=`<div class="text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2.5">
+        No se reconoció ningún curso aprobado en este archivo. Verifica que sea el <strong>Plan de Estudios Individual - PEI</strong> descargado de AUREA.
+        <div class="font-medium mt-1 text-[10px]">Diagnóstico: ${pages.length} página(s), ${totalItems} fragmentos de texto leídos.</div>
+      </div>`;
+      return;
+    }
+
+    pdfDiagnostics={...res, attempts, mode:best.mode, pageCount:pages.length, fileName:file.name};
+    pdfUnknownApproved=res.unknown;
+    pdfApprovedOrdered=res.ordered;
+    pdfApprovedNewPlanCodes=new Set(res.newPlan.map(c=>c.code));
+    approvedOldCodes=new Set(res.known.map(c=>c.code));
+    simulatedCodes.clear();
+
+    document.getElementById('studentName').value=res.student.name||'';
+    document.getElementById('studentId').value=res.student.id||'';
+    updateStudentInfo();
+
+    renderAddedCoursesList();
+    renderPdfStatus(file.name,res);
+    // Las equivalencias se generan de inmediato: ya no hace falta ningún botón.
+    equivalencesGenerated=true;
+    calculateNewPlan();
+  }catch(err){
+    status.innerHTML=`<div class="text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2.5">No fue posible leer el PDF: ${err.message||err}</div>`;
+  }
+}
+
+// Panel de diagnóstico: permite comprobar, sin salir del aplicativo, qué leyó el
+// lector y si la lectura cuadra con el propio resumen del PEI.
+// Nombres completos de los componentes y estados, tal como los define el propio PEI,
+// para que el diagnóstico sea legible sin tener que consultar las abreviaturas.
+// Devuelve "Nombre completo (ABR)" para que las observaciones se entiendan sin
+// tener que consultar la tabla de abreviaturas.
+function componentLabel(abbr){
+  const n=PDF_COMPONENT_NAMES[abbr];
+  return n?`${n} (${abbr})`:abbr;
+}
+const PDF_COMPONENT_NAMES={
+  BA:'Básico', ES:'Específico', EDES:'Electivo Disciplinar Específico',
+  EFC:'Electivo Formación Complementaria', IBC:'Electivo Interdisciplinar Básico Comun',
+  EDCU:'Electivo Disciplinar Común', RG:'Requisito de grado'
+};
+const PDF_STATUS_NAMES={
+  DISP:'Disponible para Matricula', PREQ:'Pendiente de Prerequisito',
+  APRO:'Aprobado', REQU:'Requisto Cumplido', HOME:'Homologado por Equivalencia',
+  HOMO:'Homologado', MATR:'Matriculado', TRAN:'Plan de Transición',
+  REPR:'Reprobado', CANC:'Cancelado', RETI:'Retirado', ANUL:'Anulado', PERD:'Perdido'
+};
+
+function showPdfDiagnostics(){
+  const d=pdfDiagnostics;
+  if(!d) return showAlert("Sin datos","Primero carga un Plan de Estudios Individual - PEI.");
+
+  const card=(title,inner)=>`<div class="mb-4">
+      <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-wide mb-2">${title}</h4>
+      <div class="rounded-xl border border-gray-200 overflow-hidden">${inner}</div>
+    </div>`;
+  const row=(k,v)=>`<div class="flex justify-between items-start gap-3 px-3 py-2 border-b border-gray-100 last:border-0 text-xs">
+      <span class="text-gray-500 font-medium shrink-0">${k}</span>
+      <span class="font-bold text-gray-800 text-right">${v}</span></div>`;
+
+  // --- Identificación ---
+  const ident=card('Documento y estudiante',
+     row('Archivo', d.fileName||'—')
+    +row('Páginas leídas', d.pageCount||'—')
+    +row('Estudiante', d.student?.name||'—')
+    +row('Cédula', d.student?.id||'—')
+    +row('Programa', d.plan?`${d.plan.code} · Resolución ${d.plan.res}`:'—'));
+
+  // --- Resumen de detección ---
+  const resumen=card('Cursos aprobados detectados',
+     row('Total reconocido', `<span class="text-emerald-700">${d.ordered.length} cursos</span>`)
+    +row('Del Plan 3443 de 2014', d.known.length)
+    +row('Del Plan 12986 de 2022', d.newPlan.length)
+    +row('Sin tipología identificada', d.unknown.length)
+    +row('Del historial, sin homologar (omitidos)', `${d.discarded?d.discarded.length:0}${(d.discarded&&d.discarded.length)?` <span class="font-medium text-gray-400">(${d.discarded.map(x=>x.code).join(', ')})</span>`:''}`)
+    +row('Filas de curso analizadas', d.rowsSeen)
+    +row('Créditos del cuerpo del plan', `${d.planCredits} <span class="font-medium text-gray-400">(el PEI declara ${d.declared?d.declared.aprobados:'—'} aprobados${d.declared&&d.declared.aplicados!=null?`, ${d.declared.aplicados} aplicados al título`:''})</span>`));
+
+  // --- Verificación por componente ---
+  const comp=d.declaredByComponent||{}, det=d.detectedByComponent||{};
+  let compInner;
+  if(Object.keys(comp).length){
+    compInner=`<table class="w-full text-xs">
+      <thead><tr class="bg-gray-50 text-[10px] uppercase tracking-wide text-gray-500 text-left">
+        <th class="px-3 py-2 font-black">Componente</th>
+        <th class="px-2 py-2 font-black text-center">PEI</th>
+        <th class="px-2 py-2 font-black text-center">Detectado</th>
+        <th class="px-3 py-2 font-black text-right">Resultado</th>
+      </tr></thead><tbody>`
+      +Object.keys(comp).map(c=>{
+        const dd=comp[c], v=det[c]||0, ok=dd.aprobados===v;
+        const extra=(dd.aplicados!==null&&dd.aprobados>dd.aplicados)
+          ? `<div class="text-[10px] font-medium text-gray-500 mt-0.5">Excedente: solo ${dd.aplicados} se aplican al título.</div>`:'';
+        return `<tr class="border-t border-gray-100 align-top">
+          <td class="px-3 py-2"><span class="font-bold text-gray-800">${PDF_COMPONENT_NAMES[c]||c}</span> <span class="text-gray-400">(${c})</span>${extra}</td>
+          <td class="px-2 py-2 text-center font-bold text-gray-600">${dd.aprobados}</td>
+          <td class="px-2 py-2 text-center font-bold text-gray-800">${v}</td>
+          <td class="px-3 py-2 text-right font-black ${ok?'text-emerald-600':'text-amber-600'}">${ok?'✔ Coincide':'⚠ Difiere'}</td>
+        </tr>`;
+      }).join('')+`</tbody></table>`;
+  }else{
+    compInner=`<div class="px-3 py-2 text-xs text-gray-500 font-medium">El PEI no trae "Resumen por Componente".</div>`;
+  }
+  const compCard=card('Verificación cruzada por componente (créditos aprobados)',compInner);
+
+  // --- Estados encontrados ---
+  // Se listan todos los estados que el PEI declara en su leyenda MÁS los que aparecen
+  // en las filas de curso. Los que existen pero no tienen ningún curso se muestran
+  // igualmente con "0 cursos", para que la referencia quede completa y no parezca que
+  // falta un estado (p. ej. Matriculado en un PEI donde el estudiante no cursa nada).
+  const sc=d.statusCounts||{};
+  const REF_STATUSES=['APRO','REQU','HOME','HOMO','TRAN','MATR','DISP','PREQ'];
+  const declaredKeys=[...(d.statusLegend?Object.keys(d.statusLegend):[]), ...Object.keys(PDF_LEARNED_STATUSES)];
+  const allKeys=[...new Set([...Object.keys(sc), ...declaredKeys, ...REF_STATUSES])]
+    .filter(k=>sc[k]>0 || declaredKeys.includes(k) || REF_STATUSES.includes(k));
+  // Primero los que tienen cursos (de mayor a menor), después los que están en cero.
+  allKeys.sort((a,b)=>{
+    const va=sc[a]||0, vb=sc[b]||0;
+    if(vb!==va) return vb-va;
+    return REF_STATUSES.indexOf(a)-REF_STATUSES.indexOf(b);
+  });
+  const estInner=allKeys.length
+    ? `<table class="w-full text-xs">
+        <thead><tr class="bg-gray-50 text-[10px] uppercase tracking-wide text-gray-500 text-left">
+          <th class="px-3 py-2 font-black">Estado</th>
+          <th class="px-2 py-2 font-black">Cuenta como aprobado</th>
+          <th class="px-3 py-2 font-black text-right">Cursos</th>
+        </tr></thead><tbody>`
+      + allKeys.map(k=>{
+        const n=sc[k]||0;
+        const nombre=PDF_STATUS_NAMES[k]||(PDF_LEARNED_STATUSES[k]&&PDF_LEARNED_STATUSES[k].nombre)||(d.statusLegend&&d.statusLegend[k])||'Estado no catalogado';
+        const cuenta=PDF_APPROVED_STATUSES.has(k);
+        const conocido=PDF_ALL_STATUSES.has(k);
+        const tag=cuenta
+          ? '<span class="text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5">Si</span>'
+          : (conocido
+              ? '<span class="text-[10px] font-bold text-gray-500 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5">No</span>'
+              : '<span class="text-[10px] font-black text-amber-700 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5">Se resuelve por la nota</span>');
+        const aprendido=PDF_LEARNED_STATUSES[k]
+          ? `<div class="text-[10px] font-medium text-blue-700 mt-0.5">Estado nuevo aprendido de la leyenda del PEI${PDF_LEARNED_STATUSES[k].aprobatorio===null?' (sin clasificar)':''}.</div>`
+          : '';
+        return `<tr class="border-t border-gray-100 align-top ${n===0?'opacity-50':''}">
+          <td class="px-3 py-2"><span class="font-bold text-gray-800">${nombre}</span> <span class="text-gray-400">(${k})</span>${aprendido}</td>
+          <td class="px-2 py-2">${tag}</td>
+          <td class="px-3 py-2 text-right font-black ${n>0?'text-gray-800':'text-gray-400'}">${n}</td>
+        </tr>`;
+      }).join('') + `</tbody></table>`
+    : `<div class="px-3 py-2 text-xs text-gray-500 font-medium">-</div>`;
+  const estCard=card('Estados encontrados en el PEI',estInner);
+
+  // --- Estrategias de lectura ---
+  const att=(d.attempts||[]);
+  const attInner=att.length
+    ? att.map(a=>{
+        const ganador=d.mode? a.mode===d.mode : false;
+        return `<div class="flex justify-between items-center px-3 py-2 border-b border-gray-100 last:border-0 text-xs">
+          <span class="font-bold text-gray-700">Modo "${a.mode}"</span>
+          <span class="text-gray-500 font-medium">${a.lines} renglones · <span class="font-bold text-gray-800">${a.found} cursos</span></span></div>`;
+      }).join('')
+    : `<div class="px-3 py-2 text-xs text-gray-500 font-medium">—</div>`;
+  const attCard=card('Estrategias de lectura evaluadas',attInner);
+
+  document.getElementById('diagBody').innerHTML=ident+resumen+compCard+estCard+attCard;
+  const m=document.getElementById('diagModal');
+  m.classList.remove('hidden'); m.classList.add('flex');
+  document.getElementById('diagBody').scrollTop=0;
+}
+
+function closeDiag(){
+  const m=document.getElementById('diagModal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+
+function renderPdfStatus(fileName,res){
+  const status=document.getElementById('pdfParseStatus');
+  const total=res.ordered.length;
+  const planHtml=res.plan
+    ? `<div class="text-[10px] font-bold text-gray-600 mt-1">PEI del programa ${res.plan.code} · Resolución ${res.plan.res}.</div>`
+    : '';
+  // Verificación cruzada precisa: se compara componente por componente contra el
+  // "Resumen por Componente" del propio PEI. Los cursos del historial no entran en
+  // esa comparación porque tampoco suman en el total del PEI.
+  let checkHtml='';
+  if(res.componentIssues && res.componentIssues.length===0 && res.declaredByComponent){
+    checkHtml=`<div class="text-[10px] font-bold text-emerald-700 mt-1">✔ Verificación cruzada superada: los ${res.planCredits} créditos detectados coinciden exactamente con los créditos aprobados que declara el "Resumen por Componente" del PEI, componente por componente.</div>`;
+  }else if(res.componentIssues && res.componentIssues.length>0){
+    const det=res.componentIssues.map(i=>`${componentLabel(i.comp)}: PEI ${i.declarado} / detectado ${i.detectado}`).join(' · ');
+    checkHtml=`<div class="text-[10px] font-bold text-amber-700 mt-1">⚠ Verificación cruzada: hay diferencias por componente (${det}). Revisa la lista de abajo y abre el diagnóstico para más detalle.</div>`;
+  }else if(res.declared){
+    const diff=res.planCredits-res.declared.aprobados;
+    checkHtml = diff===0
+      ? `<div class="text-[10px] font-bold text-emerald-700 mt-1">✔ Verificación cruzada: los ${res.planCredits} créditos detectados coinciden con los ${res.declared.aprobados} créditos aprobados que declara el PEI.</div>`
+      : `<div class="text-[10px] font-bold text-amber-700 mt-1">⚠ Verificación cruzada: se detectaron ${res.planCredits} créditos del plan y el PEI declara ${res.declared.aprobados} aprobados (diferencia de ${Math.abs(diff)}).</div>`;
+  }
+  // El propio PEI puede declarar créditos aprobados por encima de los exigidos.
+  const excessHtml=(res.componentExcess&&res.componentExcess.length)
+    ? `<div class="text-[10px] font-bold text-gray-600 mt-1">Observación: en ${res.componentExcess.map(e=>`${componentLabel(e.comp)} (aprobados ${e.aprobados}, aplicados ${e.aplicados})`).join(', ')} el estudiante aprobó más créditos de los que el programa exige; el excedente no cuenta para el título.</div>`
+    : '';
+  const newPlanHtml=res.newPlan.length
+    ? `<div class="text-[10px] font-bold text-emerald-700 mt-1">${res.newPlan.length} curso(s) ya están aprobados dentro del plan 12986 de 2022 y se marcaron como cumplidos sin requerir equivalencia.</div>`
+    : '';
+  const nuevos=(res.unclassifiedStatuses||[]).concat(Object.keys(PDF_LEARNED_STATUSES));
+  const nuevosHtml=nuevos.length
+    ? `<div class="text-[10px] font-bold text-blue-700 mt-1">Se detectaron estados no vistos antes en un PEI (${[...new Set(nuevos)].join(', ')}). El aplicativo los registró automáticamente; revisa "Ver diagnóstico" para confirmar cómo se interpretaron.</div>`
+    : '';
+  const unknownHtml=res.unknown.length
+    ? `<div class="text-[10px] font-bold text-amber-700 mt-1">${res.unknown.length} curso(s) aprobado(s) no pertenecen a ninguno de los dos planes; se listan en "Cursos aprobados sin tipología identificada".</div>`
+    : '';
+  // Cursos del historial sin homologar: se informan, pero no entran en el análisis.
+  const discardedHtml=(res.discarded&&res.discarded.length)
+    ? `<div class="text-[10px] font-bold text-gray-600 mt-1">${res.discarded.length} curso(s) del historial no se homologaron a este plan (son de otro programa) y se omitieron del análisis: ${res.discarded.map(d=>d.code).join(', ')}.</div>`
+    : '';
+  status.innerHTML=`<div class="text-xs bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2.5">
+    <div class="font-black text-emerald-800">✔ ${fileName}: se reconocieron ${total} cursos aprobados y las equivalencias se generaron automáticamente.</div>
+    ${planHtml}${checkHtml}${excessHtml}${newPlanHtml}${unknownHtml}${discardedHtml}${nuevosHtml}
+    <button onclick="showPdfDiagnostics()" class="mt-2 inline-flex items-center gap-1.5 bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-700 border border-gray-300 hover:border-blue-300 text-[11px] font-bold px-3 py-1.5 rounded-lg transition-colors shadow-sm">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      Ver diagnóstico
+    </button>
+  </div>`;
+}
+
+function renderAddedCoursesList(){
+  const list=document.getElementById('addedCoursesList');
+  let totalCred=0;
+  const items=[];
+  // Se respeta el orden en que los cursos aparecen en el PDF para que la
+  // verificación pueda hacerse renglón por renglón contra el documento original.
+  const source = pdfApprovedOrdered.length
+    ? pdfApprovedOrdered
+    : [...approvedOldCodes].map(code=>{
+        const c=oldCourses.find(o=>o.code===code);
+        return {code, name:c?c.name:code, cred:c?c.cred:0, isKnown:!!c};
+      });
+
+  source.forEach(it=>{
+    totalCred+=it.cred||0;
+    const kind=it.kind||(it.isKnown?'old':'unknown');
+    if(kind==='old'){
+      items.push(`<div class="flex items-center justify-between gap-2 p-2.5 rounded-xl border border-blue-200 bg-blue-50">
+        <div class="min-w-0">
+          <p class="text-[11px] font-black text-gray-800">${it.code} <span class="text-[10px] font-bold text-emerald-700">(${it.cred} cr)</span></p>
+          <p class="text-xs font-semibold text-gray-600 leading-snug">${it.name}</p>
+        </div>
+      </div>`);
+    }else if(kind==='new'){
+      items.push(`<div class="flex items-center justify-between gap-2 p-2.5 rounded-xl border border-emerald-200 bg-emerald-50">
+        <div class="min-w-0">
+          <p class="text-[11px] font-black text-gray-800">${it.code} <span class="text-[10px] font-bold text-emerald-700">(${it.cred} cr)</span></p>
+          <p class="text-xs font-semibold text-gray-600 leading-snug">${it.name}</p>
+          <p class="text-[10px] font-bold text-emerald-700 mt-0.5">Ya aprobado en el plan 12986 de 2022 (no requiere equivalencia)</p>
+        </div>
+      </div>`);
+    }else{
+      items.push(`<div class="flex items-center justify-between gap-2 p-2.5 rounded-xl border border-amber-200 bg-amber-50">
+        <div class="min-w-0">
+          <p class="text-[11px] font-black text-gray-800">${it.code} <span class="text-[10px] font-bold text-emerald-700">(${it.cred||0} cr)</span></p>
+          <p class="text-xs font-semibold text-gray-600 leading-snug">${it.name}</p>
+          <p class="text-[10px] font-bold text-amber-700 mt-0.5">Aprobado en el plan, pero sin tipología identificada</p>
+        </div>
+      </div>`);
+    }
+  });
+
+  if(items.length===0){
+    list.innerHTML=`<div class="text-gray-400 text-center font-medium py-6 text-xs">Aún no se ha cargado ningún plan de estudios.</div>`;
+  }else{
+    list.innerHTML=items.join('');
+  }
+  document.getElementById('addedCoursesCount').innerText=source.length;
+  document.getElementById('addedCoursesCredits').innerText=totalCred;
+}
+
+
+/* =========================================================================
+   MOTOR DE CÁLCULO
+   ========================================================================= */
+function calculateNewPlan(){
+  fulfilledNewCodes=new Set();
+  equivalenceReasons={};
+  // Cursos que el PEI cargado ya reporta aprobados DENTRO del plan 12986 de 2022
+  // (ocurre cuando el estudiante ya fue trasladado). No requieren equivalencia:
+  // se marcan como cumplidos directamente.
+  pdfApprovedNewPlanCodes.forEach(code=>{
+    fulfilledNewCodes.add(code);
+    if(!equivalenceReasons[code]) equivalenceReasons[code]=[];
+    equivalenceReasons[code].push('Aprobado directamente en el plan 12986 de 2022');
+  });
+  familyMatches={};
+  const rawOldMatchesByNewCode={}; // newCode -> [oldCode,...] (para detectar cursos "perdidos")
+  const usedInSuccess=new Set(); // códigos antiguos que SÍ lograron activar alguna equivalencia
+
+  mappingRules.forEach(rule=>{
+    const hasAll=rule.requiredAll.every(c=>approvedOldCodes.has(c));
+    const hasOr=rule.orGroup.length===0||rule.orGroup.some(c=>approvedOldCodes.has(c));
+    if(hasAll&&hasOr){
+      fulfilledNewCodes.add(rule.newCode);
+      // Una misma equivalencia puede otorgar más de un curso del plan nuevo
+      // (p. ej. "Fundamentos de X" Y "Aplicación de X").
+      (rule.alsoNewCodes||[]).forEach(nc=>fulfilledNewCodes.add(nc));
+      const relevantOld=rule.requiredAll.concat(rule.orGroup.filter(c=>approvedOldCodes.has(c)));
+      relevantOld.forEach(c=>usedInSuccess.add(c));
+      const reasonNames=relevantOld.map(c=>oldCourses.find(o=>o.code===c)?.name||c).join(" + ");
+      if(!equivalenceReasons[rule.newCode]) equivalenceReasons[rule.newCode]=[];
+      equivalenceReasons[rule.newCode].push(reasonNames);
+      (rule.alsoNewCodes||[]).forEach(nc=>{
+        if(!equivalenceReasons[nc]) equivalenceReasons[nc]=[];
+        equivalenceReasons[nc].push(reasonNames);
+      });
+      if(!rawOldMatchesByNewCode[rule.newCode]) rawOldMatchesByNewCode[rule.newCode]=[];
+      rawOldMatchesByNewCode[rule.newCode].push(relevantOld.join("+"));
+      if(rule.familyId){
+        if(!familyMatches[rule.familyId]) familyMatches[rule.familyId]=[];
+        familyMatches[rule.familyId].push({newCode:rule.newCode,oldCodes:relevantOld,names:relevantOld.map(c=>oldCourses.find(o=>o.code===c)?.name||c)});
+      }
+    }
+  });
+  equivalenceOldCodesByNewCode=rawOldMatchesByNewCode;
+
+  // Con las reglas vigentes cada equivalencia depende de un solo curso aprobado, de
+  // modo que ya no existen equivalencias "a medias". Los cursos que no aportan
+  // créditos se determinan más adelante (sin equivalencia o excedentes de electivos).
+  lostCourses=[];
+
+  // detectar duplicidad simple (misma familia con >1 curso antiguo satisfaciendo el MISMO newCode)
+  const duplicateWarnings={}; // newCode -> texto
+  Object.keys(familyMatches).forEach(fid=>{
+    const entries=familyMatches[fid];
+    const byNewCode={};
+    entries.forEach(e=>{ if(!byNewCode[e.newCode]) byNewCode[e.newCode]=[]; byNewCode[e.newCode].push(e); });
+    Object.keys(byNewCode).forEach(nc=>{
+      if(byNewCode[nc].length>1 && fid!=="fam_tradField"){
+        const allNames=byNewCode[nc].map(e=>e.names.join(" + "));
+        duplicateWarnings[nc]=`Duplicidad: aprobó más de un curso equivalente a "${familyLabels[fid]||nc}" (${allNames.join(" | ")}). Solo se reconoce un curso.`;
+      }
+    });
+  });
+
+  // Cursos perdidos por duplicidad: cuando 2 o más cursos del plan 3443 (reglas simples,
+  // sin combinación Y/O) equivalen al MISMO curso del plan 12986, solo el primero cuenta
+  // para la equivalencia; el(los) restante(s) se reportan aquí como curso perdido, aunque
+  // la alerta de duplicidad en la malla/electivos se mantiene igual.
+  const simpleTargetGroups={};
+  mappingRules.forEach(rule=>{
+    const isCombo=rule.requiredAll.length>1 || (rule.requiredAll.length>=1 && rule.orGroup.length>0);
+    if(isCombo) return;
+    const code=rule.requiredAll[0];
+    if(!approvedOldCodes.has(code)) return;
+    if(!simpleTargetGroups[rule.newCode]) simpleTargetGroups[rule.newCode]=[];
+    if(!simpleTargetGroups[rule.newCode].includes(code)) simpleTargetGroups[rule.newCode].push(code);
+  });
+  Object.keys(simpleTargetGroups).forEach(newCode=>{
+    const codes=simpleTargetGroups[newCode];
+    if(codes.length<=1) return;
+    const targetCourse=newCourses.find(c=>c.code===newCode);
+    const targetName=targetCourse?targetCourse.name:newCode;
+    const kept=codes[0];
+    const keptName=oldCourses.find(o=>o.code===kept)?.name||kept;
+    codes.slice(1).forEach(code=>{
+      const oc=oldCourses.find(o=>o.code===code);
+      const already=lostCourses.find(lc=>lc.code===code);
+      const note=`Duplicidad: ya se reconoció la equivalencia a "${targetName}" con "${keptName}" (${kept}); este curso queda como excedente y no suma créditos adicionales.`;
+      if(already){
+        if(!already.notes) already.notes=[];
+        already.notes.push(note);
+      }else{
+        lostCourses.push({code, name:oc?oc.name:code, cred:oc?oc.cred:0, targets:[targetName], missing:[], notes:[note]});
+      }
+    });
+  });
+
+  // total créditos malla principal
+  let totalCreds=0;
+  fulfilledNewCodes.forEach(code=>{
+    const c=newCourses.find(x=>x.code===code);
+    if(c) totalCreds+=c.cred;
+  });
+
+  totalCreds += computeElectivesAndCredits();
+  appendElectiveAndNoEquivLostCourses();
+
+  document.getElementById('totalEquivCredits').innerText = equivalencesGenerated ? `${totalCreds} / 160` : '— / 160';
+
+  renderMainGrid(duplicateWarnings);
+  renderElectives();
+  renderEquivalencesTable();
+
+  updateSimList();
+}
+
+// Créditos de los componentes electivos. Además de sumar, deja registrado qué
+// equivalencias de electivos SÍ aportan créditos (electiveRecognized) y cuáles
+// quedan como excedente (electiveExcess), para que el punto 3 informe exactamente
+// lo mismo que el punto 4.
+let electiveRecognized=new Set();
+let electiveExcess=new Set();
+
+// Un curso del plan 12986 puede estar aprobado por DOS vías:
+//   a) por equivalencia desde el plan 3443 (a través de su oldCode), o
+//   b) directamente, cuando el PEI del estudiante ya reporta ese curso del plan nuevo
+//      como aprobado (estudiantes que ya cursaron en el plan renovado).
+// Todos los componentes electivos deben reconocer ambas vías; de lo contrario, un
+// curso aprobado del plan nuevo quedaría sin reflejarse en la malla ni en el punto 5.
+function electiveOptionApproved(o){
+  if(!o) return false;
+  if(o.oldCode && approvedOldCodes.has(o.oldCode)) return true;
+  return pdfApprovedNewPlanCodes.has(o.newCode);
+}
+
+// Reparte los cursos aprobados de una posición de línea (fundamentos, profundización
+// o acción psicosocial) entre el único slot disponible en la malla: se reconoce el
+// primero y el resto queda como excedente.
+function lineSlotState(lines, stepIdx){
+  const aprobadas=lines.filter(l=>l.steps[stepIdx] && l.steps[stepIdx].fulfilled);
+  if(aprobadas.length===0) return {fulfilled:false, cred:0, recognized:null, extra:[], lines:[]};
+  return {
+    fulfilled:true,
+    cred:aprobadas[0].steps[stepIdx].cred,
+    recognized:aprobadas[0].steps[stepIdx].newCode,
+    extra:aprobadas.slice(1).map(l=>l.steps[stepIdx]),
+    lines:aprobadas.map(l=>l.name)
+  };
+}
+
+function computeElectivesAndCredits(){
+  let credits=0;
+  electiveState={};
+  electiveRecognized=new Set();
+  electiveExcess=new Set();
+
+  // Formación complementaria
+  // Formación complementaria: el componente exige 3 CRÉDITOS, y sus opciones ya no
+  // valen todas lo mismo (Gestión Emocional y Bienestar vale 2). Por eso se acumulan
+  // créditos hasta el tope en vez de contar opciones; lo que exceda queda como
+  // excedente y se reporta en "Cursos / Créditos Perdidos".
+  const compl=electiveGroups.complementaria;
+  const complApproved=compl.options.filter(electiveOptionApproved);
+  const complCap=compl.requiredCredits||compl.required||3;
+  // Se elige la combinación de opciones aprobadas que MÁS créditos reconoce sin
+  // pasarse del tope. Recorrer la lista en orden podría desaprovechar créditos
+  // (p. ej. contar dos cursos de 1 crédito y dejar fuera uno de 2, quedándose en 2
+  // de los 3 posibles). Como las opciones son pocas, se evalúan todas.
+  let complCounted=[], complAcc=0;
+  const nOpt=complApproved.length;
+  for(let mask=0; mask<(1<<nOpt); mask++){
+    let sum=0; const pick=[];
+    for(let i=0;i<nOpt;i++) if(mask&(1<<i)){ sum+=complApproved[i].cred; pick.push(complApproved[i]); }
+    if(sum<=complCap && (sum>complAcc || (sum===complAcc && pick.length<complCounted.length))){
+      complAcc=sum; complCounted=pick;
+    }
+  }
+  const complCountedSet=new Set(complCounted.map(o=>o.newCode));
+  const complExtra=complApproved.filter(o=>!complCountedSet.has(o.newCode));
+  credits += complAcc;
+  complCounted.forEach(o=>electiveRecognized.add(o.newCode));
+  complExtra.forEach(o=>electiveExcess.add(o.newCode));
+  electiveState.complementaria={approved:complApproved, counted:complCounted, creditsCounted:complAcc, extra:complExtra};
+
+  // Tradicional (por línea): solo el primer paso (fundamentos) tiene equivalencia y,
+  // aunque el estudiante haya aprobado el fundamento de varias líneas, el plan nuevo
+  // reconoce un único slot en el periodo V.
+  // Cada posición de la línea (fundamentos, profundización y acción psicosocial) tiene
+  // un solo slot en la malla, y cualquiera de las tres puede estar aprobada por
+  // equivalencia o directamente en el plan nuevo.
+  [['tradicional','tradicional'],['emergente','emergente']].forEach(([key])=>{
+    const lines=electiveGroups[key].lines.map(line=>({
+      ...line,
+      steps:line.steps.map(step=>({...step, fulfilled: electiveOptionApproved(step)}))
+    }));
+    const slots=[0,1,2].map(i=>lineSlotState(lines,i));
+    slots.forEach(sl=>{
+      if(!sl.fulfilled) return;
+      credits+=sl.cred;
+      electiveRecognized.add(sl.recognized);
+      sl.extra.forEach(st=>electiveExcess.add(st.newCode));
+    });
+    electiveState[key]={
+      lines, slots,
+      fundamentosApprovedLines: slots[0].lines,
+      fundamentosExtra: slots[0].extra
+    };
+  });
+
+  // Grupos que exigen aprobar UNA sola opción. Si el estudiante aprobó varias, se
+  // reconoce la primera y las demás quedan como excedente (no suman créditos).
+  ['bases','disciplinarCS','disciplinarInvestigacion','modelosTeoricos','ibc'].forEach(key=>{
+    const g=electiveGroups[key];
+    const approved=(g.options||[]).filter(electiveOptionApproved);
+    if(approved.length>0){
+      credits+=approved[0].cred;
+      electiveRecognized.add(approved[0].newCode);
+      approved.slice(1).forEach(o=>electiveExcess.add(o.newCode));
+    }
+    electiveState[key]={approved, extra: approved.slice(1)};
+  });
+
+  return credits;
+}
+
+// Agrega a lostCourses los cursos "excedentes" de cada categoría de electivo de opción
+// única (formación complementaria más allá de las 3 requeridas, más de una línea de
+// fundamentos tradicional, o más de una opción aprobada en bases/disciplinar CS/IBC),
+// así como los cursos aprobados del listado "Cursos sin equivalencia".
+function appendElectiveAndNoEquivLostCourses(){
+  function pushLost(oldCode, targetName, note){
+    if(!oldCode) return;
+    const oc=oldCourses.find(o=>o.code===oldCode);
+    const existing=lostCourses.find(lc=>lc.code===oldCode);
+    if(existing){
+      if(!existing.notes) existing.notes=[];
+      existing.notes.push(note);
+      if(!existing.targets.includes(targetName)) existing.targets.push(targetName);
+    }else{
+      lostCourses.push({code:oldCode, name:oc?oc.name:oldCode, cred:oc?oc.cred:0, targets:[targetName], missing:[], notes:[note]});
+    }
+  }
+
+  electiveState.complementaria.extra.forEach(o=>{
+    pushLost(o.oldCode, "Formación Complementaria", `Duplicidad: ya se completaron los 3 créditos requeridos de Formación Complementaria; este curso queda como excedente y no suma créditos adicionales.`);
+  });
+  // Excedentes de las líneas de profundización, en sus tres posiciones y en ambos
+  // campos: solo se reconoce una línea por posición.
+  const posiciones=['Fundamentos','Profundización','Acción psicosocial'];
+  [['tradicional','Tradicional'],['emergente','Emergente']].forEach(([key,campo])=>{
+    (electiveState[key].slots||[]).forEach((sl,i)=>{
+      (sl.extra||[]).forEach(step=>{
+        pushLost(step.oldCode, `Electivo ${posiciones[i]} Campo Profesional ${campo}`,
+          `Duplicidad: solo se reconoce una línea de profundización ${campo.toLowerCase()}; este curso queda como excedente y no suma créditos adicionales.`);
+      });
+    });
+  });
+  electiveState.bases.extra.forEach(o=>{
+    pushLost(o.oldCode, "Bases Socioculturales del Comportamiento", `Duplicidad: ya se reconoció la equivalencia con otra opción de Bases Socioculturales del Comportamiento; este curso queda como excedente y no suma créditos adicionales.`);
+  });
+  electiveState.disciplinarCS.extra.forEach(o=>{
+    pushLost(o.oldCode, "Electivo Disciplinar Común Ciencias Sociales", `Duplicidad: ya se reconoció la equivalencia con otra opción del Electivo Disciplinar Común Ciencias Sociales; este curso queda como excedente y no suma créditos adicionales.`);
+  });
+  electiveState.ibc.extra.forEach(o=>{
+    pushLost(o.oldCode, "Electivo IBC Económico Administrativo", `Duplicidad: ya se reconoció la equivalencia con otra opción del Electivo IBC Económico Administrativo; este curso queda como excedente y no suma créditos adicionales.`);
+  });
+  electiveState.disciplinarInvestigacion.extra.forEach(o=>{
+    pushLost(o.oldCode, "Electivo Disciplinar Común Investigación", `Duplicidad: ya se reconoció la equivalencia con otra opción del Electivo Disciplinar Común Investigación; este curso queda como excedente y no suma créditos adicionales.`);
+  });
+  electiveState.modelosTeoricos.extra.forEach(o=>{
+    pushLost(o.oldCode, "Electivo Modelos Teóricos y Metodológicos de la Psicología", `Duplicidad: ya se reconoció la equivalencia con otra opción del Electivo Modelos Teóricos y Metodológicos de la Psicología; este curso queda como excedente y no suma créditos adicionales.`);
+  });
+
+  noEquivalenceCourses.forEach(c=>{
+    if(approvedOldCodes.has(c.code) && !lostCourses.find(lc=>lc.code===c.code)){
+      lostCourses.push({code:c.code, name:c.name, cred:c.cred, targets:[], missing:[], notes:[`Este curso no tiene equivalente en el Plan Renovado Res. 12986 de 2022 (ver "Cursos sin equivalencia").`]});
+    }
+  });
+}
+
+// Slots de electivos que se muestran directamente en la malla (punto 3), según su
+// ubicación real en el documento oficial de cursos por periodo. No tienen código propio
+// (son categorías), su estado se calcula a partir de electiveState.
+const gridElectiveSlots=[
+ {period:1, row:6, label:"Electiva Campo de Formación Complementaria", cred:1, kind:"compl", idx:0},
+ {period:2, row:7, label:"Electiva Campo de Formación Complementaria", cred:1, kind:"compl", idx:1},
+ {period:2, row:8, label:"Electiva Campo de Formación Complementaria", cred:1, kind:"compl", idx:2},
+ {period:5, row:5, label:"Electivo Fundamentos Campo Profesional Tradicional", cred:2, kind:"trad_fund"},
+ {period:5, row:4, label:"Electivo Fundamentos Campo Profesional Emergente", cred:2, kind:"emerg_fund"},
+ {period:6, row:5, label:"Electivo Profundización Campo Profesional Tradicional", cred:2, kind:"trad_prof"},
+ {period:6, row:4, label:"Electivo Profundización Campo Profesional Emergente", cred:2, kind:"emerg_prof"},
+ {period:6, row:8, label:"Electivo Disciplinar Común Investigación", cred:3, kind:"disc_invest"},
+ {period:7, row:5, label:"Electivo Acción Psicosocial C.P. Tradicional", cred:2, kind:"trad_accion"},
+ {period:7, row:4, label:"Electivo Acción Psicosocial C.P. Emergente", cred:2, kind:"emerg_accion"},
+ {period:8, row:5, label:"Electivo Bases Socioculturales del Comportamiento", cred:2, kind:"bases"},
+ {period:9, row:6, label:"Electivo Disciplinar Común Ciencias Sociales", cred:2, kind:"disc_cs"},
+ {period:9, row:8, label:"Electivo Modelos Teóricos y Metodológicos de la Psicología", cred:2, kind:"modelos"},
+ {period:10, row:1, label:"Electivo IBC Económico Administrativo", cred:3, kind:"ibc"}
+];
+
+function getElectiveSlotState(kind, idx){
+  const st=electiveState;
+  if(!st || !st.complementaria) return {fulfilled:false, isNew:false};
+  switch(kind){
+    case "compl": {
+      // Cada slot de la malla vale 1 crédito, así que se llenan tantos slots como
+      // créditos se hayan reconocido (una opción de 2 créditos cubre dos slots).
+      const count=Math.min(st.complementaria.creditsCounted||0,3);
+      return {fulfilled: idx<count, isNew:false};
+    }
+    // Las seis posiciones de línea se resuelven igual: cada una mira su propio slot.
+    case "trad_fund": case "trad_prof": case "trad_accion":
+    case "emerg_fund": case "emerg_prof": case "emerg_accion": {
+      const grupo=kind.startsWith("trad")?"tradicional":"emergente";
+      const stepIdx=kind.endsWith("_fund")?0:(kind.endsWith("_prof")?1:2);
+      const sl=(st[grupo]&&st[grupo].slots)?st[grupo].slots[stepIdx]:null;
+      if(!sl) return {fulfilled:false, isNew:true};
+      return {fulfilled: sl.fulfilled, isNew: !sl.fulfilled,
+              dup: (stepIdx===0 && sl.lines.length>1)?sl.lines:null};
+    }
+    case "disc_invest": return {fulfilled: st.disciplinarInvestigacion.approved.length>=1, isNew:false};
+    case "modelos": return {fulfilled: st.modelosTeoricos.approved.length>=1, isNew:false};
+    case "bases": return {fulfilled: st.bases.approved.length>=1, isNew:false};
+    case "disc_cs": return {fulfilled: st.disciplinarCS.approved.length>=1, isNew:false};
+    case "ibc": return {fulfilled: st.ibc.approved.length>=1, isNew:false};
+    default: return {fulfilled:false, isNew:false};
+  }
+}
+
+function renderElectiveSlotCard(slot){
+  const state=getElectiveSlotState(slot.kind, slot.idx);
+  const isFulfilled=state.fulfilled, isNew=state.isNew;
+  const repCode=isFulfilled?null:getSlotRepresentativeCode(slot.kind, slot.idx);
+  const isSimulated=!isFulfilled && repCode && simulatedCodes.has(repCode);
+  let bgClass=isFulfilled?'bg-emerald-50 border-emerald-300':
+              isSimulated?'bg-blue-50 border-blue-300':
+              isNew?'bg-amber-50 border-amber-300':
+              'bg-white border-gray-200 hover:border-blue-300';
+  let statusTxt=isFulfilled?'Aprobado / Eq.':isSimulated?'Sugerido Matrícula':isNew?'Nuevo en Plan 12986':'Pendiente';
+  let statusColor=isFulfilled?'text-emerald-700':isSimulated?'text-blue-700':isNew?'text-amber-700':'text-gray-400';
+  let dupNote='';
+  if(state.dup){
+    const obsIdx=cardObservations.length;
+    cardObservations.push({title:'Duplicidad detectada', message:`Tiene equivalencia en más de una línea (${state.dup.join(' y ')}). Solo se reconoce un curso.`});
+    dupNote=`<button type="button" onclick="event.stopPropagation(); showCardObservation(${obsIdx})" class="mt-1 dup-badge text-[9px] font-bold rounded-md px-1.5 py-1 w-full flex items-center justify-between gap-1 hover:brightness-95"><span>⚠ Duplicidad</span><span class="underline">Ver más</span></button>`;
+  }
+  let missingPrereqNote='';
+  if(isFulfilled){
+    const missingRefs=getPrereqRefsFor({type:'elective',kind:slot.kind}).filter(ref=>!isRefFulfilledByEquivalence(ref));
+    if(missingRefs.length){
+      const obsIdx=cardObservations.length;
+      const names=missingRefs.map(ref=>getRefName(ref)).join(', ');
+      cardObservations.push({title:'Prerrequisito pendiente', message:`Este electivo ya cuenta con equivalencia, pero requiere haber cursado antes: ${names}. Se recomienda cursarlo de forma prioritaria.`});
+      missingPrereqNote=`<button type="button" onclick="event.stopPropagation(); showCardObservation(${obsIdx})" class="mt-1 warn-badge text-[9px] font-bold rounded-md px-1.5 py-1 w-full flex items-center justify-between gap-1 hover:brightness-95"><span>⚠ Prerrequisito pendiente</span><span class="underline">Ver más</span></button>`;
+    }
+  }
+  const clickAttr=(!isFulfilled && repCode)?`onclick="toggleElectiveSim('${slot.kind}', ${slot.idx})" style="cursor:pointer"`:'';
+  return `<div class="p-3 rounded-lg border border-dashed ${bgClass} flex flex-col h-full overflow-hidden relative" data-slot-kind="${slot.kind}" ${clickAttr}>
+    <div class='flex justify-between items-start mb-1.5'>
+      <span class='text-[9px] font-black tracking-widest uppercase text-indigo-500'>Electivo</span>
+      <span class='text-[10px] font-bold bg-white bg-opacity-60 px-1.5 py-0.5 rounded border border-gray-200'>${slot.cred} cr</span>
+    </div>
+    <p class='text-[13px] font-bold leading-snug mb-2 ${isFulfilled?'text-emerald-900':'text-gray-800'}'>${slot.label}</p>
+    ${dupNote}
+    ${missingPrereqNote}
+    <div class='text-[9px] font-black uppercase tracking-wider mt-auto pt-2 text-right ${statusColor}'>${statusTxt}</div>
+  </div>`;
+}
+
+// Lista de conexiones "prerrequisito -> curso" que se dibujan como flechas en la malla.
+// Las automáticas surgen del array prereqs de cada curso (esto ya soporta ramificaciones:
+// si dos cursos comparten el mismo prerrequisito, cada uno genera su propia flecha desde
+// el mismo curso origen). Las conexiones de electivos (que no viven en newCourses) se
+// agregan a mano, incluida la convergencia de ambos "Acción Psicosocial" hacia
+// "Acción Psicosocial en Psicología Comunitaria".
+function getAllConnections(){
+  const conns=[];
+  newCourses.forEach(c=>{
+    c.prereqs.forEach(pr=>{
+      conns.push({from:{type:'course',code:pr}, to:{type:'course',code:c.code}});
+    });
+  });
+  conns.push({from:{type:'elective',kind:'trad_fund'}, to:{type:'elective',kind:'trad_prof'}});
+  conns.push({from:{type:'elective',kind:'trad_prof'}, to:{type:'elective',kind:'trad_accion'}});
+  conns.push({from:{type:'elective',kind:'emerg_fund'}, to:{type:'elective',kind:'emerg_prof'}});
+  conns.push({from:{type:'elective',kind:'emerg_prof'}, to:{type:'elective',kind:'emerg_accion'}});
+  conns.push({from:{type:'elective',kind:'trad_accion'}, to:{type:'course',code:'402537647'}});
+  conns.push({from:{type:'elective',kind:'emerg_accion'}, to:{type:'course',code:'402537647'}});
+  conns.push({from:{type:'course',code:'402537628'}, to:{type:'elective',kind:'emerg_fund'}});
+  conns.push({from:{type:'course',code:'402537627'}, to:{type:'elective',kind:'trad_fund'}});
+  return conns;
+}
+
+// ---------------------------------------------------------------------------
+// Mecanismo ÚNICO de prerrequisitos. Reutiliza exactamente getAllConnections()
+// (la misma información que ya dibuja las flechas) tanto para bloquear la
+// sugerencia de matrícula como para mostrar la observación "Prerrequisito
+// pendiente". Así no existen dos lógicas distintas: si la flecha existe, el
+// bloqueo/observación usa esa misma flecha, sin excepciones por curso.
+// ---------------------------------------------------------------------------
+function refKey(ref){ return ref.type==='course' ? `course:${ref.code}` : `elective:${ref.kind}`; }
+
+function getPrereqRefsFor(ref){
+  const key=refKey(ref);
+  return getAllConnections().filter(c=>refKey(c.to)===key).map(c=>c.from);
+}
+
+function getRefName(ref){
+  if(ref.type==='course'){ const c=newCourses.find(x=>x.code===ref.code); return c?c.name:ref.code; }
+  const slot=gridElectiveSlots.find(s=>s.kind===ref.kind);
+  return slot?slot.label:ref.kind;
+}
+
+// ¿Ya se cumplió (por equivalencia real)? Se usa para la observación "Prerrequisito
+// pendiente" que aparece sobre un curso YA aprobado por equivalencia, Y también para
+// BLOQUEAR la sugerencia de matrícula de un curso/electivo cuyo prerrequisito aún no
+// se ha aprobado. Importante: estar "sugerido para matricular" (simulatedCodes) NO
+// cuenta como cumplido, porque no es posible matricular a la vez un curso y el curso
+// que lo requiere como prerrequisito (primero hay que cursar y aprobar el prerrequisito).
+function isRefFulfilledByEquivalence(ref){
+  if(ref.type==='course') return fulfilledNewCodes.has(ref.code);
+  return getElectiveSlotState(ref.kind, undefined).fulfilled;
+}
+
+// Dibuja las flechas conectoras (SVG) entre tarjetas de prerrequisito y su(s) curso(s)
+// dependiente(s), usando la posición real ya renderizada de cada tarjeta. Soporta que
+// una tarjeta sea origen de varias flechas (ramificación) o que varias tarjetas converjan
+// en un mismo destino, y que el origen/destino estén en filas distintas.
+function drawConnectorArrows(){
+  const gridInner=document.getElementById('newPlanGridInner');
+  if(!gridInner) return;
+  const prevSvg=gridInner.querySelector('svg.connector-overlay');
+  if(prevSvg) prevSvg.remove();
+
+  function findCourseEl(code){ return gridInner.querySelector(`[data-course-code="${code}"]`); }
+  function findSlotEl(kind){ return gridInner.querySelector(`[data-slot-kind="${kind}"]`); }
+  function resolveEl(ref){ return ref.type==='course' ? findCourseEl(ref.code) : findSlotEl(ref.kind); }
+
+  const pairs=getAllConnections().map(c=>({fromEl:resolveEl(c.from), toEl:resolveEl(c.to)}))
+    .filter(p=>p.fromEl && p.toEl && p.fromEl.offsetWidth>0 && p.toEl.offsetWidth>0);
+  if(pairs.length===0) return;
+
+  const svgNS='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(svgNS,'svg');
+  svg.setAttribute('class','connector-overlay');
+  svg.style.position='absolute';
+  svg.style.left='0'; svg.style.top='0';
+  svg.style.pointerEvents='none';
+  svg.style.zIndex='5';
+  svg.style.overflow='visible';
+  const w=gridInner.scrollWidth, h=gridInner.scrollHeight;
+  svg.setAttribute('width', w); svg.setAttribute('height', h);
+  svg.style.width=w+'px'; svg.style.height=h+'px';
+
+  const defs=document.createElementNS(svgNS,'defs');
+  const marker=document.createElementNS(svgNS,'marker');
+  marker.setAttribute('id','arrowhead');
+  // markerUnits=userSpaceOnUse evita que el ancho de línea (stroke-width) escale el
+  // tamaño/posición de la punta de flecha, que era la causa de que la flecha no
+  // terminara exactamente sobre la tarjeta destino.
+  marker.setAttribute('markerUnits','userSpaceOnUse');
+  marker.setAttribute('markerWidth','8'); marker.setAttribute('markerHeight','8');
+  marker.setAttribute('viewBox','0 0 8 8');
+  marker.setAttribute('refX','7'); marker.setAttribute('refY','4');
+  marker.setAttribute('orient','auto');
+  const arrowPath=document.createElementNS(svgNS,'path');
+  arrowPath.setAttribute('d','M0,0 L8,4 L0,8 Z');
+  arrowPath.setAttribute('fill','#9ca3af');
+  marker.appendChild(arrowPath);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+
+  pairs.forEach(({fromEl,toEl})=>{
+    const x1=fromEl.offsetLeft+fromEl.offsetWidth;
+    const y1=fromEl.offsetTop+fromEl.offsetHeight/2;
+    // Se deja un pequeño margen antes del borde izquierdo de la tarjeta destino para
+    // que la punta de flecha (dibujada por el marcador) no quede tapada por el borde.
+    const x2=toEl.offsetLeft-2;
+    const y2=toEl.offsetTop+toEl.offsetHeight/2;
+    const midX=(x1+x2)/2;
+    const path=document.createElementNS(svgNS,'path');
+    const d=`M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
+    path.setAttribute('d', d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','#9ca3af');
+    path.setAttribute('stroke-width','1.75');
+    path.setAttribute('marker-end','url(#arrowhead)');
+    svg.appendChild(path);
+  });
+
+  gridInner.appendChild(svg);
+}
+
+function renderMainGrid(duplicateWarnings){
+  const outer=document.getElementById('newPlanGrid');
+  outer.innerHTML='';
+  cardObservations=[];
+  if(!equivalencesGenerated){
+    outer.innerHTML=`<div class="w-full flex flex-col items-center justify-center text-center py-16 px-6 text-gray-400">
+      <svg class="w-10 h-10 mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      <p class="font-bold text-sm text-gray-500 mb-1">Aún no se ha cargado ningún plan de estudios</p>
+      <p class="text-xs max-w-md">Carga el <span class="font-bold text-blue-600">Plan de Estudios Individual - PEI</span> en el punto 1 y el reporte se generará automáticamente.</p>
+    </div>`;
+    return;
+  }
+
+  const gridInner=document.createElement('div');
+  gridInner.id='newPlanGridInner';
+  gridInner.className='relative';
+  gridInner.style.display='grid';
+  gridInner.style.gridTemplateColumns='repeat(10, 260px)';
+  gridInner.style.columnGap='16px';
+  gridInner.style.rowGap='10px';
+  gridInner.style.width='max-content';
+  gridInner.style.paddingBottom='8px';
+
+  // Cada curso y cada slot de electivo trae su propia fila oficial (campo "row"), tomada
+  // del documento "CURSOS_POR_PERIODO" (columna "Ubicado en Fila"). Se respeta tal cual,
+  // incluidos los huecos donde un periodo no tiene curso en determinada fila.
+  const periodItems={};
+  let maxRows=0;
+  for(let p=1;p<=10;p++){
+    const items=newCourses.filter(c=>c.period===p).map(c=>({type:'course',ref:c,row:c.row}))
+      .concat(gridElectiveSlots.filter(s=>s.period===p).map(s=>({type:'elective',ref:s,row:s.row})));
+    periodItems[p]=items;
+    items.forEach(it=>{ if(it.row>maxRows) maxRows=it.row; });
+  }
+  gridInner.style.gridTemplateRows=`auto repeat(${maxRows}, 152px)`;
+
+  // Fondo por columna (agrupa visualmente cada periodo), se agrega antes que las
+  // tarjetas para que quede detrás de ellas en el orden de pintado.
+  for(let p=1;p<=10;p++){
+    const bg=document.createElement('div');
+    bg.className='bg-gray-50/50 rounded-xl border border-gray-100 shadow-sm';
+    bg.style.gridColumn=String(p);
+    bg.style.gridRow='1 / -1';
+    gridInner.appendChild(bg);
+  }
+
+  for(let p=1;p<=10;p++){
+    const header=document.createElement('h3');
+    header.className='text-center font-black text-gray-600 bg-white shadow-sm py-1.5 rounded-lg text-[10px] uppercase tracking-widest border border-gray-100';
+    header.style.gridColumn=String(p);
+    header.style.gridRow='1';
+    header.style.margin='8px 8px 0 8px';
+    header.innerText=`Periodo ${p}`;
+    gridInner.appendChild(header);
+  }
+
+  for(let p=1;p<=10;p++){
+    periodItems[p].forEach(item=>{
+      // Margen horizontal fijo únicamente; el espaciado vertical entre filas lo define
+      // siempre el rowGap del grid (igual en todas las columnas y todas las filas).
+      const cellStyle=`grid-column:${p}; grid-row:${item.row+1}; margin:0 8px;`;
+
+      if(item.type==='elective'){
+        const wrap=document.createElement('div');
+        wrap.innerHTML=renderElectiveSlotCard(item.ref);
+        const cardEl=wrap.firstElementChild;
+        cardEl.style.cssText=(cardEl.getAttribute('style')||'')+';'+cellStyle;
+        gridInner.appendChild(cardEl);
+        return;
+      }
+
+      const c=item.ref;
+      const isFulfilled=fulfilledNewCodes.has(c.code);
+      if(isFulfilled && simulatedCodes.has(c.code)) simulatedCodes.delete(c.code);
+      const isSimulated=simulatedCodes.has(c.code);
+      const reasons=equivalenceReasons[c.code];
+      const dupWarn=duplicateWarnings[c.code];
+
+      let missingPrereqNames=[];
+      if(isFulfilled){
+        missingPrereqNames = getPrereqRefsFor({type:'course',code:c.code})
+          .filter(ref=>!isRefFulfilledByEquivalence(ref))
+          .map(ref=>getRefName(ref));
+      }
+
+      const card=document.createElement('div');
+      let bgClass=isFulfilled?'bg-emerald-50 border-emerald-200':
+                  isSimulated?'bg-blue-50 border-blue-200':
+                  c.isNew?'bg-amber-50 border-amber-200':
+                  'bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm';
+      card.className=`p-3 rounded-lg border ${bgClass} cursor-pointer flex flex-col h-full overflow-hidden transition-all relative`;
+      card.setAttribute('data-course-code', c.code);
+      card.style.cssText=cellStyle;
+      card.onclick=()=>toggleSim(c.code);
+      let statusTxt=isFulfilled?'Aprobado / Eq.':isSimulated?'Sugerido Matrícula':c.isNew?'Nuevo en Plan 12986':'Pendiente';
+      let statusColor=isFulfilled?'text-emerald-700':isSimulated?'text-blue-700':c.isNew?'text-amber-700':'text-gray-400';
+
+      let dupBadgeHtml='';
+      if(dupWarn){
+        const obsIdx=cardObservations.length;
+        cardObservations.push({title:'Duplicidad detectada', message:dupWarn});
+        dupBadgeHtml=`<button type="button" onclick="event.stopPropagation(); showCardObservation(${obsIdx})" class="mt-1 dup-badge text-[9px] font-bold rounded-md px-1.5 py-1 w-full flex items-center justify-between gap-1 hover:brightness-95"><span>⚠ Duplicidad</span><span class="underline">Ver más</span></button>`;
+      }
+      let missingPrereqBadgeHtml='';
+      if(missingPrereqNames.length){
+        const obsIdx=cardObservations.length;
+        cardObservations.push({title:'Prerrequisito pendiente', message:`Este curso ya cuenta con equivalencia, pero requiere haber cursado antes: ${missingPrereqNames.join(', ')}. Se recomienda cursarlo de forma prioritaria.`});
+        missingPrereqBadgeHtml=`<button type="button" onclick="event.stopPropagation(); showCardObservation(${obsIdx})" class="mt-1 warn-badge text-[9px] font-bold rounded-md px-1.5 py-1 w-full flex items-center justify-between gap-1 hover:brightness-95"><span>⚠ Prerrequisito pendiente</span><span class="underline">Ver más</span></button>`;
+      }
+
+      card.innerHTML=`
+        <div class='flex justify-between items-start mb-1.5'>
+          <span class='text-[10px] font-black tracking-widest ${isFulfilled?'text-emerald-800':'text-gray-500'}'>${c.code}</span>
+          <span class='text-[10px] font-bold bg-white bg-opacity-60 px-1.5 py-0.5 rounded border border-gray-200'>${c.cred} cr</span>
+        </div>
+        <p class='text-[13px] font-bold leading-snug mb-2 ${isFulfilled?'text-emerald-900':'text-gray-800'}'>${c.name}</p>
+        ${reasons?`<div class='mt-auto pt-2 border-t border-emerald-200/50'><p class='text-[9px] font-semibold text-emerald-700 leading-tight flex gap-1'><svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Eq. por: ${reasons.join(' · ')}</p></div>`:''}
+        ${dupBadgeHtml}
+        ${missingPrereqBadgeHtml}
+        <div class='text-[9px] font-black uppercase tracking-wider mt-auto pt-2 text-right ${statusColor}'>${statusTxt}</div>`;
+      gridInner.appendChild(card);
+    });
+  }
+
+  outer.appendChild(gridInner);
+  // Se difiere el cálculo de posiciones al siguiente frame (doble rAF) porque Tailwind
+  // (cargado vía CDN) aplica los estilos de las clases nuevas de forma asíncrona; medir
+  // offsetLeft/offsetTop inmediatamente después de crear las tarjetas podía capturar
+  // tamaños/posiciones aún sin estilo, dejando algunas flechas "flotando" mal ubicadas.
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ drawConnectorArrows(); }); });
+}
+
+// Punto 3: tabla de "Equivalencias realizadas". Reconstruye las filas directamente
+// desde las reglas (mappingRules + approvedOldCodes) para poder:
+//  1) Mostrar cada curso antiguo en su propio recuadro (igual que en el punto 5),
+//     alineado a la izquierda, separado del siguiente por la relación que corresponda,
+//     centrada en la columna: "Y" (ambos cursos son necesarios) u "O" (son alternativas
+//     entre sí; si el estudiante aprobó más de una, solo la primera cuenta para la
+//     equivalencia, pero TODAS se muestran y TODOS sus créditos se restan).
+//  2) Ordenar las filas siguiendo el mismo orden del documento "EQUIVALENCIAS" (Acuerdo
+//     017 de 2023), no el orden interno en que están declaradas las reglas en el código.
+//  3) Mostrar también, como filas adicionales, los casos en que el estudiante aprobó un
+//     curso pero le falta otro para lograr la equivalencia: el curso aprobado en
+//     recuadro verde, el/los curso(s) que faltan en recuadro rojo, y la columna
+//     "OBSERVACIONES" explicando cuántos créditos se pierden y cuántos cursos faltan.
+const equivalenceDisplayOrder=[
+ "402537619","80017","200610","40003","40002","402537677","200611","402537620",
+ "150001","900001","900002","900003","900004","402537623","402537617","202107095",
+ "402537625","402537624","402537660","402537631","404009","402537523","402537628",
+ "402537636","402537633","402537629","402537521","400001","402537635","402537638",
+ "402537644","402537647","402537649","402537634","402537643","402537654","402537655",
+ "402537640","402537642","400002","402537637","402537627","402537618","402537519",
+ "402537641","402537520","112001","402537529","402537645","80005","80007","80010",
+ "400004","402539410","402537650","402537651","402537653","700004"
+];
+const equivalenceOrderIndex={};
+equivalenceDisplayOrder.forEach((code,i)=>{ equivalenceOrderIndex[code]=i; });
+
+function buildEquivalenceRows(){
+  const rows=[];
+  const rulesByNewCode={};
+  // Con las reglas vigentes cada equivalencia depende de UN solo curso aprobado del
+  // plan 3443, por lo que ya no existen equivalencias "a medias": una regla se cumple
+  // o no. Las reglas que comparten curso destino forman un grupo "O" (alternativas).
+  mappingRules.forEach(rule=>{
+    if(!approvedOldCodes.has(rule.requiredAll[0])) return;
+    (rulesByNewCode[rule.newCode]=rulesByNewCode[rule.newCode]||[]).push(rule);
+  });
+
+  Object.keys(rulesByNewCode).forEach(newCode=>{
+    const reglas=rulesByNewCode[newCode];
+    const newC=findAnyCourseByCode(newCode);
+    if(!newC) return;
+
+    // Cursos aprobados que dan lugar a esta equivalencia (uno, o varios alternativos).
+    const segments=reglas.map(r=>{
+      const c=oldCourses.find(o=>o.code===r.requiredAll[0]);
+      return c?{course:c, state:'approved'}:null;
+    }).filter(Boolean);
+    if(segments.length===0) return;
+    segments.forEach((s,i)=>{ s.rel = i===0? null : 'O'; });
+
+    const alsoNew=(reglas[0].alsoNewCodes||[]).map(c=>findAnyCourseByCode(c)).filter(Boolean);
+    const newList=[newC].concat(alsoNew);
+
+    // Créditos REALMENTE reconocidos. Un curso de la malla siempre suma; un curso de
+    // un componente electivo solo suma si ese componente no fue ya cubierto por otra
+    // opción (de lo contrario queda como excedente). Así el total de este punto
+    // coincide exactamente con los créditos equivalentes del punto 4.
+    const enMalla=new Set(newCourses.map(c=>c.code));
+    let recognized=0, hayExcedente=false;
+    newList.forEach(c=>{
+      if(enMalla.has(c.code) || electiveRecognized.has(c.code)) recognized+=c.cred;
+      else hayExcedente=true;
+    });
+
+    const oldCredTotal=segments.reduce((a,s)=>a+s.course.cred,0);
+    const newCredTotal=newList.reduce((a,c)=>a+c.cred,0);
+    rows.push({segments, newC, alsoNew, newList, newCredTotal, recognized,
+               excedente: recognized===0 && hayExcedente,
+               oldCredTotal, diff:recognized-oldCredTotal, newCode});
+  });
+
+  rows.sort((a,b)=>{
+    const ia=equivalenceOrderIndex[a.newCode]??9999, ib=equivalenceOrderIndex[b.newCode]??9999;
+    return ia-ib;
+  });
+  return rows;
+}
+
+const relLetterCls={ Y:'text-indigo-600', O:'text-indigo-600' };
+
+// Componente electivo al que pertenece un curso del plan nuevo. Se usa para que los
+// avisos de excedente digan exactamente de qué componente se trata y con cuántos
+// cursos se cubre: la mayoría se aprueban con un solo curso, pero Formación
+// Complementaria se completa con varios (3 créditos).
+function electiveComponentInfo(newCode){
+  for(const key of Object.keys(electiveGroups)){
+    const g=electiveGroups[key];
+    const enOpciones=(g.options||[]).some(o=>o.newCode===newCode);
+    const enLineas=(g.lines||[]).some(l=>l.steps.some(st=>st.newCode===newCode));
+    if(enOpciones||enLineas) return {key, title:g.title, varios: key==='complementaria'};
+  }
+  return null;
+}
+
+function courseBoxHtml(seg){
+  const relHtml=seg.rel?`<div class="text-center font-black text-[11px] ${relLetterCls[seg.rel]} my-1">${seg.rel}</div>`:'';
+  return relHtml+`<div class="text-left rounded-lg border bg-emerald-50 border-emerald-200 text-emerald-800 px-3 py-2 text-xs mb-1.5 last:mb-0"><span class="font-black">${seg.course.name}</span> <span class="opacity-60">(${seg.course.code})</span> — ${seg.course.cred} cr</div>`;
+}
+
+function renderEquivalencesTable(){
+  const container=document.getElementById('equivalencesTableContainer');
+  if(!container) return;
+  if(!equivalencesGenerated){
+    container.innerHTML=`<div class="w-full flex flex-col items-center justify-center text-center py-14 px-6 text-gray-400">
+      <p class="font-bold text-sm text-gray-500 mb-1">Aún no se ha cargado ningún plan de estudios</p>
+      <p class="text-xs max-w-md">Carga el <span class="font-bold text-blue-600">Plan de Estudios Individual - PEI</span> en el punto 1 y el detalle se generará automáticamente.</p>
+    </div>`;
+    return;
+  }
+
+  const rows=buildEquivalenceRows();
+  if(rows.length===0){
+    container.innerHTML=`<div class="text-xs text-gray-400 font-medium italic py-6 text-center">Aún no se ha generado ninguna equivalencia con los cursos seleccionados.</div>`;
+    return;
+  }
+
+  const totalRecognized=rows.reduce((s,r)=>s+r.recognized,0);
+  const totalApproved=rows.reduce((s,r)=>s+r.oldCredTotal,0);
+  // Cursos que el PEI ya reportaba aprobados dentro del plan 12986: no son
+  // equivalencias, por eso se informan aparte. Se calculan como los créditos que el
+  // punto 4 reconoce y que NO provienen de ninguna equivalencia, incluidos los cursos
+  // de componentes electivos. Así el punto 3 y el punto 4 siempre cuadran.
+  const contadosEnMalla=new Set();
+  fulfilledNewCodes.forEach(c=>{ if(newCourses.some(n=>n.code===c)) contadosEnMalla.add(c); });
+  electiveRecognized.forEach(c=>contadosEnMalla.add(c));
+  const porEquivalencia=new Set();
+  rows.forEach(r=>r.newList.forEach(c=>{ if(contadosEnMalla.has(c.code)) porEquivalencia.add(c.code); }));
+  let creditosDirectos=0;
+  contadosEnMalla.forEach(c=>{
+    if(porEquivalencia.has(c)) return;
+    const x=findAnyCourseByCode(c); if(x) creditosDirectos+=x.cred;
+  });
+
+  const arrowSvg=`<svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>`;
+
+  // Las tres columnas de contenido siempre miden lo mismo; la de la flecha es fija.
+  const tableHtml=`<div class="overflow-x-auto"><table class="w-full text-xs border-collapse table-fixed">
+    <colgroup>
+      <col style="width:32%"><col style="width:4%"><col style="width:32%"><col style="width:32%">
+    </colgroup>
+    <thead>
+      <tr class="text-left text-[10px] uppercase tracking-wide text-gray-500 border-b border-gray-200">
+        <th class="py-2 pr-3 font-black">CURSOS APROBADOS - PLAN 3443 DE 2014</th>
+        <th class="py-2 px-1 font-black"></th>
+        <th class="py-2 px-3 font-black">Plan 12986 de 2022</th>
+        <th class="py-2 pl-3 font-black">OBSERVACIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows.map(r=>{
+        const oldHtml=r.segments.map(s=>courseBoxHtml(s)).join('');
+        const newHtml=r.newList.map((nc,i)=>{
+          const conector=i>0?`<div class="text-center font-black text-[11px] ${relLetterCls.Y} my-1">Y</div>`:'';
+          return `${conector}<div><span class="font-black text-gray-800">${nc.name}</span> <span class="text-gray-400">(${nc.code})</span> — ${nc.cred} cr</div>`;
+        }).join('');
+        let obsHtml;
+        if(r.excedente){
+          const info=electiveComponentInfo(r.newC.code);
+          const conQue=info&&info.varios?'otros cursos':'otro curso';
+          obsHtml=`<span class="text-amber-700 font-bold">Excedente: el componente ${info?`"${info.title}"`:'correspondiente'} ya fue reconocido con ${conQue}, por lo que no suma créditos adicionales.</span>`;
+        }else if(r.recognized===r.oldCredTotal){
+          obsHtml=`<span class="text-gray-500 font-bold">Mismos créditos</span>`;
+        }else if(r.recognized>r.oldCredTotal){
+          obsHtml=`<span class="text-emerald-600 font-bold">Se reconocen ${r.recognized} créditos (se ganan ${r.recognized-r.oldCredTotal})</span>`;
+        }else{
+          obsHtml=`<span class="text-emerald-600 font-bold">Se reconocen ${r.recognized} de ${r.oldCredTotal} créditos</span>`;
+        }
+        return `<tr class="border-b border-gray-100">
+          <td class="py-2.5 pr-3 align-top">${oldHtml}</td>
+          <td class="py-2.5 px-1 align-middle text-left">${arrowSvg}</td>
+          <td class="py-2.5 px-3 align-middle text-left">${newHtml}</td>
+          <td class="py-2.5 pl-3 align-middle text-left">${obsHtml}</td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table></div>
+  <div class="mt-3 text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">Total de créditos reconocidos: ${totalRecognized} de ${totalApproved}</div>
+  ${creditosDirectos?`<div class="mt-2 text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">Adicionalmente, el estudiante tiene ${creditosDirectos} créditos ya aprobados directamente en el plan 12986 de 2022, que no requieren equivalencia y sí se incluyen en el total del punto 4.</div>`:''}
+  <div class="mt-3 pt-3 border-t border-gray-100 text-[10px] text-gray-500 font-medium flex flex-col gap-1.5">
+    <span class="flex items-center gap-1.5"><span class="font-black ${relLetterCls.O}">O</span> Cursos alternativos entre sí; si el estudiante aprobó más de uno, el curso equivalente se reconoce una sola vez</span>
+    <span class="flex items-center gap-1.5"><span class="font-black ${relLetterCls.Y}">Y</span> Una misma equivalencia otorga dos cursos del plan nuevo (fundamentos y aplicación)</span>
+  </div>`;
+
+  container.innerHTML=tableHtml;
+}
+
+function renderElectives(){
+  const container=document.getElementById('electivesContainer');
+  container.innerHTML='';
+  if(!equivalencesGenerated){
+    container.innerHTML=`<div class="md:col-span-2 flex flex-col items-center justify-center text-center py-14 px-6 text-gray-400">
+      <p class="font-bold text-sm text-gray-500 mb-1">Aún no se ha cargado ningún plan de estudios</p>
+      <p class="text-xs max-w-md">Carga el <span class="font-bold text-blue-600">Plan de Estudios Individual - PEI</span> en el punto 1 y el reporte se generará automáticamente.</p>
+    </div>`;
+    return;
+  }
+
+  function box(title,sub,innerHtml,extraClass=''){
+    const div=document.createElement('div');
+    div.className=`border rounded-xl p-4 ${extraClass||'border-gray-200 bg-gray-50/50'}`;
+    div.innerHTML=`<h3 class="font-black text-sm text-gray-800 mb-1">${title}</h3>${sub?`<p class="text-[11px] text-gray-500 font-medium mb-3">${sub}</p>`:''}${innerHtml}`;
+    return div;
+  }
+
+  function eqReasonHtml(newCode){
+    const reasons=equivalenceReasons[newCode];
+    if(!reasons) return '';
+    return `<p class="text-[9px] font-semibold text-emerald-700 leading-tight flex gap-1 mt-0.5 pl-1"><svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Eq. por: ${reasons.join(' · ')}</p>`;
+  }
+
+  function simpleOptionRows(options,noEquivLabel){
+    return options.map(o=>{
+      const ok=electiveOptionApproved(o);
+      // Un curso aprobado que no aporta créditos (porque el componente ya se reconoció
+      // con otra opción) se distingue del que sí los aporta.
+      const excedente=ok && electiveExcess.has(o.newCode);
+      const cls = excedente ? 'bg-red-50 border-red-200 text-red-700 font-bold'
+                : (ok ? 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold'
+                : (o.oldCode?'bg-white border-gray-200 text-gray-500':'bg-amber-50 border-amber-200 text-amber-800'));
+      const estado = excedente ? 'Aprobado · excedente'
+                   : (ok?'✔ Aprobado':(o.oldCode?'—':(noEquivLabel||'Nuevo')));
+      return `<div class="mb-1.5">
+        <div class="flex justify-between items-center text-xs py-2 px-3 rounded-lg border ${cls}">
+          <span>${o.newName} <span class="text-[10px] text-gray-400">(${o.newCode})</span></span>
+          <span class="flex items-center gap-1.5"><span class="text-[10px] font-bold bg-white bg-opacity-60 px-1.5 py-0.5 rounded border border-gray-200">${o.cred} cr</span>${estado}</span>
+        </div>
+        ${ok&&!excedente?eqReasonHtml(o.newCode):''}
+      </div>`;
+    }).join('');
+  }
+
+  // Aviso de excedente, común a todos los componentes electivos que se cursan una
+  // sola vez. Antes solo lo mostraba "Bases socioculturales", y en Formación
+  // Complementaria la comparación estaba mal escrita (un arreglo comparado con > 0),
+  // por lo que nunca aparecía.
+  function extraNoteHtml(extra){
+    if(!extra || extra.length===0) return '';
+    const nombres=extra.map(o=>`${o.newName} (${o.cred} cr)`).join(', ');
+    return `<div class="dup-badge text-[10px] font-bold rounded-md px-2 py-1.5 mb-1.5">⚠ El estudiante aprobó más cursos de los requeridos en este componente. Solo se reconoce lo exigido; el excedente (${nombres}) no suma créditos adicionales.</div>`;
+  }
+
+  function subSection(title,innerHtml){
+    return `<div class="mb-3 last:mb-0"><p class="text-xs font-black text-gray-700 mb-1.5">${title}</p>${innerHtml}</div>`;
+  }
+
+  // 1) Tradicional (arriba-izquierda)
+  {
+    const st=electiveState.tradicional;
+    let dupNote='';
+    if(st.fundamentosApprovedLines.length>1){
+      dupNote=`<div class="dup-badge text-[10px] font-bold rounded-md px-2 py-1.5 mb-2">⚠ Cursos duplicados en el electivo de Fundamentos (Periodo V): tiene equivalencia en más de una línea (${st.fundamentosApprovedLines.join(' y ')}). Solo se reconocen los créditos de una línea; la(s) otra(s) queda(n) como excedente en "Cursos / Créditos Perdidos". Aun así, el estudiante puede elegir en qué línea continuar cursando la profundización.</div>`;
+    }
+    const linesHtml=st.lines.map(line=>{
+      const stepsHtml=line.steps.map(s=>`
+        <div class="mb-1.5">
+          <div class="flex justify-between items-center text-[11px] py-1.5 px-2 rounded-lg border ${s.fulfilled?'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold':'bg-white border-gray-200 text-gray-400'}">
+            <span>P${s.period} · ${s.label}: ${s.newName}</span>
+            <span class="flex items-center gap-1.5 shrink-0"><span class="text-[9px] font-bold bg-white bg-opacity-70 px-1 py-0.5 rounded border border-gray-200">${s.cred} cr</span>${s.fulfilled?'✔ Aprobado':(s.oldCode?'—':'Nuevo')}</span>
+          </div>
+          ${s.fulfilled?eqReasonHtml(s.newCode):''}
+        </div>`).join('');
+      return `<div class="mb-2 border border-gray-100 rounded-lg p-2 bg-white">
+        <p class="text-xs font-black text-gray-700 mb-1">${line.name}</p>${stepsHtml}</div>`;
+    }).join('');
+    container.appendChild(box(electiveGroups.tradicional.title,electiveGroups.tradicional.sub,dupNote+linesHtml));
+  }
+
+  // 2) Emergente (arriba-derecha)
+  {
+    const st=electiveState.emergente;
+    const linesHtml=st.lines.map(line=>{
+      const stepsHtml=line.steps.map(s=>`
+        <div class="mb-1.5 flex justify-between items-center text-[11px] py-1.5 px-2 rounded-lg border bg-amber-50 border-amber-200 text-amber-800">
+          <span>P${s.period} · ${s.label}: ${s.newName}</span><span class="flex items-center gap-1.5 shrink-0"><span class="text-[9px] font-bold bg-white bg-opacity-70 px-1 py-0.5 rounded border border-amber-200">${s.cred} cr</span>Nuevo</span></div>`).join('');
+      return `<div class="mb-2 border border-gray-100 rounded-lg p-2 bg-white">
+        <p class="text-xs font-black text-gray-700 mb-1">${line.name}</p>${stepsHtml}</div>`;
+    }).join('');
+    container.appendChild(box(electiveGroups.emergente.title,electiveGroups.emergente.sub,linesHtml));
+  }
+
+  // 3) Electivos IBC y Complementarios (Disciplinar Común Investigación + IBC Económico Administrativo)
+  {
+    const inv=subSection(`${electiveGroups.disciplinarInvestigacion.title} (Periodo VI)`,
+      `<p class="text-[10px] text-gray-500 font-medium mb-1.5">Se requiere aprobar una (1) opción.</p>`+
+      extraNoteHtml(electiveState.disciplinarInvestigacion.extra)+
+      simpleOptionRows(electiveGroups.disciplinarInvestigacion.options));
+    const ibc=subSection(`${electiveGroups.ibc.title} (Periodo X)`,
+      `<p class="text-[10px] text-gray-500 font-medium mb-1.5">Se requiere aprobar una (1) opción.</p>`+
+      extraNoteHtml(electiveState.ibc.extra)+
+      simpleOptionRows(electiveGroups.ibc.options));
+    container.appendChild(box("Electivos IBC y Complementarios","",inv+ibc));
+  }
+
+  // 4) Formación Complementaria
+  {
+    const st=electiveState.complementaria;
+    const rows=simpleOptionRows(electiveGroups.complementaria.options.map(o=>({...o,oldCode:o.oldCode})));
+    const cap=electiveGroups.complementaria.requiredCredits||3;
+    const c=st.creditsCounted||0;
+    // El componente se mide en CRÉDITOS, porque sus opciones no valen todas lo mismo.
+    const status=`<div class="text-xs font-bold mb-2 ${c>=cap?'text-emerald-700':'text-gray-500'}">${c}/${cap} créditos reconocidos</div>`;
+    container.appendChild(box(electiveGroups.complementaria.title,electiveGroups.complementaria.sub,
+      status+extraNoteHtml(st.extra)+rows));
+  }
+
+  // 5) Electivos Disciplinares (Disciplinar Ciencias Sociales + Bases Socioculturales + Modelos Teóricos)
+  {
+    const stBases=electiveState.bases;
+    const dcs=subSection(`${electiveGroups.disciplinarCS.title} (Periodo IX)`,
+      `<p class="text-[10px] text-gray-500 font-medium mb-1.5">Se requiere aprobar una (1) opción.</p>`+
+      extraNoteHtml(electiveState.disciplinarCS.extra)+
+      simpleOptionRows(electiveGroups.disciplinarCS.options,'Sin equiv.'));
+    const bases=subSection(`${electiveGroups.bases.title} (Periodo VIII)`,
+      `<p class="text-[10px] text-gray-500 font-medium mb-1.5">Se requiere aprobar una (1) opción.</p>`+
+      extraNoteHtml(stBases.extra)+simpleOptionRows(electiveGroups.bases.options));
+    const mt=subSection(electiveGroups.modelosTeoricos.title,
+      `<p class="text-[10px] text-gray-500 font-medium mb-1.5">${electiveGroups.modelosTeoricos.sub}</p>`+
+      extraNoteHtml(electiveState.modelosTeoricos.extra)+
+      simpleOptionRows(electiveGroups.modelosTeoricos.options));
+    container.appendChild(box("Electivos Disciplinares","",dcs+bases+mt));
+  }
+
+  // 6) Cursos sin equivalencia
+  {
+    const rows=noEquivalenceCourses.map(c=>{
+      const ok=approvedOldCodes.has(c.code);
+      return `<div class="flex justify-between items-center text-xs py-2 px-3 rounded-lg border ${ok?'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold':'bg-gray-50 border-gray-100 text-gray-400'}">
+        <span>${c.name} <span class="text-[10px] text-gray-400">(${c.code})</span></span>
+        <span class="flex items-center gap-1.5"><span class="text-[10px] font-bold bg-white bg-opacity-60 px-1.5 py-0.5 rounded border border-gray-200">${c.cred} cr</span>${ok?'✔ Aprobado':'No aprobado'}</span></div>`;
+    }).join('');
+    container.appendChild(box("Cursos sin equivalencia","Cursos del plan 3443 de 2014 sin curso equivalente en el plan 12986 de 2022.",`<div class="space-y-2">${rows}</div>`));
+  }
+
+  // 7) Electivos sin tipología identificada
+  {
+    const electiveNewCodes=new Set();
+    Object.values(electiveGroups).forEach(g=>{
+      if(g.options) g.options.forEach(o=>electiveNewCodes.add(o.newCode));
+      if(g.lines) g.lines.forEach(l=>l.steps.forEach(s=>electiveNewCodes.add(s.newCode)));
+    });
+    const unclassified=[...fulfilledNewCodes].filter(code=>!knownNewCodes.has(code)&&!electiveNewCodes.has(code));
+    // Además de las equivalencias sin ubicación en la malla, aquí se listan los cursos
+    // que el lector del PDF reconoció como APROBADOS pero que no pertenecen al plan
+    // 3443 de 2014 (por tanto ninguna otra función del aplicativo los contempla).
+    const rowsHtml=[];
+    unclassified.forEach(code=>{
+      const reasons=(equivalenceReasons[code]||[]).join(' · ');
+      rowsHtml.push(`<div class="text-xs py-2 px-3 rounded-lg border bg-amber-50 border-amber-200 text-amber-800 font-bold">Código nuevo: ${code} — Eq. por: ${reasons}</div>`);
+    });
+    pdfUnknownApproved.forEach(u=>{
+      rowsHtml.push(`<div class="text-xs py-2 px-3 rounded-lg border bg-amber-50 border-amber-200 text-amber-800">
+        <span class="font-black">${u.name}</span> <span class="opacity-70">(${u.code})</span> — ${u.cred||0} cr
+        <div class="text-[10px] font-bold mt-0.5">Curso aprobado dentro del plan de estudios del estudiante, sin tipología equivalente identificada en el Plan 12986 de 2022.</div>
+      </div>`);
+    });
+    const inner = rowsHtml.length===0
+      ? `<div class="text-xs text-gray-400 font-medium italic">Ninguno detectado.</div>`
+      : `<div class="space-y-2">${rowsHtml.join('')}</div>`;
+    container.appendChild(box("Cursos aprobados sin tipología identificada","Cursos aprobados que no fue posible ubicar en el Plan 12986 de 2022.",inner));
+  }
+
+  // 8) Cursos / Créditos perdidos
+  {
+    let inner;
+    if(lostCourses.length===0){
+      inner=`<div class="text-xs text-gray-400 font-medium italic">Ninguno detectado.</div>`;
+    }else{
+      const totalLostCred=lostCourses.reduce((a,lc)=>a+lc.cred,0);
+      const summary=`<div class="text-xs font-black text-red-700 mb-2 bg-red-50 border border-red-200 rounded-lg px-3 py-2">Total: ${lostCourses.length} curso(s) perdido(s) — ${totalLostCred} crédito(s) no reconocidos</div>`;
+      inner=summary+`<div class="space-y-2">`+lostCourses.map(lc=>`
+        <div class="text-xs py-2 px-3 rounded-lg border bg-red-50 border-red-200 text-red-800">
+          <div class="font-black">${lc.name} <span class="text-[10px] text-red-400">(${lc.code})</span> — ${lc.cred} cr</div>
+          ${lc.notes&&lc.notes.length?`<div class="text-[10px] font-medium mt-0.5">${lc.notes.join(' ')}</div>`:''}
+        </div>`).join('')+`</div>`;
+    }
+    container.appendChild(box("Cursos / Créditos Perdidos","Cursos aprobados que necesitaban otro curso adicional para generar equivalencia y ese curso no fue aprobado, cursos excedentes en electivos de opción única, y cursos sin equivalencia en el plan nuevo (créditos que no se reconocen).",inner));
+  }
+}
+
+function toggleSim(code){
+  const course=newCourses.find(c=>c.code===code);
+  if(!course) return;
+  if(fulfilledNewCodes.has(code)) return;
+  const missingRefs=getPrereqRefsFor({type:'course',code}).filter(ref=>!isRefFulfilledByEquivalence(ref));
+  if(missingRefs.length>0 && !simulatedCodes.has(code)){
+    const reqNames=missingRefs.map(ref=>getRefName(ref)).join('\n• ');
+    return showAlert("Faltan Prerrequisitos",`Para cursar "${course.name}", primero debes haber aprobado (por equivalencia) los siguientes cursos. No es posible sugerir a la vez un curso y el curso que lo requiere como prerrequisito:\n\n• ${reqNames}`);
+  }
+  if(simulatedCodes.has(code)) simulatedCodes.delete(code);
+  else simulatedCodes.add(code);
+  calculateNewPlan();
+}
+
+function updateSimList(){
+  const list=document.getElementById('simulatedList');
+  const totalSpan=document.getElementById('simulatedCredits');
+  list.innerHTML=''; let total=0;
+  if(simulatedCodes.size===0){
+    list.innerHTML='<div class="text-gray-400 text-center font-medium py-4 text-xs" id="emptySimMsg">Haz clic en la malla sobre los cursos pendientes para armar tu matrícula.</div>';
+    totalSpan.innerText='0'; return;
+  }
+  [...simulatedCodes].sort((a,b)=>{ const ca=findAnyCourseByCode(a); const cb=findAnyCourseByCode(b); return (ca?ca.period:99)-(cb?cb.period:99); }).forEach(code=>{
+    const c=findAnyCourseByCode(code); if(!c) return; total+=c.cred;
+    list.innerHTML+=`<div class='p-2.5 border-b border-gray-100 text-[13px] flex items-center justify-between hover:bg-gray-50 transition-colors'>
+      <div class="flex items-center gap-2"><span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-1.5 py-0.5 rounded">P${c.period}</span>
+      <span class="font-medium text-gray-700">${c.name} <span class="text-xs text-gray-400">(${c.code})</span></span></div>
+      <span class="font-black text-gray-800 bg-gray-100 px-2 py-0.5 rounded border border-gray-200">${c.cred} cr</span></div>`;
+  });
+  totalSpan.innerText=total;
+}
+
+function copyToClipboard(){
+  if(simulatedCodes.size===0) return showAlert("Lista Vacía","No has sugerido ningún curso para matricular.");
+  let text="Sugerencia de Matrícula (Plan 12986):\n\n"; let total=0;
+  [...simulatedCodes].sort((a,b)=>{ const ca=findAnyCourseByCode(a); const cb=findAnyCourseByCode(b); return (ca?ca.period:99)-(cb?cb.period:99); }).forEach(code=>{
+    const c=findAnyCourseByCode(code); if(!c) return; total+=c.cred;
+    text+=`[Periodo ${c.period}] - ${c.code} - ${c.name} (${c.cred} Créditos)\n`;
+  });
+  text+=`\nTotal Créditos: ${total}`;
+  const el=document.createElement('textarea'); el.value=text; document.body.appendChild(el); el.select();
+  document.execCommand('copy'); document.body.removeChild(el);
+  showAlert("¡Copiado!","La lista de sugerencia de matrícula ha sido copiada al portapapeles.");
+}
+
+/* =========================================================================
+   INFORME DE EQUIVALENCIAS (documento de texto editable)
+   -------------------------------------------------------------------------
+   Genera una redacción en prosa, a modo de informe breve o respuesta a PQR,
+   describiendo las equivalencias reconocidas al estudiante. El texto se
+   muestra en un cuadro editable para que quien atiende la solicitud pueda
+   ajustarlo antes de descargarlo en Word (.doc) o en texto plano (.txt).
+   ========================================================================= */
+
+function rptFechaLarga(){
+  const d=new Date();
+  return d.toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'});
+}
+
+// Redacta el informe completo a partir del estado actual del análisis.
+function buildEquivalenceReport(){
+  const nombre=(document.getElementById('studentName').value||'').trim();
+  const cedula=(document.getElementById('studentId').value||'').trim();
+  const rows=buildEquivalenceRows();
+  const logradas=rows.filter(r=>!r.excedente);
+  const excedentes=rows.filter(r=>r.excedente);
+
+  const totalReconocidos=rows.reduce((a,r)=>a+r.recognized,0);
+  const totalAprobados=rows.reduce((a,r)=>a+r.oldCredTotal,0);
+  const creditosMalla=(document.getElementById('totalEquivCredits').innerText||'').trim();
+  const cursosAprobados=(pdfApprovedOrdered&&pdfApprovedOrdered.length)?pdfApprovedOrdered.length:approvedOldCodes.size;
+
+  const L=[];
+  const add=(t)=>L.push(t==null?'':String(t));
+  const sep=()=>L.push('');
+
+  add('INFORME DE EQUIVALENCIAS - TRANSICIÓN DE PLAN DE ESTUDIOS');
+  add('Programa de Psicología');
+  add('Del Plan 3443 de 2014 al Plan Renovado 12986 de 2022');
+  sep();
+  add('Estudiante: '+(nombre||'________________________'));
+  add('Documento de identidad: '+(cedula||'________________________'));
+  add('Fecha de elaboración: '+rptFechaLarga());
+  sep();
+  add('1. ASUNTO');
+  sep();
+  add('Se atiende la solicitud relacionada con el reconocimiento de equivalencias '+
+      'para el tránsito del plan de estudios del programa de Psicología, Resolución 3443 de 2014, '+
+      'al plan renovado adoptado mediante Resolución 12986 de 2022. En el presente informe se '+
+      'relacionan los cursos aprobados por el estudiante y el resultado de su homologación en el '+
+      'plan vigente.');
+  sep();
+
+  add('2. ANTECEDENTES');
+  sep();
+  add('A partir del Plan de Estudios Individual (PEI), se identificaron '+cursosAprobados+
+      ' cursos aprobados en el plan 3443 de 2014. Sobre esa base se aplicaron las reglas de '+
+      'equivalencia vigentes entre ambos planes de estudio.');
+  sep();
+
+  add('3. RESULTADO GENERAL');
+  sep();
+  add('- Equivalencias reconocidas: '+logradas.length+'.');
+  add('- Créditos reconocidos por equivalencia: '+totalReconocidos+' de '+totalAprobados+
+      ' créditos aprobados que intervienen en las equivalencias.');
+  add('- Avance total reconocido en el plan 12986 de 2022: '+(creditosMalla||'-')+' créditos.');
+  sep();
+
+  add('4. DETALLE DE LAS EQUIVALENCIAS RECONOCIDAS');
+  sep();
+  if(logradas.length===0){
+    add('No se reconoció ninguna equivalencia con los cursos aprobados registrados.');
+    sep();
+  }else{
+    add('A continuación se relaciona, una a una, cada equivalencia aplicada:');
+    sep();
+    logradas.forEach((r,i)=>{
+      const olds=r.segments;
+      const nuevos=r.newList;
+      const aprobCred=r.oldCredTotal;
+      const recon=r.recognized;
+
+      const cr=(n)=>n===1?'1 crédito':n+' créditos';
+      const unir=(arr)=>arr.length<=1?(arr[0]||''):arr.slice(0,-1).join(', ')+' y '+arr[arr.length-1];
+      const listaOld=olds.map(s=>`"${s.course.name}" (código ${s.course.code}, ${cr(s.course.cred)})`);
+      const listaNew=nuevos.map(c=>`"${c.name}" (código ${c.code}, ${cr(c.cred)})`);
+
+      const esAlternativa=olds.length>1;
+      let frase='4.'+(i+1)+'. ';
+      if(esAlternativa){
+        // Relación "O": cursos alternativos entre sí; el reconocimiento se aplica una vez.
+        frase+='El estudiante aprobó '+unir(listaOld)+'. Estos cursos son alternativos entre sí '+
+               'para efectos de la equivalencia, por lo cual el reconocimiento se aplica una sola vez. '+
+               'Se '+(listaNew.length>1?'reconocen los cursos ':'reconoce el curso ')+unir(listaNew)+
+               ' del plan 12986 de 2022.';
+      }else{
+        frase+='El curso aprobado '+listaOld[0]+' es equivalente a '+
+               (listaNew.length>1?'los cursos ':'')+unir(listaNew)+' del plan 12986 de 2022.';
+      }
+      if(listaNew.length>1){
+        frase+=' Ambos cursos se reconocen de manera conjunta por tratarse de una misma unidad de '+
+               'formación (fundamentos y aplicación).';
+      }
+      if(recon===aprobCred){
+        frase+=' El reconocimiento conserva la misma cantidad de créditos ('+cr(recon)+').';
+      }else if(recon<aprobCred){
+        frase+=' Se '+(recon===1?'reconoce':'reconocen')+' '+recon+' de los '+aprobCred+
+               ' créditos aprobados, '+(esAlternativa
+                 ? 'toda vez que, al ser cursos alternativos, la equivalencia se aplica una sola vez.'
+                 : 'debido a que el plan renovado asigna una carga crediticia menor a este curso.');
+      }else{
+        frase+=' El reconocimiento asciende a '+cr(recon)+'.';
+      }
+      add(frase);
+      sep();
+    });
+  }
+
+  if(excedentes.length>0){
+    add('5. CURSOS APROBADOS QUE NO APORTAN CRÉDITOS ADICIONALES');
+    sep();
+    add('Los siguientes cursos aprobados corresponden a componentes electivos que ya fueron '+
+        'reconocidos con otra opción. Por tratarse de componentes que se cursan una sola vez, '+
+        'estos cursos no suman créditos adicionales al plan renovado:');
+    sep();
+    excedentes.forEach((r,i)=>{
+      const olds=r.segments.map(s=>`"${s.course.name}" (${s.course.code}, ${s.course.cred===1?'1 crédito':s.course.cred+' créditos'})`);
+      add('5.'+(i+1)+'. '+olds.join(' y ')+', que correspondería a '+
+          `"${r.newC.name}" (código ${r.newC.code})`+'. Este componente ya fue reconocido con otra '+
+          'opción aprobada por el estudiante.');
+      sep();
+    });
+  }
+
+  const numObs=excedentes.length>0?6:5;
+  const obs=[];
+
+  // Duplicidades por familia (cursos alternativos aprobados más de una vez)
+  const famDup={};
+  const yaExplicados=new Set();   // cursos ya descritos como alternativos entre sí
+  (mappingRules||[]).forEach(r=>{
+    if(!r.familyId) return;
+    if(!approvedOldCodes.has(r.requiredAll[0])) return;
+    (famDup[r.familyId]=famDup[r.familyId]||[]).push(r.requiredAll[0]);
+  });
+  Object.keys(famDup).forEach(f=>{ if(famDup[f].length>1) famDup[f].forEach(c=>yaExplicados.add(c)); });
+  Object.keys(famDup).forEach(f=>{
+    if(famDup[f].length>1){
+      const nombres=famDup[f].map(c=>{const x=oldCourses.find(o=>o.code===c);return x?`"${x.name}" (${c})`:c;});
+      const destino=(familyLabels&&familyLabels[f])||f;
+      const tipo=(familyKind&&familyKind[f])||'curso';
+      obs.push('El estudiante aprobó '+nombres.join(' y ')+', cursos alternativos entre sí que conducen '+
+        'a la misma equivalencia ('+(tipo==='componente'?'el componente ':'el curso ')+'"'+destino+'"). '+
+        'Por tanto, la equivalencia se reconoce una sola vez y los créditos restantes no se homologan.');
+    }
+  });
+
+  if(electiveState && electiveState.tradicional && electiveState.tradicional.fundamentosApprovedLines &&
+     electiveState.tradicional.fundamentosApprovedLines.length>1){
+    obs.push('El estudiante aprobó el electivo de fundamentos de más de una línea de profundización ('+
+      electiveState.tradicional.fundamentosApprovedLines.join(', ')+'). Solo se reconocen los créditos '+
+      'de una línea; no obstante, el estudiante puede elegir en cuál de ellas continuar cursando la profundización.');
+  }
+  if(pdfUnknownApproved && pdfUnknownApproved.length){
+    obs.push('Se identificaron '+pdfUnknownApproved.length+' curso(s) aprobado(s) sin tipología equivalente '+
+      'en el plan 12986 de 2022: '+pdfUnknownApproved.map(u=>`"${u.name}" (${u.code})`).join(', ')+
+      '. Estos cursos requieren revisión por parte del comité correspondiente.');
+  }
+  if(lostCourses && lostCourses.length){
+    // Se distingue entre cursos que realmente no tienen equivalente y cursos que sí lo
+    // tienen pero quedan como excedente por duplicidad: afirmar lo primero de los
+    // segundos contradiría el detalle del punto 4.
+    const noEquivCodes=new Set((noEquivalenceCourses||[]).map(c=>c.code));
+    const sinEq=lostCourses.filter(lc=>noEquivCodes.has(lc.code));
+    // Se excluyen los que ya se explicaron como cursos alternativos entre sí, para no
+    // decir dos veces lo mismo con distintas palabras.
+    const excedentes=lostCourses.filter(lc=>!noEquivCodes.has(lc.code) && !yaExplicados.has(lc.code));
+    if(sinEq.length){
+      obs.push('Los siguientes cursos aprobados no cuentan con curso equivalente en el plan renovado y, '+
+        'por tanto, no aportan créditos al nuevo plan: '+
+        sinEq.map(lc=>`"${lc.name}" (${lc.code}, ${lc.cred===1?'1 crédito':lc.cred+' créditos'})`).join(', ')+'.');
+    }
+    if(excedentes.length){
+      obs.push('Los siguientes cursos aprobados quedan como excedente, por cuanto el componente al que '+
+        'corresponden ya fue reconocido con otra opción: '+
+        excedentes.map(lc=>`"${lc.name}" (${lc.code}, ${lc.cred===1?'1 crédito':lc.cred+' créditos'})`).join(', ')+
+        '. En consecuencia, no suman créditos adicionales al plan renovado.');
+    }
+  }
+
+  add(numObs+'. OBSERVACIONES');
+  sep();
+  if(obs.length===0){
+    add('No se identificaron situaciones especiales adicionales en el proceso de equivalencias.');
+  }else{
+    obs.forEach((o,i)=>{ add(numObs+'.'+(i+1)+'. '+o); sep(); });
+  }
+  if(obs.length===0) sep();
+
+  add((numObs+1)+'. CONCLUSIÓN');
+  sep();
+  add('De acuerdo con lo expuesto, al estudiante se le reconocen '+logradas.length+' equivalencias, '+
+      'equivalentes a un avance de '+(creditosMalla||'-')+' créditos en el plan de estudios adoptado '+
+      'mediante Resolución 12986 de 2022. El estudiante deberá cursar los créditos restantes conforme '+
+      'a la malla curricular vigente y a los prerrequisitos establecidos en ella.');
+
+  return L.join('\n');
+}
+
+function openEquivalenceReport(){
+  if(!equivalencesGenerated){
+    return showAlert('Aún no hay reporte','Primero carga el Plan de Estudios Individual - PEI en el punto 1 para poder generar el informe.');
+  }
+  document.getElementById('reportText').value=buildEquivalenceReport();
+  const m=document.getElementById('reportModal');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeEquivalenceReport(){
+  const m=document.getElementById('reportModal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+
+function reportFileTag(){
+  const cedula=(document.getElementById('studentId').value||'').trim();
+  const nombre=(document.getElementById('studentName').value||'').trim();
+  if(cedula) return '_'+cedula;
+  if(nombre) return '_'+nombre.replace(/\s+/g,'_');
+  return '';
+}
+function downloadBlob(content, mime, filename){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+// Descarga en texto plano (se abre en el Bloc de notas y es totalmente editable).
+function downloadReportTxt(){
+  const txt=document.getElementById('reportText').value;
+  downloadBlob('\ufeff'+txt,'text/plain;charset=utf-8','Informe_equivalencias'+reportFileTag()+'.txt');
+}
+
+function copyReport(){
+  const ta=document.getElementById('reportText');
+  ta.select(); ta.setSelectionRange(0,999999);
+  let ok=false;
+  try{ ok=document.execCommand('copy'); }catch(e){ ok=false; }
+  if(!ok && navigator.clipboard){ navigator.clipboard.writeText(ta.value).catch(()=>{}); ok=true; }
+  const b=document.getElementById('copyReportBtn');
+  if(b){ const t=b.innerText; b.innerText=ok?'Copiado':'No se pudo copiar'; setTimeout(()=>b.innerText=t,1600); }
+}
+
+function resetSimulation(){
+  approvedOldCodes=new Set(); simulatedCodes.clear(); lostCourses=[];
+  pdfUnknownApproved=[]; pdfApprovedOrdered=[]; pdfApprovedNewPlanCodes=new Set(); pdfDiagnostics=null;
+  equivalencesGenerated=false;
+  document.getElementById('studentName').value='';
+  document.getElementById('studentId').value='';
+  const fi=document.getElementById('pdfFileInput'); if(fi) fi.value='';
+  const st=document.getElementById('pdfParseStatus'); if(st) st.innerHTML='';
+  updateStudentInfo();
+  renderAddedCoursesList();
+  calculateNewPlan();
+}
+
+// Observaciones (duplicidad / prerrequisito pendiente) de las tarjetas de la malla.
+// Como las tarjetas tienen tamaño fijo, solo se muestra un título corto + botón "Ver
+// más"; el texto completo se guarda aquí y se despliega en el modal al hacer clic.
+let cardObservations=[];
+function showCardObservation(idx){
+  const obs=cardObservations[idx];
+  if(!obs) return;
+  showAlert(obs.title, obs.message);
+}
+
+function showAlert(t,m){
+  document.getElementById('alertTitle').innerHTML=`<svg class="w-5 h-5 text-amber-500 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> ${t}`;
+  document.getElementById('alertMessage').innerText=m;
+  document.getElementById('alertModal').classList.remove('hidden'); document.getElementById('alertModal').classList.add('flex');
+}
+function closeAlert(){ document.getElementById('alertModal').classList.add('hidden'); document.getElementById('alertModal').classList.remove('flex'); }
+
+function updateStudentInfo(){
+  const name=document.getElementById('studentName').value.trim();
+  const id=document.getElementById('studentId').value.trim();
+  const el=document.getElementById('exportStudentInfo');
+  if(!name && !id){
+    el.classList.add('hidden');
+    el.innerHTML='';
+    return;
+  }
+  el.classList.remove('hidden');
+  el.innerHTML=(name?`<span>Estudiante: <span class="font-black text-gray-900">${name}</span></span>`:'')+
+               (id?`<span>Cédula: <span class="font-black text-gray-900">${id}</span></span>`:'');
+}
+
+window.onload=()=>{
+  if(typeof pdfjsLib!=='undefined' && pdfjsLib.GlobalWorkerOptions){
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  const dz=document.getElementById('pdfDropZone');
+  if(dz){
+    ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dz.classList.add('border-blue-600','bg-blue-50');}));
+    ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dz.classList.remove('border-blue-600','bg-blue-50');}));
+    dz.addEventListener('drop',e=>{ if(e.dataTransfer&&e.dataTransfer.files.length) handlePdfFiles(e.dataTransfer.files); });
+  }
+  renderAddedCoursesList(); calculateNewPlan(); updateStudentInfo();
+};
+</script>
+</body>
+</html>
