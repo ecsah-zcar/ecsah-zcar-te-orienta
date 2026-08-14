@@ -14,46 +14,97 @@ body {
 
 /* ===== HEADER ===== */
 header {
-    background: linear-gradient(135deg, #FFC107, #FFA000);
-    background-blend-mode: normal;
-    padding: 2rem 2rem 1.5rem;
-    text-align: center;
-    border-bottom: 4px solid #FFC107;
-    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.2);
+    background: #ffffff;
+    padding: 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    border-bottom: 3px solid #FFC107;
 }
 
-.logo-titulo {
+/* Banda superior */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    background: #faf8f5;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.header-top-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-unad {
+    height: 35px;
+    width: auto;
+}
+
+.acreditacion {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1a2c3e;
+    background: #FFC107;
+    padding: 0.2rem 0.8rem;
+    border-radius: 30px;
+    letter-spacing: 0.5px;
+}
+
+.header-top-right {
+    font-size: 0.85rem;
+    color: #5d4037;
+    font-weight: 500;
+}
+
+/* Bloque central (título dentro de cajón amarillo) */
+.header-main {
+    background: linear-gradient(135deg, #FFC107, #FFA000);
+    padding: 1.8rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 30px rgba(255, 193, 7, 0.15);
+}
+
+.header-main-content {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1.2rem;
     flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .logo-ecsah {
-    height: 70px;
+    height: 80px;
     width: auto;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
 }
 
-.logo-titulo h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
+.header-main-content h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
     color: #1a2c3e;
     letter-spacing: -0.5px;
-    margin-bottom: 0.1rem;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+    margin: 0;
+    text-shadow: 0 1px 3px rgba(255,255,255,0.2);
 }
 
-.logo-titulo p {
+.header-main-content p {
     font-size: 1.1rem;
     font-weight: 500;
     color: #1a2c3e;
     opacity: 0.85;
+    margin: 0;
 }
 
+/* Buscador */
 .buscador {
-    margin-top: 1.2rem;
+    padding: 1rem 2rem 1.5rem;
+    text-align: center;
+    background: #ffffff;
 }
 
 #searchInput {
@@ -61,20 +112,20 @@ header {
     max-width: 550px;
     padding: 0.9rem 1.4rem;
     border-radius: 50px;
-    border: none;
+    border: 1px solid rgba(0,0,0,0.05);
     font-size: 1rem;
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background: #f8f5f0;
     transition: all 0.3s ease;
-    font-family: inherit;
-    color: #1a2c3e;
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
 }
 
 #searchInput:focus {
     outline: none;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-    transform: scale(1.01);
     background: #ffffff;
+    border-color: #FFC107;
+    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.1);
+    transform: scale(1.01);
 }
 
 /* ===== PESTAÑAS ===== */
