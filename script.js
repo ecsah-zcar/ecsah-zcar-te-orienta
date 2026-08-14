@@ -77,11 +77,12 @@ const contenidoEstudiantes = [
         descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más.",
         enlaces: [
             { texto: "📄 Descargar FUS en PDF", ruta: "documentos/F-7-2-1_Formato_FUS.pdf" }
+            { texto: "📄 Descargar instructivo de Homologaciones - SIHO", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" }
         ],
         botonesModal: [
-            { texto: "🔄 Homologaciones - SIHO", modalId: "modalHomologaciones" },
+            { texto: "🔄 Acuerdos de Homologaciones - SIHO", modalId: "modalHomologaciones" },
             { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
-            { texto: "📋 Guía FUS", modalId: "modalFUS" }
+            { texto: "📋 Guía para diligenciar el FUS", modalId: "modalFUS" }
         ]
     },
     {
