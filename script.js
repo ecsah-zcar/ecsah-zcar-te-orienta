@@ -62,14 +62,38 @@ const contenidoEstudiantes = [
         titulo: "📚 Programas de la ECSAH",
         descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
         enlaces: [
-            { texto: '<i class="fas fa-guitar"></i> Música', ruta: "https://estudios.unad.edu.co/musica" },
-            { texto: '<i class="fas fa-brain"></i> Psicología', ruta: "https://estudios.unad.edu.co/psicologia" },
-            { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
-            { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía', ruta: "https://estudios.unad.edu.co/filosofia" },
-            { texto: '<i class="fas fa-users"></i> Sociología', ruta: "https://estudios.unad.edu.co/sociologia" },
-            { texto: '<i class="fas fa-palette"></i> Artes Visuales', ruta: "https://estudios.unad.edu.co/artes-visuales" },
-            { texto: '<i class="fas fa-landmark"></i> Historia', ruta: "https://estudios.unad.edu.co/historia" },
-            { texto: '<i class="fas fa-hands-helping"></i> Trabajo Social', ruta: "https://estudios.unad.edu.co/trabajo-social" }
+            { 
+                texto: '<i class="fas fa-guitar"></i> <strong>Música</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 023939 - 12 de Diciembre de 2023</span>', 
+                ruta: "https://estudios.unad.edu.co/musica" 
+            },
+            { 
+                texto: '<i class="fas fa-brain"></i> <strong>Psicología</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 012986 - 06 de julio de 2022</span>', 
+                ruta: "https://estudios.unad.edu.co/psicologia" 
+            },
+            { 
+                texto: '<i class="fas fa-bullhorn"></i> <strong>Comunicación Social</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 019845 - 20 de octubre de 2020</span>', 
+                ruta: "https://estudios.unad.edu.co/comunicacion-social" 
+            },
+            { 
+                texto: '<i class="fas fa-puzzle-piece"></i> <strong>Filosofía</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 014430 - 25 de agosto de 2023</span>', 
+                ruta: "https://estudios.unad.edu.co/filosofia" 
+            },
+            { 
+                texto: '<i class="fas fa-users"></i> <strong>Sociología</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 011631 - 12 de julio de 2023</span>', 
+                ruta: "https://estudios.unad.edu.co/sociologia" 
+            },
+            { 
+                texto: '<i class="fas fa-palette"></i> <strong>Artes Visuales</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 020540 - 27 de octubre de 2022</span>', 
+                ruta: "https://estudios.unad.edu.co/artes-visuales" 
+            },
+            { 
+                texto: '<i class="fas fa-landmark"></i> <strong>Historia</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 011187 - 10 de julio de 2024</span>', 
+                ruta: "https://estudios.unad.edu.co/historia" 
+            },
+            { 
+                texto: '<i class="fas fa-hands-helping"></i> <strong>Trabajo Social</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 007068 - 10 de marzo de 2026</span>', 
+                ruta: "https://estudios.unad.edu.co/trabajo-social" 
+            }
         ]
     },
     {
