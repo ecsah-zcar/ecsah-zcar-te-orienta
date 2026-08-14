@@ -76,7 +76,7 @@ const contenidoEstudiantes = [
         titulo: "📋 Procesos académico-administrativos",
         descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más.",
         enlaces: [
-            { texto: "📄 Descargar FUS en PDF", ruta: "documentos/F-7-2-1_Formato_FUS.pdf" }
+            { texto: "📄 Descargar FUS en PDF", ruta: "documentos/F-7-2-1_Formato_FUS.pdf" },
             { texto: "📄 Descargar instructivo de Homologaciones - SIHO", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" }
         ],
         botonesModal: [
