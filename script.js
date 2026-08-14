@@ -54,7 +54,7 @@ const contenidoEstudiantes = [
         descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos de preparación.",
         enlaces: [
             { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
-            { texto: "📋 Inscripción 2026-2", ruta: "documentos/Proceso-de-Inscripción-Pruebas-Saber-Segundo_Semestre-2026.pdf" },
+            { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso-de-Inscripción-Pruebas-Saber-Primer-Semestre-2026.pdf" },
             { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
         ]
     },
@@ -104,7 +104,7 @@ const contenidoEstudiantes = [
             { texto: "📄 Descargar instructivo de Homologaciones - SIHO", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" }
         ],
         botonesModal: [
-            { texto: "🔄 Acuerdos de Homologaciones - ECSAH", modalId: "modalHomologaciones" },
+            { texto: "🔄 Acuerdos de Homologaciones - SIHO", modalId: "modalHomologaciones" },
             { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
             { texto: "📋 Guía para diligenciar el FUS", modalId: "modalFUS" }
         ]
@@ -141,7 +141,7 @@ const contenidoEstudiantes = [
 ];
 
 // ============================================
-// CONTENIDO PARA MODALES DE PROCESOS
+// CONTENIDO PARA MODALES DE PROCESOS (CORREGIDO)
 // ============================================
 
 const contenidoHomologaciones = [
@@ -150,16 +150,16 @@ const contenidoHomologaciones = [
     { texto: "📖 Convenio Comunicación Social - INSTEL TLLRPTV", ruta: "documentos/Convenio_Comunicación Social_Instel_TLLRPTV.pdf" },
     { texto: "📝 Convenio Comunicación Social - Social ARTV", ruta: "documentos/Convenio_Comunicación_Social_ARTV.pdf" },
     { texto: "📖 Convenio Comunicación Social - Comunicadores Empíricos", ruta: "documentos/Convenio_Comunicación_Social_RECONOCIMIENTO_EXPERIENCIA_COMUNICADORES_EMPIRICOS.pdf" },
-    { texto: "📝 Convenio Filosofía - Seminarios y Cominidades Religiosas", ruta: "documentos/Convenio_Filosofía_planes_de_estudio_Seminarios_y_Comunidades.pdf" },
+    { texto: "📝 Convenio Filosofía - Seminarios y Comunidades Religiosas", ruta: "documentos/Convenio_Filosofía_planes_de_estudio_Seminarios_y_Comunidades.pdf" },
     { texto: "📖 Convenio Comunicación Social - INSTEL TLL", ruta: "documentos/Convenio_Comunicación_Social_Instel_TLL.pdf" },
-    { texto: "📝 Convenio_Comunicacion_Social_COMULDESA_2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" },
+    { texto: "📝 Convenio Comunicación Social - COMULDESA 2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" },
     { texto: "📖 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
 ];
 
 const contenidoAplazamientos = [
     { texto: "📋 Formato solicitud aplazamiento", ruta: "documentos/Formato-Aplazamiento.pdf" },
-    { texto: "📅 Calendario de fechas límite", ruta: "documentos/Calendario-Académico-2026.pdf" },
-    { texto: "📝 Tipos de aplazamiento", ruta: "documentos/Aplazamientos.pdf" }
+    { texto: "📅 Calendario de fechas límite", ruta: "documentos/Calendario-Aplazamientos.pdf" },
+    { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Instructivo-Aplazamiento.pdf" }
 ];
 
 // ============================================
@@ -214,7 +214,12 @@ function crearTarjeta(item) {
     
     const header = document.createElement('div');
     header.className = 'card-header';
-    header.innerText = item.titulo;
+    
+    // Extraer emoji del título para mostrarlo como ícono grande
+    const emojiMatch = item.titulo.match(/^[^\w\s]+/);
+    const emoji = emojiMatch ? emojiMatch[0] : '📌';
+    const tituloLimpio = item.titulo.replace(/^[^\w\s]+\s*/, '');
+    header.innerHTML = `<span class="card-icon">${emoji}</span> ${tituloLimpio}`;
     card.appendChild(header);
     
     const body = document.createElement('div');
@@ -260,7 +265,7 @@ function crearTarjeta(item) {
         body.appendChild(wrapper);
     }
     
-    // Botones para abrir modales de procesos (Homologaciones, Aplazamientos, FUS)
+    // Botones para abrir modales de procesos
     if (item.botonesModal && item.botonesModal.length > 0) {
         const wrapper = document.createElement('div');
         wrapper.style.marginTop = '1rem';
@@ -294,7 +299,11 @@ function renderizarGrid(contenido, contenedorId) {
     const grid = document.getElementById(contenedorId);
     if (!grid) return;
     grid.innerHTML = '';
-    contenido.forEach(item => grid.appendChild(crearTarjeta(item)));
+    contenido.forEach((item, index) => {
+        const tarjeta = crearTarjeta(item);
+        tarjeta.style.animationDelay = `${0.05 * (index + 1)}s`;
+        grid.appendChild(tarjeta);
+    });
 }
 
 function filtrarTarjetas(contenido, textoBusqueda) {
@@ -352,7 +361,7 @@ function abrirModalProceso(modalId) {
     const overlay = document.getElementById(modalId);
     if (!overlay) return;
     
-    // Si es el modal FUS, usar su lógica especial (ya tiene contenido estático)
+    // Si es el modal FUS, ya tiene contenido estático
     if (modalId === 'modalFUS') {
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -362,7 +371,6 @@ function abrirModalProceso(modalId) {
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     
-    // Llenar el grid según el modal
     if (modalId === 'modalHomologaciones') {
         const grid = document.getElementById('gridHomologaciones');
         if (grid && grid.children.length === 0) {
@@ -519,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Modales de procesos (Homologaciones, Aplazamientos, FUS)
+    // Modales de procesos
     document.querySelectorAll('.close-modal').forEach(btn => {
         btn.addEventListener('click', function() {
             const modalId = this.getAttribute('data-modal');
@@ -531,7 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', function(e) {
             if (e.target === this) {
                 const modalId = this.id;
-                // Si es el modal de infografías, usar su función específica
                 if (modalId === 'modalInfografias') {
                     cerrarModal();
                 } else {
