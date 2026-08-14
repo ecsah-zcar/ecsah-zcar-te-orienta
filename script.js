@@ -122,13 +122,13 @@ const contenidoEstudiantes = [
 
 const contenidoHomologaciones = [
     { texto: "📖 Convenio Artes Visuales - Inst. Bellas Artes - Duitama", ruta: "documentos/Convenio_Artes Visuales_INSTITUTO_BELLAS_ARTES_DUITAMA.pdf" },
-    { texto: "📝 Convenio Comunicación Social - ACAJEL", ruta: "documentos/Convenio_Comunicacion Social_Competencias_Locución_Academia_Comunicación JAIME ECHEVERRY LOAIZA “ACAJEL”.pdf" }
+    { texto: "📝 Convenio Comunicación Social - ACAJEL", ruta: "documentos/Convenio_Comunicacion Social_Competencias_Locución_Academia_Comunicación JAIME ECHEVERRY LOAIZA “ACAJEL”.pdf" },
     { texto: "📖 Convenio Comunicación Social - INSTEL TLLRPTV", ruta: "documentos/Convenio_Comunicación Social_Instel_TLLRPTV.pdf" },
-    { texto: "📝 Convenio Comunicación Social - Social ARTV", ruta: "documentos/Convenio_Comunicación_Social_ARTV.pdf" }
+    { texto: "📝 Convenio Comunicación Social - Social ARTV", ruta: "documentos/Convenio_Comunicación_Social_ARTV.pdf" },
     { texto: "📖 Convenio Comunicación Social - Comunicadores Empíricos", ruta: "documentos/Convenio_Comunicación_Social_RECONOCIMIENTO_EXPERIENCIA_COMUNICADORES_EMPIRICOS.pdf" },
-    { texto: "📝 Convenio Filosofía - Seminarios y Cominidades Religiosas", ruta: "documentos/Convenio_Filosofía_planes_de_estudio_Seminarios_y_Comunidades.pdf" }
+    { texto: "📝 Convenio Filosofía - Seminarios y Cominidades Religiosas", ruta: "documentos/Convenio_Filosofía_planes_de_estudio_Seminarios_y_Comunidades.pdf" },
     { texto: "📖 Convenio Comunicación Social - INSTEL TLL", ruta: "documentos/Convenio_Comunicación_Social_Instel_TLL.pdf" },
-    { texto: "📝 Convenio_Comunicacion_Social_COMULDESA_2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" }
+    { texto: "📝 Convenio_Comunicacion_Social_COMULDESA_2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" },
     { texto: "📖 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
 ];
 
