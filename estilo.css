@@ -10,12 +10,11 @@ body {
 }
 
 header {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('banner-ecsah.jpg');
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.85) 0%, rgba(255, 152, 0, 0.85) 100%), url('banner-ecsah.jpg');
+    background-blend-mode: overlay;
     background-size: cover;
     background-position: center 30%;
-    color: white;
-    padding: 1.5rem 2rem;
-    text-align: center;
+    padding: 2.5rem 2rem;
 }
 
 /* Contenedor del logo + título */
@@ -35,9 +34,9 @@ header {
 }
 
 .logo-titulo h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.25rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 .logo-titulo p {
@@ -118,24 +117,24 @@ header {
 }
 
 .card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 60px rgba(255, 193, 7, 0.15);
 }
 
 .card-header {
-    background: #FFC107;
-    color: #1a2c3e;
-    padding: 1rem 1.2rem;
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 .card-body {
@@ -159,23 +158,35 @@ header {
 }
 
 .btn-enlace {
-    display: inline-block;
-    background: #FFF3E0;
-    color: #5D4037;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 30px;
-    font-weight: 500;
-    margin-top: 0.2rem;
-    transition: 0.2s;
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
+    background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+    border: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-enlace:hover {
-    background: #FFC107;
+    background: linear-gradient(135deg, #FFC107, #FFA000);
     color: #1a2c3e;
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+}
+
+.btn-enlace::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.btn-enlace:hover::after {
+    opacity: 1;
 }
 
 footer {
