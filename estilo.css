@@ -319,7 +319,6 @@ header {
 .btn-enlace:hover {
     background: #FFC107;
     color: #1a2c3e;
-    transform: scale(1.02);
     box-shadow: 0 4px 15px rgba(255, 193, 7, 0.25);
 }
 
