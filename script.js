@@ -53,25 +53,22 @@ const contenidoEstudiantes = [
             { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
         ]
     },
-    // Fila 2: tarjeta ancha (Programas)
-    // Fila 2: tarjeta ancha (Programas)
     {
         titulo: "📚 Programas de la ECSAH",
         descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
         horizontal: true,
-        enlaces: [
-            { texto: '<i class="fas fa-palette"></i><br>Artes Visuales<br><span>Res. 020540 - 2022</span>', ruta: "https://estudios.unad.edu.co/artes-visuales" },
-            { texto: '<i class="fas fa-brain"></i><br>Psicología<br><span>Res. 012986 - 2022</span>', ruta: "https://estudios.unad.edu.co/psicologia" },
-            { texto: '<i class="fas fa-bullhorn"></i><br>Comunicación Social<br><span>Res. 019845 - 2020</span>', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
-            { texto: '<i class="fas fa-puzzle-piece"></i><br>Filosofía<br><span>Res. 014430 - 2023</span>', ruta: "https://estudios.unad.edu.co/filosofia" },
-            { texto: '<i class="fas fa-landmark"></i><br>Historia<br><span>Res. 011187 - 2024</span>', ruta: "https://estudios.unad.edu.co/historia" },
-            { texto: '<i class="fas fa-guitar"></i><br>Música<br><span>Res. 023939 - 2023</span>', ruta: "https://estudios.unad.edu.co/musica" },
-            { texto: '<i class="fas fa-users"></i><br>Sociología<br><span>Res. 011631 - 2023</span>', ruta: "https://estudios.unad.edu.co/sociologia" },
-            { texto: '<i class="fas fa-hands-helping"></i><br>Trabajo Social<br><span>Res. 007068 - 2026</span>', ruta: "https://estudios.unad.edu.co/trabajo-social" }
+        programas: [
+            { icono: "fa-palette", nombre: "Artes Visuales", resolucion: "Res. 020540 - 2022", ruta: "https://estudios.unad.edu.co/artes-visuales" },
+            { icono: "fa-brain", nombre: "Psicología", resolucion: "Res. 012986 - 2022", ruta: "https://estudios.unad.edu.co/psicologia" },
+            { icono: "fa-bullhorn", nombre: "Comunicación Social", resolucion: "Res. 019845 - 2020", ruta: "https://estudios.unad.edu.co/comunicacion-social" },
+            { icono: "fa-puzzle-piece", nombre: "Filosofía", resolucion: "Res. 014430 - 2023", ruta: "https://estudios.unad.edu.co/filosofia" },
+            { icono: "fa-landmark", nombre: "Historia", resolucion: "Res. 011187 - 2024", ruta: "https://estudios.unad.edu.co/historia" },
+            { icono: "fa-guitar", nombre: "Música", resolucion: "Res. 023939 - 2023", ruta: "https://estudios.unad.edu.co/musica" },
+            { icono: "fa-users", nombre: "Sociología", resolucion: "Res. 011631 - 2023", ruta: "https://estudios.unad.edu.co/sociologia" },
+            { icono: "fa-hands-helping", nombre: "Trabajo Social", resolucion: "Res. 007068 - 2026", ruta: "https://estudios.unad.edu.co/trabajo-social" }
         ]
     },
-    
-    // Fila 3: tres tarjetas
+        // Fila 3: tres tarjetas
     {
         titulo: "📋 Procesos académico-administrativos",
         descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más.",
@@ -233,39 +230,29 @@ function crearTarjeta(item) {
     }
     
     // Si es horizontal (Programas de la ECSAH) → grid de 4 columnas
-if (item.horizontal && item.enlaces) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'programas-grid';
+    if (item.horizontal && item.programas) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'programas-grid';
     
-    item.enlaces.forEach(enlace => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'programa-item';
+        item.programas.forEach(prog => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'programa-item';
         
-        // Extraer ícono, nombre y resolución del texto HTML
-        const iconoMatch = enlace.texto.match(/<i class="([^"]+)"><\/i>/);
-        const icono = iconoMatch ? iconoMatch[1] : 'fas fa-file';
+            const link = document.createElement('a');
+            link.href = prog.ruta;
+            link.target = "_blank";
+            link.innerHTML = `
+                <span class="programa-icono"><i class="fas ${prog.icono}"></i></span>
+                <span class="programa-nombre">${prog.nombre}</span>
+                <span class="programa-resolucion">${prog.resolucion}</span>
+            `;
         
-        // Limpiar el texto para obtener nombre y resolución
-        const textoLimpio = enlace.texto.replace(/<i class="[^"]+"><\/i>\s*/, '');
-        const partes = textoLimpio.split('<br>');
-        const nombre = partes[0].replace(/<[^>]*>/g, '').trim();
-        const resolucion = partes[1] ? partes[1].replace(/<[^>]*>/g, '').trim() : '';
-        
-        const link = document.createElement('a');
-        link.href = enlace.ruta;
-        link.target = "_blank";
-        link.innerHTML = `
-            <span class="programa-icono"><i class="${icono}"></i></span>
-            <span class="programa-nombre">${nombre}</span>
-            <span class="programa-resolucion">${resolucion}</span>
-        `;
-        
-        itemDiv.appendChild(link);
-        wrapper.appendChild(itemDiv);
-    });
-    body.appendChild(wrapper);
-}
-    
+            itemDiv.appendChild(link);
+            wrapper.appendChild(itemDiv);
+        });
+        body.appendChild(wrapper);
+    }
+
     // Botones para modales de procesos
     if (item.botonesModal && item.botonesModal.length > 0) {
         const wrapper = document.createElement('div');
