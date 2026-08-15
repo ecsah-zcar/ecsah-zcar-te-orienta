@@ -230,37 +230,39 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
-    // Si es horizontal (Programas de la ECSAH) → grid de 2 columnas
-    if (item.horizontal && item.enlaces) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'programas-grid';
-        item.enlaces.forEach(enlace => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'programa-item';
-            
-            // Extraer icono, nombre y resolución
-            const iconoMatch = enlace.texto.match(/<i class="([^"]+)"><\/i>/);
-            const icono = iconoMatch ? iconoMatch[1] : 'fas fa-file';
-            
-            const textoLimpio = enlace.texto.replace(/<i class="[^"]+"><\/i>\s*/, '');
-            const partes = textoLimpio.split('<br>');
-            const nombre = partes[0].replace(/<[^>]*>/g, '').trim();
-            const resolucion = partes[1] ? partes[1].replace(/<[^>]*>/g, '').trim() : '';
-            
-            const link = document.createElement('a');
-            link.href = enlace.ruta;
-            link.target = "_blank";
-            link.innerHTML = `
-                <span class="programa-icono"><i class="${icono}"></i></span>
-                <span class="programa-nombre">${nombre}</span>
-                <span class="programa-resolucion">${resolucion}</span>
-            `;
-            
-            itemDiv.appendChild(link);
-            wrapper.appendChild(itemDiv);
-        });
-        body.appendChild(wrapper);
-    }
+    // Si es horizontal (Programas de la ECSAH) → grid de 4 columnas
+if (item.horizontal && item.enlaces) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'programas-grid';
+    
+    item.enlaces.forEach(enlace => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'programa-item';
+        
+        // Extraer ícono, nombre y resolución del texto HTML
+        const iconoMatch = enlace.texto.match(/<i class="([^"]+)"><\/i>/);
+        const icono = iconoMatch ? iconoMatch[1] : 'fas fa-file';
+        
+        // Limpiar el texto para obtener nombre y resolución
+        const textoLimpio = enlace.texto.replace(/<i class="[^"]+"><\/i>\s*/, '');
+        const partes = textoLimpio.split('<br>');
+        const nombre = partes[0].replace(/<[^>]*>/g, '').trim();
+        const resolucion = partes[1] ? partes[1].replace(/<[^>]*>/g, '').trim() : '';
+        
+        const link = document.createElement('a');
+        link.href = enlace.ruta;
+        link.target = "_blank";
+        link.innerHTML = `
+            <span class="programa-icono"><i class="${icono}"></i></span>
+            <span class="programa-nombre">${nombre}</span>
+            <span class="programa-resolucion">${resolucion}</span>
+        `;
+        
+        itemDiv.appendChild(link);
+        wrapper.appendChild(itemDiv);
+    });
+    body.appendChild(wrapper);
+}
     
     // Botones para modales de procesos
     if (item.botonesModal && item.botonesModal.length > 0) {
