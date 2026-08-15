@@ -246,8 +246,8 @@ function crearTarjeta(item) {
         wrapper.style.marginTop = '1rem';
         const btn = document.createElement('button');
         btn.className = 'btn-enlace';
-        btn.style.background = '#FFC107';
-        btn.style.color = '#1a2c3e';
+        btn.style.background = '#FFF3E0';
+        btn.style.color = '#5D4037';
         btn.style.fontWeight = 'bold';
         btn.innerText = `📘 ${item.desplegable.titulo}`;
         btn.addEventListener('click', () => {
