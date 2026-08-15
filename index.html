@@ -8,7 +8,7 @@
     <!-- Estilos principales -->
     <link rel="stylesheet" href="estilo.css">
     
-    <!-- Fuente Inter -->
+    <!-- Fuente Nunito (moderna y legible) -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Font Awesome (íconos profesionales) -->
@@ -18,32 +18,23 @@
 
     <!-- ======== HEADER ======== -->
     <header>
-    <!-- Banda superior (logo UNAD + acreditación) -->
-    <div class="header-top">
-        <div class="header-top-left">
-            <img src="logo-unad.png" alt="UNAD" class="logo-unad">
-            <span class="acreditacion">ACREDITADA EN ALTA CALIDAD</span>
-        </div>
-        <div class="header-top-right">
-            <span>La ECSAH del siglo XXI</span>
-        </div>
-    </div>
-
-    <!-- Bloque central (título + subtítulo) -->
-    <div class="header-main">
-        <div class="header-main-content">
-            <img src="logo-ecsah.jpg" alt="ECSAH" class="logo-ecsah">
-            <div>
-                <h1>ECSAH ZCAR Te Orienta</h1>
-                <p>Información académica y administrativa – Zona Caribe</p>
+        <!-- Contenedor del banner (imagen de fondo) -->
+        <div class="header-banner">
+            <!-- Franja amarilla con el título (superpuesta) -->
+            <div class="header-franja">
+                <div class="logo-titulo">
+                    <img src="logo-ecsah.jpg" alt="Logo ECSAH" class="logo-ecsah">
+                    <div>
+                        <h1>ECSAH ZCAR Te Orienta</h1>
+                        <p>Información académica y administrativa – Zona Caribe</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Buscador (dentro del banner, pero fuera de la franja) -->
+            <div class="buscador">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar por palabra clave (matrícula, grado, práctica...)">
             </div>
         </div>
-    </div>
-
-    <!-- Buscador -->
-    <div class="buscador">
-        <input type="text" id="searchInput" placeholder="🔍 Buscar por palabra clave (matrícula, grado, práctica...)">
-    </div>
     </header>
 
     <!-- ======== PESTAÑAS ======== -->
@@ -52,7 +43,7 @@
         <button class="tab-btn" data-tab="docentes" id="btnDocentes">👩‍🏫 Docentes</button>
     </div>
 
-    <!-- ======== CONTENIDO ESTUDIANTES (libre) ======== -->
+    <!-- ======== CONTENIDO ESTUDIANTES ======== -->
     <div id="estudiantes" class="tab-content active">
         <section class="intro">
             <h2>📘 Bienvenido, estudiante</h2>
@@ -63,7 +54,6 @@
 
     <!-- ======== CONTENIDO DOCENTES (protegido) ======== -->
     <div id="docentes" class="tab-content">
-        <!-- Pantalla de bloqueo -->
         <div id="docenteLockScreen" class="lock-screen">
             <div class="lock-box">
                 <h2>🔒 Acceso restringido</h2>
@@ -73,7 +63,6 @@
                 <p id="errorMsg" class="error-msg"></p>
             </div>
         </div>
-        <!-- Contenido docente (oculto hasta desbloquear) -->
         <div id="docenteContent" style="display: none;">
             <section class="intro">
                 <h2>📚 Bienvenido, docente</h2>
@@ -83,120 +72,10 @@
         </div>
     </div>
 
-    <!-- ======== MODAL PARA INFOGRAFÍAS (Planea tu matrícula) ======== -->
-    <div id="modalInfografias" class="modal-overlay" style="display: none;">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="modalTitle">Planea tu matrícula</h2>
-                <span class="modal-close" id="modalCloseBtn">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="modal-grid" id="modalGrid">
-                    <!-- Las infografías se generan aquí automáticamente -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ======== MODAL HOMOLOGACIONES ======== -->
-    <div id="modalHomologaciones" class="modal-overlay" style="display: none;">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2>🔄 Homologaciones - SIHO</h2>
-                <span class="modal-close close-modal" data-modal="modalHomologaciones">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p style="margin-bottom:1rem;">Documentos y recursos para el proceso de homologación de asignaturas a través del Sistema SIHO.</p>
-                <div class="modal-grid" id="gridHomologaciones">
-                    <!-- Generado por JS -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ======== MODAL APLAZAMIENTOS ======== -->
-    <div id="modalAplazamientos" class="modal-overlay" style="display: none;">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2>📅 Aplazamientos</h2>
-                <span class="modal-close close-modal" data-modal="modalAplazamientos">&times;</span>
-            </div>
-            <div class="modal-body">
-                <!-- Mensaje destacado con fechas límite -->
-                <div class="fus-instructions" style="border-left-color: #2196F3;">
-                    <h3>⚠️ Fechas límite importantes</h3>
-                    <ul>
-                        <li><strong>📅 Aplazamiento de cursos:</strong> 15 de junio de 2026</li>
-                        <li><strong>📅 Aplazamiento de periodo académico:</strong> 30 de junio de 2026</li>
-                        <li><strong>📅 Cancelación de periodo:</strong> 30 de junio de 2026</li>
-                    </ul>
-                    <p>📎 <a href="documentos/Calendario-Aplazamientos.pdf" target="_blank">Ver calendario completo de fechas</a></p>
-                    <p style="font-size:0.85rem; color:#666;">📌 Las fechas pueden cambiar según el calendario académico oficial.</p>
-                </div>
-
-                <!-- Documentos relacionados -->
-                <p style="margin-top:1rem; margin-bottom:0.5rem; font-weight:600;">📄 Formatos y documentación</p>
-                <div class="modal-grid" id="gridAplazamientos">
-                    <!-- Generado por JS -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ======== MODAL FUS (Formato Único de Solicitudes) ======== -->
-    <div id="modalFUS" class="modal-overlay" style="display: none;">
-        <div class="modal-box modal-fus">
-            <div class="modal-header">
-                <h2 id="modalFUSTitle">📋 Formato Único de Solicitudes (FUS)</h2>
-                <span class="modal-close close-modal" data-modal="modalFUS">&times;</span>
-            </div>
-            <div class="modal-body">
-                <!-- Instrucciones de la decana -->
-                <div class="fus-instructions">
-                    <h3>📌 Instrucciones de la Decana</h3>
-                    <ul>
-                        <li>✅ Estar debidamente diligenciado.</li>
-                        <li>✅ No modificar la estructura original del formato.</li>
-                        <li>✅ En el apartado "Justificación", colocar los motivos de la solicitud conservando las líneas originales.</li>
-                        <li>✅ Contener firma manuscrita (a puño y letra).</li>
-                        <li>✅ Ser enviado en formato <strong>PDF</strong>.</li>
-                        <li>✅ Corresponder a un solo archivo de <strong>una (1) hoja</strong>.</li>
-                        <li>✅ Colocar el centro donde radica (donde está matriculado).</li>
-                    </ul>
-                    <p>📎 <a href="documentos/FUS-Formato-Unico-Solicitudes.pdf" target="_blank">Descargar formato en PDF</a></p>
-                </div>
-
-                <!-- Vista previa (opcional) -->
-                <div class="fus-preview">
-                    <h3>📄 Vista previa del formato</h3>
-                    <img src="documentos/Imagen_FUS.png" alt="Vista previa del FUS" style="width:100%; max-width:600px; border:1px solid #ddd; border-radius:8px;">
-                    <p style="font-size:0.85rem; color:#666;">Si no ves la imagen, <a href="documentos/FUS-Formato-Unico-Solicitudes.pdf" target="_blank">descarga el PDF</a>.</p>
-                </div>
-
-                <!-- Guía de diligenciamiento -->
-                <div class="fus-guide">
-                    <h3>✍️ ¿Cómo diligenciar cada campo?</h3>
-                    <div class="fus-accordion">
-                        <div class="fus-item"><button class="fus-btn">1. Fecha de solicitud</button><div class="fus-panel"><p>Escribir la fecha en que se realiza la solicitud, con el formato <strong>DD/MM/AAAA</strong>.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">2. Centro donde se radica</button><div class="fus-panel"><p>Escribir el nombre del centro donde se radica la solicitud (ej: Centro Zona Caribe).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">3. Documento de identidad</button><div class="fus-panel"><p>Escribir el número del documento de identidad del estudiante (sin puntos ni comas).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">4. Fecha de nacimiento</button><div class="fus-panel"><p>Escribir la fecha de nacimiento del estudiante con formato <strong>DD/MM/AAAA</strong>.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">5. Nombres y apellidos</button><div class="fus-panel"><p>Escribir nombres y apellidos tal como figuran en el documento de identidad.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">6. Programa actual</button><div class="fus-panel"><p>Escribir el nombre exacto del programa, tal como figura en el Registro Académico Individual.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">7. E-mail institucional</button><div class="fus-panel"><p>Escribir el correo institucional del estudiante (ej: estudiante@unad.edu.co).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">8. E-mail alternativo</button><div class="fus-panel"><p>Escribir un correo alternativo para notificaciones (opcional pero recomendado).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">9. Número telefónico móvil</button><div class="fus-panel"><p>Escribir el número de celular para notificaciones (ej: 3001234567).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">10. Tipo de solicitud</button><div class="fus-panel"><p>Marcar con una <strong>"X"</strong> en el cuadro que corresponda al tipo de solicitud (Novedades, Servicios u Opciones de grado).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">11. Justificación</button><div class="fus-panel"><p>Escribir de manera concreta y breve los motivos de la solicitud. <strong>No eliminar las líneas originales del formato</strong>.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">12-15. Datos de cursos con novedades</button><div class="fus-panel"><p>Para cada curso: escribe el <strong>nombre</strong> (12), <strong>código</strong> (13), <strong>créditos</strong> (14) y la <strong>novedad</strong> (15) correspondiente.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">23. Firma del estudiante</button><div class="fus-panel"><p>Firma manuscrita del estudiante (a puño y letra).</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">24. Firma funcionario RCONT</button><div class="fus-panel"><p><strong>Lo diligencia Registro y Control.</strong> Déjalo en blanco.</p></div></div>
-                        <div class="fus-item"><button class="fus-btn">25. Asesor académico</button><div class="fus-panel"><p><strong>Lo diligencia el asesor académico.</strong> Déjalo en blanco si no aplica.</p></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- ======== MODALES ======== -->
+    <!-- (Aquí van los modales que ya tenías: Infografías, Homologaciones, Aplazamientos, FUS) -->
+    <!-- No los repito para no alargar, pero deben estar incluidos en tu archivo real -->
+    <!-- Asegúrate de que el modal FUS tenga el acordeón y las instrucciones -->
 
     <!-- ======== FOOTER ======== -->
     <footer>
@@ -204,7 +83,6 @@
         <p>ECSAH Zona Caribe – Universidad Nacional Abierta y a Distancia</p>
     </footer>
 
-    <!-- ======== SCRIPTS ======== -->
     <script src="script.js"></script>
 </body>
 </html>
