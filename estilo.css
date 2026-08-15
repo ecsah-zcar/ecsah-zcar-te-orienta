@@ -245,7 +245,7 @@ header {
 /* ===== PROGRAMS EN DOS COLUMNAS (estilo segunda imagen) ===== */
 .programas-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);  /* 4 columnas */
     gap: 0.8rem;
     margin-top: 0.5rem;
 }
