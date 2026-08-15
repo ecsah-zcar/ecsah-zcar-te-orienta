@@ -2,8 +2,9 @@
 // ECSAH ZCAR Te Orienta - Micrositio
 // ============================================
 
-// 📚 CONTENIDO ESTUDIANTES
+// 📚 CONTENIDO ESTUDIANTES (ordenado según esquema)
 const contenidoEstudiantes = [
+    // Fila 1: tres tarjetas
     {
         titulo: "📌 Matrícula 2026",
         descripcion: "Toda la información sobre el proceso de matrícula: fechas, requisitos, pasos y documentación necesaria.",
@@ -33,17 +34,11 @@ const contenidoEstudiantes = [
         }
     },
     {
-        titulo: "🎓 Opciones de grado",
-        descripcion: "Conoce las diferentes opciones para tu trabajo de grado: proyecto aplicado, diplomado, artículo, etc.",
+        titulo: "🎓 Opciones de grado y prácticas",
+        descripcion: "Conoce las opciones para tu trabajo de grado y los requisitos para prácticas profesionales.",
         enlaces: [
             { texto: "📘 Opciones de Grado - Guía completa", ruta: "documentos/Opciones-de-Grado.pdf" },
-            { texto: "📖 Información General Sobre Grado", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/grados" }
-        ]
-    },
-    {
-        titulo: "💼 Prácticas profesionales",
-        descripcion: "Documentación, seguimiento, convenios, informe final y carta de presentación para tu práctica.",
-        enlaces: [
+            { texto: "📖 Información General Sobre Grado", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/grados" },
             { texto: "📋 Protocolo de práctica profesional 3443", ruta: "documentos/Protocolo_Practicas_Psicología_Resolución_3443.pdf" },
             { texto: "📝 Requisitos de Practicas Profesionales", ruta: "documentos/Requisitos_Prácticas_Profesionales.pdf" },
             { texto: "🤝 Convenios activos", ruta: "#" }
@@ -51,38 +46,41 @@ const contenidoEstudiantes = [
     },
     {
         titulo: "📰 Noticias Saber Pro / TyT",
-        descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos de preparación.",
+        descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos.",
         enlaces: [
             { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
             { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso-de-Inscripción-Pruebas-Saber-Primer-Semestre-2026.pdf" },
             { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
         ]
     },
+    // Fila 2: tarjeta ancha (Programas)
     {
         titulo: "📚 Programas de la ECSAH",
         descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
+        horizontal: true,
         enlaces: [
-            { texto: '<i class="fas fa-guitar"></i> <strong>Música</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 023939 - 12 de Diciembre de 2023</span>', ruta: "https://estudios.unad.edu.co/musica" },
-            { texto: '<i class="fas fa-brain"></i> <strong>Psicología</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 012986 - 06 de julio de 2022</span>', ruta: "https://estudios.unad.edu.co/psicologia" },
-            { texto: '<i class="fas fa-bullhorn"></i> <strong>Comunicación Social</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 019845 - 20 de octubre de 2020</span>', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
-            { texto: '<i class="fas fa-puzzle-piece"></i> <strong>Filosofía</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 014430 - 25 de agosto de 2023</span>', ruta: "https://estudios.unad.edu.co/filosofia" },
-            { texto: '<i class="fas fa-users"></i> <strong>Sociología</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 011631 - 12 de julio de 2023</span>', ruta: "https://estudios.unad.edu.co/sociologia" },
-            { texto: '<i class="fas fa-palette"></i> <strong>Artes Visuales</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 020540 - 27 de octubre de 2022</span>', ruta: "https://estudios.unad.edu.co/artes-visuales" },
-            { texto: '<i class="fas fa-landmark"></i> <strong>Historia</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 011187 - 10 de julio de 2024</span>', ruta: "https://estudios.unad.edu.co/historia" },
-            { texto: '<i class="fas fa-hands-helping"></i> <strong>Trabajo Social</strong><br><span style="font-size:0.75rem; color:#6c757d;">Resolución No. 007068 - 10 de marzo de 2026</span>', ruta: "https://estudios.unad.edu.co/trabajo-social" }
+            { texto: '<i class="fas fa-guitar"></i> Música<br><span style="font-size:0.7rem; color:#6c757d;">Res. 023939 - 2023</span>', ruta: "https://estudios.unad.edu.co/musica" },
+            { texto: '<i class="fas fa-brain"></i> Psicología<br><span style="font-size:0.7rem; color:#6c757d;">Res. 012986 - 2022</span>', ruta: "https://estudios.unad.edu.co/psicologia" },
+            { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social<br><span style="font-size:0.7rem; color:#6c757d;">Res. 019845 - 2020</span>', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
+            { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía<br><span style="font-size:0.7rem; color:#6c757d;">Res. 014430 - 2023</span>', ruta: "https://estudios.unad.edu.co/filosofia" },
+            { texto: '<i class="fas fa-users"></i> Sociología<br><span style="font-size:0.7rem; color:#6c757d;">Res. 011631 - 2023</span>', ruta: "https://estudios.unad.edu.co/sociologia" },
+            { texto: '<i class="fas fa-palette"></i> Artes Visuales<br><span style="font-size:0.7rem; color:#6c757d;">Res. 020540 - 2022</span>', ruta: "https://estudios.unad.edu.co/artes-visuales" },
+            { texto: '<i class="fas fa-landmark"></i> Historia<br><span style="font-size:0.7rem; color:#6c757d;">Res. 011187 - 2024</span>', ruta: "https://estudios.unad.edu.co/historia" },
+            { texto: '<i class="fas fa-hands-helping"></i> Trabajo Social<br><span style="font-size:0.7rem; color:#6c757d;">Res. 007068 - 2026</span>', ruta: "https://estudios.unad.edu.co/trabajo-social" }
         ]
     },
+    // Fila 3: tres tarjetas
     {
         titulo: "📋 Procesos académico-administrativos",
         descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más.",
         enlaces: [
             { texto: "📄 Descargar FUS en PDF", ruta: "documentos/F-7-2-1_Formato_FUS.pdf" },
-            { texto: "📄 Descargar instructivo de Homologaciones - SIHO", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" }
+            { texto: "📄 Instructivo Homologaciones", ruta: "documentos/MANUAL-SHIO-Rol-Estudiante.pdf" }
         ],
         botonesModal: [
-            { texto: "🔄 Acuerdos de Homologaciones - SIHO", modalId: "modalHomologaciones" },
+            { texto: "🔄 Acuerdos de Homologaciones", modalId: "modalHomologaciones" },
             { texto: "📅 Aplazamientos", modalId: "modalAplazamientos" },
-            { texto: "📋 Guía para diligenciar el FUS", modalId: "modalFUS" }
+            { texto: "📋 Guía FUS", modalId: "modalFUS" }
         ]
     },
     {
@@ -104,20 +102,11 @@ const contenidoEstudiantes = [
             { texto: "🎧 Podcasts disponibles", ruta: "#" },
             { texto: "📝 Participar como invitado", ruta: "#" }
         ]
-    },
-    {
-        titulo: "🌐 Redes Sociales",
-        descripcion: "Síguenos en nuestras redes sociales oficiales.",
-        enlaces: [
-            { texto: "📷 Instagram", ruta: "https://www.instagram.com/unad.zcar?igsh=d2llZGJmaTJlcnk=" },
-            { texto: "📘 Facebook", ruta: "https://www.facebook.com/share/14fm1HT8Paf/" },
-            { texto: "📧 Correo ECSAH ZCAR", ruta: "mailto:ecsah.zcar@unad.edu.co" }
-        ]
     }
 ];
 
 // ============================================
-// CONTENIDO PARA MODALES
+// CONTENIDO PARA MODALES DE PROCESOS
 // ============================================
 
 const contenidoHomologaciones = [
@@ -181,12 +170,17 @@ const contenidoDocentes = [
 ];
 
 // ============================================
-// FUNCIONES PRINCIPALES
+// FUNCIONES COMUNES
 // ============================================
 
 function crearTarjeta(item) {
     const card = document.createElement('div');
     card.className = 'card';
+    
+    // Si es horizontal, añadir clase especial
+    if (item.horizontal) {
+        card.classList.add('card-programas');
+    }
     
     const header = document.createElement('div');
     header.className = 'card-header';
@@ -203,7 +197,8 @@ function crearTarjeta(item) {
     desc.innerText = item.descripcion;
     body.appendChild(desc);
     
-    if (item.enlaces && item.enlaces.length > 0) {
+    // Enlaces normales (excepto si es horizontal, que se maneja aparte)
+    if (item.enlaces && item.enlaces.length > 0 && !item.horizontal) {
         const lista = document.createElement('ul');
         item.enlaces.forEach(enlace => {
             const li = document.createElement('li');
@@ -218,6 +213,34 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
+    // Si es horizontal, mostrar en fila con scroll
+    if (item.horizontal && item.enlaces) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'horizontal-scroll';
+        item.enlaces.forEach(enlace => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'horizontal-item';
+            const link = document.createElement('a');
+            link.href = enlace.ruta;
+            link.target = "_blank";
+            link.innerHTML = enlace.texto;
+            link.style.display = 'block';
+            link.style.textDecoration = 'none';
+            link.style.color = '#1a2c3e';
+            link.style.fontWeight = '600';
+            link.style.padding = '0.5rem';
+            link.style.borderRadius = '12px';
+            link.style.background = '#f5f0eb';
+            link.style.transition = 'all 0.2s';
+            link.onmouseover = () => { link.style.background = '#FFC107'; link.style.transform = 'scale(1.02)'; };
+            link.onmouseout = () => { link.style.background = '#f5f0eb'; link.style.transform = 'scale(1)'; };
+            itemDiv.appendChild(link);
+            wrapper.appendChild(itemDiv);
+        });
+        body.appendChild(wrapper);
+    }
+    
+    // Botón para abrir modal de infografías (Planea tu matrícula)
     if (item.desplegable) {
         const wrapper = document.createElement('div');
         wrapper.style.marginTop = '1rem';
@@ -234,6 +257,7 @@ function crearTarjeta(item) {
         body.appendChild(wrapper);
     }
     
+    // Botones para modales de procesos
     if (item.botonesModal && item.botonesModal.length > 0) {
         const wrapper = document.createElement('div');
         wrapper.style.marginTop = '1rem';
@@ -281,7 +305,7 @@ function filtrarTarjetas(contenido, textoBusqueda) {
 }
 
 // ============================================
-// FUNCIONES PARA MODALES
+// FUNCIONES DEL MODAL (Infografías)
 // ============================================
 
 function abrirModal(enlaces, titulo) {
@@ -313,6 +337,10 @@ function cerrarModal() {
         document.body.style.overflow = 'auto';
     }
 }
+
+// ============================================
+// FUNCIONES PARA MODALES DE PROCESOS
+// ============================================
 
 function abrirModalProceso(modalId) {
     const overlay = document.getElementById(modalId);
@@ -448,10 +476,8 @@ function initTabs() {
 document.addEventListener('DOMContentLoaded', () => {
     renderizarGrid(allEstudiantes, 'gridEstudiantes');
     initTabs();
-    
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.addEventListener('input', updateSearch);
-    
     const unlockBtn = document.getElementById('unlockBtn');
     if (unlockBtn) unlockBtn.addEventListener('click', unlockDocente);
     const passwordInput = document.getElementById('passwordInput');
@@ -473,14 +499,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Escape') cerrarModal();
         });
     }
-    
     document.querySelectorAll('.close-modal').forEach(btn => {
         btn.addEventListener('click', function() {
             const modalId = this.getAttribute('data-modal');
             cerrarModalProceso(modalId);
         });
     });
-    
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -493,16 +517,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
     document.querySelectorAll('.fus-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             this.classList.toggle('active');
             const panel = this.nextElementSibling;
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none';
-            } else {
-                panel.style.display = 'block';
-            }
+            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
         });
     });
 });
