@@ -367,3 +367,213 @@ footer a:hover {
 .fus-instructions { /* ... */ }
 .fus-accordion { /* ... */ }
 /* etc. (mantén los estilos que ya tenías para los modales) */
+
+/* ===== MODAL OVERLAY ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;  /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-box {
+    background: white;
+    border-radius: 28px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px 35px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #FFC107;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #5D4037;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.modal-close {
+    font-size: 2.2rem;
+    cursor: pointer;
+    color: #999;
+    transition: 0.2s;
+    line-height: 1;
+    font-weight: 300;
+}
+
+.modal-close:hover {
+    color: #333;
+    transform: scale(1.2);
+}
+
+.modal-body {
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.modal-item {
+    background: #FFF9E6;
+    border-radius: 16px;
+    padding: 16px 10px;
+    text-align: center;
+    border: 1px solid #FFE082;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-item:hover {
+    background: #FFC107;
+    border-color: #FFC107;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.25);
+}
+
+.modal-item .emoji {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.modal-item a {
+    text-decoration: none;
+    color: #5D4037;
+    font-weight: 500;
+    font-size: 0.85rem;
+    display: block;
+}
+
+.modal-item a:hover {
+    color: #1a2c3e;
+}
+
+/* ===== FUS específico ===== */
+.modal-fus .modal-box {
+    max-width: 800px;
+}
+
+.fus-instructions {
+    background: #FFF8E1;
+    padding: 1.2rem 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    border-left: 6px solid #FFC107;
+}
+
+.fus-instructions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.fus-instructions li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255, 224, 130, 0.3);
+}
+
+.fus-instructions li:last-child {
+    border-bottom: none;
+}
+
+.fus-preview {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.fus-preview img {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    max-width: 100%;
+}
+
+.fus-guide h3 {
+    margin-bottom: 1rem;
+    color: #5D4037;
+}
+
+.fus-accordion {
+    border: 1px solid #FFE082;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.fus-item {
+    border-bottom: 1px solid #FFE082;
+}
+
+.fus-item:last-child {
+    border-bottom: none;
+}
+
+.fus-btn {
+    background: #FFF3E0;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #5D4037;
+    width: 100%;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+}
+
+.fus-btn:hover {
+    background: #FFC107;
+}
+
+.fus-btn::before {
+    content: "▶️ ";
+    transition: 0.2s;
+}
+
+.fus-btn.active::before {
+    content: "🔽 ";
+}
+
+.fus-panel {
+    display: none;
+    padding: 1rem 1.2rem;
+    background: #FFFDF5;
+    border-top: 1px solid #FFE082;
+}
+
+.fus-panel p {
+    margin: 0;
+    color: #333;
+    line-height: 1.6;
+}
