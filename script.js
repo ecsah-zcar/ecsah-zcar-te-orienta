@@ -59,14 +59,14 @@ const contenidoEstudiantes = [
         descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
         horizontal: true,
         enlaces: [
-            { texto: '<i class="fas fa-guitar"></i> Música<br><span style="font-size:0.7rem; color:#6c757d;">Res. 023939 - 2023</span>', ruta: "https://estudios.unad.edu.co/musica" },
-            { texto: '<i class="fas fa-brain"></i> Psicología<br><span style="font-size:0.7rem; color:#6c757d;">Res. 012986 - 2022</span>', ruta: "https://estudios.unad.edu.co/psicologia" },
-            { texto: '<i class="fas fa-bullhorn"></i> Comunicación Social<br><span style="font-size:0.7rem; color:#6c757d;">Res. 019845 - 2020</span>', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
-            { texto: '<i class="fas fa-puzzle-piece"></i> Filosofía<br><span style="font-size:0.7rem; color:#6c757d;">Res. 014430 - 2023</span>', ruta: "https://estudios.unad.edu.co/filosofia" },
-            { texto: '<i class="fas fa-users"></i> Sociología<br><span style="font-size:0.7rem; color:#6c757d;">Res. 011631 - 2023</span>', ruta: "https://estudios.unad.edu.co/sociologia" },
-            { texto: '<i class="fas fa-palette"></i> Artes Visuales<br><span style="font-size:0.7rem; color:#6c757d;">Res. 020540 - 2022</span>', ruta: "https://estudios.unad.edu.co/artes-visuales" },
-            { texto: '<i class="fas fa-landmark"></i> Historia<br><span style="font-size:0.7rem; color:#6c757d;">Res. 011187 - 2024</span>', ruta: "https://estudios.unad.edu.co/historia" },
-            { texto: '<i class="fas fa-hands-helping"></i> Trabajo Social<br><span style="font-size:0.7rem; color:#6c757d;">Res. 007068 - 2026</span>', ruta: "https://estudios.unad.edu.co/trabajo-social" }
+            { texto: '<i class="fas fa-palette"></i><br>Artes Visuales<br><span>2022</span>', ruta: "https://estudios.unad.edu.co/artes-visuales" },
+            { texto: '<i class="fas fa-brain"></i><br>Psicología<br><span>2022</span>', ruta: "https://estudios.unad.edu.co/psicologia" },
+            { texto: '<i class="fas fa-bullhorn"></i><br>Comunicación Social<br><span>2020</span>', ruta: "https://estudios.unad.edu.co/comunicacion-social" },
+            { texto: '<i class="fas fa-landmark"></i><br>Historia<br><span>2024</span>', ruta: "https://estudios.unad.edu.co/historia" },
+            { texto: '<i class="fas fa-users"></i><br>Sociología<br><span>2023</span>', ruta: "https://estudios.unad.edu.co/sociologia" },
+            { texto: '<i class="fas fa-guitar"></i><br>Música<br><span>2023</span>', ruta: "https://estudios.unad.edu.co/musica" },
+            { texto: '<i class="fas fa-hands-helping"></i><br>Trabajo Social<br><span>2026</span>', ruta: "https://estudios.unad.edu.co/trabajo-social" },
+            { texto: '<i class="fas fa-puzzle-piece"></i><br>Filosofía<br><span>2023</span>', ruta: "https://estudios.unad.edu.co/filosofia" }
         ]
     },
     // Fila 3: tres tarjetas
@@ -197,7 +197,24 @@ function crearTarjeta(item) {
     desc.innerText = item.descripcion;
     body.appendChild(desc);
     
-    // Enlaces normales (excepto si es horizontal, que se maneja aparte)
+    // 🔼 Botón "Planea tu matrícula" (AHORA VA PRIMERO)
+    if (item.desplegable) {
+        const wrapper = document.createElement('div');
+        wrapper.style.marginTop = '1rem';
+        const btn = document.createElement('button');
+        btn.className = 'btn-enlace';
+        btn.style.background = '#FFF3E0';
+        btn.style.color = '#5D4037';
+        btn.style.fontWeight = 'bold';
+        btn.innerText = `📘 ${item.desplegable.titulo}`;
+        btn.addEventListener('click', () => {
+            abrirModal(item.desplegable.enlaces, item.desplegable.titulo);
+        });
+        wrapper.appendChild(btn);
+        body.appendChild(wrapper);
+    }
+    
+    // Enlaces normales (calendario, oferta, etc.) - AHORA VAN DESPUÉS
     if (item.enlaces && item.enlaces.length > 0 && !item.horizontal) {
         const lista = document.createElement('ul');
         item.enlaces.forEach(enlace => {
@@ -213,48 +230,35 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
-    // Si es horizontal, mostrar en fila con scroll
+    // Si es horizontal (Programas de la ECSAH) → grid de 2 columnas
     if (item.horizontal && item.enlaces) {
         const wrapper = document.createElement('div');
         wrapper.className = 'programas-grid';
         item.enlaces.forEach(enlace => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'programa-item';
+            
+            // Extraer icono, nombre y resolución
+            const iconoMatch = enlace.texto.match(/<i class="([^"]+)"><\/i>/);
+            const icono = iconoMatch ? iconoMatch[1] : 'fas fa-file';
+            
+            const textoLimpio = enlace.texto.replace(/<i class="[^"]+"><\/i>\s*/, '');
+            const partes = textoLimpio.split('<br>');
+            const nombre = partes[0].replace(/<[^>]*>/g, '').trim();
+            const resolucion = partes[1] ? partes[1].replace(/<[^>]*>/g, '').trim() : '';
+            
             const link = document.createElement('a');
             link.href = enlace.ruta;
             link.target = "_blank";
-            link.innerHTML = enlace.texto;
-            link.style.display = 'block';
-            link.style.textDecoration = 'none';
-            link.style.color = '#1a2c3e';
-            link.style.fontWeight = '600';
-            link.style.padding = '0.6rem 0.8rem';
-            link.style.borderRadius = '12px';
-            link.style.background = '#f5f0eb';
-            link.style.transition = 'all 0.2s';
-            link.style.textAlign = 'center';
-            link.onmouseover = () => { link.style.background = '#FFC107'; link.style.transform = 'scale(1.02)'; };
-            link.onmouseout = () => { link.style.background = '#f5f0eb'; link.style.transform = 'scale(1)'; };
+            link.innerHTML = `
+                <span class="programa-icono"><i class="${icono}"></i></span>
+                <span class="programa-nombre">${nombre}</span>
+                <span class="programa-resolucion">${resolucion}</span>
+            `;
+            
             itemDiv.appendChild(link);
             wrapper.appendChild(itemDiv);
         });
-        body.appendChild(wrapper);
-    }
-    
-    // Botón para abrir modal de infografías (Planea tu matrícula)
-    if (item.desplegable) {
-        const wrapper = document.createElement('div');
-        wrapper.style.marginTop = '1rem';
-        const btn = document.createElement('button');
-        btn.className = 'btn-enlace';
-        btn.style.background = '#FFF3E0';
-        btn.style.color = '#5D4037';
-        btn.style.fontWeight = 'bold';
-        btn.innerText = `📘 ${item.desplegable.titulo}`;
-        btn.addEventListener('click', () => {
-            abrirModal(item.desplegable.enlaces, item.desplegable.titulo);
-        });
-        wrapper.appendChild(btn);
         body.appendChild(wrapper);
     }
     
@@ -306,54 +310,19 @@ function filtrarTarjetas(contenido, textoBusqueda) {
 }
 
 // ============================================
-// FUNCIONES DEL MODAL (Infografías)
+// FUNCIONES UNIFICADAS PARA MODALES
 // ============================================
 
-function abrirModal(enlaces, titulo) {
-    const overlay = document.getElementById('modalInfografias');
-    const grid = document.getElementById('modalGrid');
-    const titleEl = document.getElementById('modalTitle');
-    if (!overlay || !grid) return;
-    if (overlay.style.display === 'flex') return;
-    titleEl.innerText = `📘 ${titulo}`;
-    grid.innerHTML = '';
-    enlaces.forEach(enlace => {
-        const div = document.createElement('div');
-        div.className = 'modal-item';
-        const textoLimpio = enlace.texto.replace(/^[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
-        div.innerHTML = `
-            <span class="emoji">📄</span>
-            <a href="${enlace.ruta}" target="_blank">${textoLimpio}</a>
-        `;
-        grid.appendChild(div);
-    });
-    overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
+let modalAbierto = false;
 
-function cerrarModal() {
-    const overlay = document.getElementById('modalInfografias');
-    if (overlay) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-}
-
-// ============================================
-// FUNCIONES PARA MODALES DE PROCESOS
-// ============================================
-
-function abrirModalProceso(modalId) {
+function abrirModalGenerico(modalId) {
     const overlay = document.getElementById(modalId);
     if (!overlay) return;
     if (overlay.style.display === 'flex') return;
-    if (modalId === 'modalFUS') {
-        overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        return;
-    }
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
+    modalAbierto = true;
+    // Cargar contenido dinámico solo para homologaciones y aplazamientos
     if (modalId === 'modalHomologaciones') {
         const grid = document.getElementById('gridHomologaciones');
         if (grid && grid.children.length === 0) {
@@ -383,12 +352,46 @@ function abrirModalProceso(modalId) {
     }
 }
 
-function cerrarModalProceso(modalId) {
+function cerrarModalGenerico(modalId) {
     const overlay = document.getElementById(modalId);
-    if (overlay) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
+    if (!overlay) return;
+    overlay.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    modalAbierto = false;
+}
+
+// Funciones específicas para compatibilidad
+function abrirModal(enlaces, titulo) {
+    const overlay = document.getElementById('modalInfografias');
+    const grid = document.getElementById('modalGrid');
+    const titleEl = document.getElementById('modalTitle');
+    if (!overlay || !grid) return;
+    if (overlay.style.display === 'flex') return;
+    titleEl.innerText = `📘 ${titulo}`;
+    grid.innerHTML = '';
+    enlaces.forEach(enlace => {
+        const div = document.createElement('div');
+        div.className = 'modal-item';
+        const textoLimpio = enlace.texto.replace(/^[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
+        div.innerHTML = `
+            <span class="emoji">📄</span>
+            <a href="${enlace.ruta}" target="_blank">${textoLimpio}</a>
+        `;
+        grid.appendChild(div);
+    });
+    abrirModalGenerico('modalInfografias');
+}
+
+function cerrarModal() {
+    cerrarModalGenerico('modalInfografias');
+}
+
+function abrirModalProceso(modalId) {
+    abrirModalGenerico(modalId);
+}
+
+function cerrarModalProceso(modalId) {
+    cerrarModalGenerico(modalId);
 }
 
 // ============================================
@@ -488,24 +491,24 @@ document.addEventListener('DOMContentLoaded', () => {
     checkDocenteAccess();
     currentTab = 'estudiantes';
     
-    // Eventos modales
-    const modalOverlay = document.getElementById('modalInfografias');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) cerrarModal();
-        });
-        if (modalCloseBtn) modalCloseBtn.addEventListener('click', cerrarModal);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') cerrarModal();
-        });
-    }
-    document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const modalId = this.getAttribute('data-modal');
-            cerrarModalProceso(modalId);
+    // ============================================
+    // EVENTOS PARA MODALES (UNIFICADOS)
+    // ============================================
+    
+    // Cierre con la X
+    document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const modalId = this.closest('.modal-overlay').id;
+            if (modalId === 'modalInfografias') {
+                cerrarModal();
+            } else {
+                cerrarModalProceso(modalId);
+            }
         });
     });
+    
+    // Cierre al hacer clic fuera del modal
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -518,6 +521,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    // Cierre con tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modalAbierto) {
+            const abierto = document.querySelector('.modal-overlay[style*="display: flex"]');
+            if (abierto) {
+                const modalId = abierto.id;
+                if (modalId === 'modalInfografias') {
+                    cerrarModal();
+                } else {
+                    cerrarModalProceso(modalId);
+                }
+            }
+        }
+    });
+    
+    // Acordeón del FUS
     document.querySelectorAll('.fus-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             this.classList.toggle('active');
