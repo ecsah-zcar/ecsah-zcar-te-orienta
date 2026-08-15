@@ -216,10 +216,10 @@ function crearTarjeta(item) {
     // Si es horizontal, mostrar en fila con scroll
     if (item.horizontal && item.enlaces) {
         const wrapper = document.createElement('div');
-        wrapper.className = 'horizontal-scroll';
+        wrapper.className = 'programas-grid';
         item.enlaces.forEach(enlace => {
             const itemDiv = document.createElement('div');
-            itemDiv.className = 'horizontal-item';
+            itemDiv.className = 'programa-item';
             const link = document.createElement('a');
             link.href = enlace.ruta;
             link.target = "_blank";
@@ -228,10 +228,11 @@ function crearTarjeta(item) {
             link.style.textDecoration = 'none';
             link.style.color = '#1a2c3e';
             link.style.fontWeight = '600';
-            link.style.padding = '0.5rem';
+            link.style.padding = '0.6rem 0.8rem';
             link.style.borderRadius = '12px';
             link.style.background = '#f5f0eb';
             link.style.transition = 'all 0.2s';
+            link.style.textAlign = 'center';
             link.onmouseover = () => { link.style.background = '#FFC107'; link.style.transform = 'scale(1.02)'; };
             link.onmouseout = () => { link.style.background = '#f5f0eb'; link.style.transform = 'scale(1)'; };
             itemDiv.appendChild(link);
