@@ -117,7 +117,8 @@ const contenidoHomologaciones = [
     { texto: "📝 Convenio Filosofía - Seminarios y Comunidades Religiosas", ruta: "documentos/Convenio_Filosofía_planes_de_estudio_Seminarios_y_Comunidades.pdf" },
     { texto: "📖 Convenio Comunicación Social - INSTEL TLL", ruta: "documentos/Convenio_Comunicación_Social_Instel_TLL.pdf" },
     { texto: "📝 Convenio Comunicación Social - COMULDESA 2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" },
-    { texto: "📖 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
+    { texto: "📖 Homologación y Validación Psicología", ruta: "https://estudios.unad.edu.co/homologacion-y-validacion-psicologia?types[0]=1" },
+    { texto: "📝 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
 ];
 
 const contenidoAplazamientos = [
