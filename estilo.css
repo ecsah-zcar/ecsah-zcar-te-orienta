@@ -23,8 +23,8 @@ header {
 .header-banner {
     background: url('banner-ecsah.jpg') center 30% / cover no-repeat;
     position: relative;
-    padding: 1.5rem 2rem 1rem;
-    min-height: 220px;
+    padding: 1.5rem 1rem 1rem;
+    min-height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,8 +34,8 @@ header {
 .header-franja {
     background: rgba(255, 193, 7, 0.88);
     backdrop-filter: blur(2px);
-    padding: 1rem 2rem;
-    border-radius: 20px;
+    padding: 0.8rem 1.2rem;
+    border-radius: 16px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     width: 100%;
     max-width: 900px;
@@ -46,18 +46,18 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.2rem;
+    gap: 0.8rem;
     flex-wrap: wrap;
 }
 
 .logo-ecsah {
-    height: 70px;
+    height: 50px;
     width: auto;
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
 }
 
 .logo-titulo h1 {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: #1a2c3e;
     letter-spacing: -0.5px;
@@ -66,7 +66,7 @@ header {
 }
 
 .logo-titulo p {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: #1a2c3e;
     opacity: 0.85;
@@ -74,17 +74,17 @@ header {
 }
 
 .buscador {
-    margin-top: 1.2rem;
+    margin-top: 0.8rem;
     width: 100%;
     max-width: 600px;
 }
 
 #searchInput {
     width: 100%;
-    padding: 0.9rem 1.4rem;
+    padding: 0.8rem 1.2rem;
     border-radius: 50px;
     border: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     background: rgba(255,255,255,0.95);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
@@ -103,26 +103,30 @@ header {
 .tabs {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 1rem;
     background: #ffffff;
-    padding: 0.7rem 1.5rem;
+    padding: 0.6rem 1rem;
     border-bottom: 1px solid rgba(255, 193, 7, 0.2);
     position: sticky;
     top: 0;
     z-index: 10;
+    flex-wrap: wrap;
 }
 
 .tab-btn {
     background: transparent;
     border: none;
-    padding: 0.6rem 2rem;
-    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.95rem;
     font-weight: 700;
     border-radius: 40px;
     cursor: pointer;
     transition: all 0.2s ease;
     color: #5d4037;
     font-family: 'Nunito', sans-serif;
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
 }
 
 .tab-btn.active {
@@ -138,7 +142,7 @@ header {
 /* ===== CONTENIDO ===== */
 .tab-content {
     display: none;
-    padding: 2.5rem 2rem;
+    padding: 1.5rem 1rem;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -150,9 +154,9 @@ header {
 .intro {
     background: rgba(255, 248, 225, 0.7);
     backdrop-filter: blur(4px);
-    padding: 1.5rem 2rem;
-    border-radius: 24px;
-    margin-bottom: 2.5rem;
+    padding: 1.2rem 1.2rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
     border-left: 6px solid #FFC107;
 }
 
@@ -160,14 +164,18 @@ header {
     margin-bottom: 0.5rem;
     color: #5d4037;
     font-weight: 700;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
 }
 
-/* ===== GRID DE 3 COLUMNAS ===== */
+.intro p {
+    font-size: 0.95rem;
+}
+
+/* ===== GRID DE 3 COLUMNAS (responsive) ===== */
 .grid-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 /* Tarjeta de programas ocupa toda la fila */
@@ -189,11 +197,11 @@ header {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 280px;
+    min-height: 260px;
 }
 
 .card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     box-shadow: 0 20px 50px rgba(255, 193, 7, 0.12);
     border-color: rgba(255, 193, 7, 0.2);
 }
@@ -205,30 +213,31 @@ header {
 .card-header {
     background: #FFC107;
     color: #1a2c3e;
-    padding: 1rem 1.5rem;
-    font-size: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     flex-shrink: 0;
 }
 
 .card-header .card-icon {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
 }
 
 .card-body {
-    padding: 1.5rem;
+    padding: 1.2rem;
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
 .card-body p {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     color: #3d3d3d;
     font-weight: 400;
+    font-size: 0.95rem;
 }
 
 .card-body ul {
@@ -239,21 +248,21 @@ header {
 }
 
 .card-body li {
-    margin: 0.7rem 0;
+    margin: 0.5rem 0;
 }
 
-/* ===== PROGRAMS EN DOS COLUMNAS (estilo segunda imagen) ===== */
+/* ===== PROGRAMS EN 4 COLUMNAS (responsive) ===== */
 .programas-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);  /* 4 columnas */
-    gap: 0.8rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
     margin-top: 0.5rem;
 }
 
 .programa-item {
     background: #f5f0eb;
-    border-radius: 14px;
-    padding: 0.8rem 0.5rem;
+    border-radius: 12px;
+    padding: 0.6rem 0.3rem;
     text-align: center;
     transition: all 0.2s ease;
 }
@@ -271,20 +280,20 @@ header {
 }
 
 .programa-item .programa-icono {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     display: block;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.1rem;
 }
 
 .programa-item .programa-nombre {
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     display: block;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
 .programa-item .programa-resolucion {
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     color: #6c757d;
     display: block;
     font-weight: 400;
@@ -301,10 +310,10 @@ header {
     background: #f5f0eb;
     color: #1a2c3e;
     text-decoration: none;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 0.8rem;
     border-radius: 30px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     width: 100%;
     text-align: center;
@@ -325,9 +334,9 @@ footer {
     background: #5d4037;
     color: #ffe082;
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
     margin-top: 2rem;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
 }
 
 footer a {
@@ -343,18 +352,18 @@ footer a:hover {
 .footer-social {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .footer-social a {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .footer-social a i {
-    margin-right: 0.4rem;
+    margin-right: 0.3rem;
 }
 
 /* ===== MODAL OVERLAY ===== */
@@ -370,7 +379,7 @@ footer a:hover {
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    padding: 20px;
+    padding: 15px;
     animation: modalFadeIn 0.3s ease;
 }
 
@@ -381,12 +390,12 @@ footer a:hover {
 
 .modal-box {
     background: white;
-    border-radius: 28px;
+    border-radius: 24px;
     max-width: 900px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    padding: 30px 35px;
+    padding: 20px 20px;
     box-shadow: 0 30px 80px rgba(0,0,0,0.25);
     border: 1px solid rgba(255,255,255,0.2);
 }
@@ -396,19 +405,19 @@ footer a:hover {
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid #FFC107;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
 }
 
 .modal-header h2 {
     margin: 0;
     color: #5D4037;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 700;
 }
 
 .modal-close {
-    font-size: 2.2rem;
+    font-size: 2rem;
     cursor: pointer;
     color: #999;
     transition: 0.2s;
@@ -429,13 +438,13 @@ footer a:hover {
 .modal-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 12px;
 }
 
 .modal-item {
     background: #FFF9E6;
-    border-radius: 16px;
-    padding: 16px 10px;
+    border-radius: 14px;
+    padding: 14px 8px;
     text-align: center;
     border: 1px solid #FFE082;
     transition: all 0.25s ease;
@@ -448,21 +457,21 @@ footer a:hover {
 .modal-item:hover {
     background: #FFC107;
     border-color: #FFC107;
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(255, 193, 7, 0.25);
 }
 
 .modal-item .emoji {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .modal-item a {
     text-decoration: none;
     color: #5D4037;
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     display: block;
 }
 
@@ -477,9 +486,9 @@ footer a:hover {
 
 .fus-instructions {
     background: #FFF8E1;
-    padding: 1.2rem 1.5rem;
-    border-radius: 16px;
-    margin-bottom: 1.5rem;
+    padding: 1rem 1.2rem;
+    border-radius: 14px;
+    margin-bottom: 1.2rem;
     border-left: 6px solid #FFC107;
 }
 
@@ -489,8 +498,9 @@ footer a:hover {
 }
 
 .fus-instructions li {
-    padding: 0.3rem 0;
+    padding: 0.2rem 0;
     border-bottom: 1px solid rgba(255, 224, 130, 0.3);
+    font-size: 0.9rem;
 }
 
 .fus-instructions li:last-child {
@@ -499,7 +509,7 @@ footer a:hover {
 
 .fus-preview {
     text-align: center;
-    margin: 1.5rem 0;
+    margin: 1rem 0;
 }
 
 .fus-preview img {
@@ -509,13 +519,14 @@ footer a:hover {
 }
 
 .fus-guide h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     color: #5D4037;
+    font-size: 1.1rem;
 }
 
 .fus-accordion {
     border: 1px solid #FFE082;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
 }
 
@@ -530,8 +541,8 @@ footer a:hover {
 .fus-btn {
     background: #FFF3E0;
     border: none;
-    padding: 0.8rem 1.2rem;
-    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
@@ -556,7 +567,7 @@ footer a:hover {
 
 .fus-panel {
     display: none;
-    padding: 1rem 1.2rem;
+    padding: 0.8rem 1rem;
     background: #FFFDF5;
     border-top: 1px solid #FFE082;
 }
@@ -564,5 +575,189 @@ footer a:hover {
 .fus-panel p {
     margin: 0;
     color: #333;
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+/* ======================================== */
+/* ===== RESPONSIVE (MÓVILES Y TABLETS) ==== */
+/* ======================================== */
+
+/* Tablets y móviles grandes */
+@media (max-width: 992px) {
+    .grid-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+    .programas-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .modal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Móviles */
+@media (max-width: 700px) {
+    .header-banner {
+        min-height: 140px;
+        padding: 1rem 0.8rem;
+    }
+    .header-franja {
+        padding: 0.6rem 0.8rem;
+        border-radius: 12px;
+    }
+    .logo-ecsah {
+        height: 40px;
+    }
+    .logo-titulo h1 {
+        font-size: 1.3rem;
+    }
+    .logo-titulo p {
+        font-size: 0.8rem;
+    }
+    .buscador {
+        margin-top: 0.6rem;
+    }
+    #searchInput {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .tabs {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    .tab-btn {
+        font-size: 0.85rem;
+        padding: 0.4rem 1rem;
+        min-width: 80px;
+        flex: 1;
+    }
+
+    .tab-content {
+        padding: 1rem 0.8rem;
+    }
+    .intro {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+    .intro h2 {
+        font-size: 1.2rem;
+    }
+    .intro p {
+        font-size: 0.9rem;
+    }
+
+    .grid-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .card {
+        min-height: 200px;
+    }
+    .card-header {
+        font-size: 1rem;
+        padding: 0.7rem 1rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+    .card-body p {
+        font-size: 0.9rem;
+    }
+    .btn-enlace {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.7rem;
+    }
+
+    .programas-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    .programa-item {
+        padding: 0.5rem 0.2rem;
+    }
+    .programa-item .programa-icono {
+        font-size: 1.2rem;
+    }
+    .programa-item .programa-nombre {
+        font-size: 0.7rem;
+    }
+    .programa-item .programa-resolucion {
+        font-size: 0.5rem;
+    }
+
+    .modal-box {
+        padding: 15px;
+        border-radius: 20px;
+        max-height: 85vh;
+    }
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    .modal-close {
+        font-size: 1.8rem;
+    }
+    .modal-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .modal-item {
+        padding: 12px 8px;
+    }
+    .modal-item .emoji {
+        font-size: 1.4rem;
+    }
+    .modal-item a {
+        font-size: 0.75rem;
+    }
+
+    .fus-instructions {
+        padding: 0.8rem 1rem;
+    }
+    .fus-instructions li {
+        font-size: 0.85rem;
+    }
+    .fus-btn {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+    }
+    .fus-panel p {
+        font-size: 0.85rem;
+    }
+
+    footer {
+        padding: 1rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    .footer-social {
+        gap: 1rem;
+    }
+    .footer-social a {
+        font-size: 0.8rem;
+    }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 400px) {
+    .programas-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.4rem;
+    }
+    .programa-item .programa-nombre {
+        font-size: 0.65rem;
+    }
+    .programa-item .programa-resolucion {
+        font-size: 0.45rem;
+    }
+    .tab-btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.8rem;
+    }
+    .logo-titulo h1 {
+        font-size: 1.1rem;
+    }
 }
