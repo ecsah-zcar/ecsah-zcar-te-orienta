@@ -37,8 +37,8 @@ const contenidoEstudiantes = [
         titulo: "🔬 Investigación",
         descripcion: "Descubre los proyectos, semilleros y convocatorias de investigación de la ECSAH Zona Caribe.",
         enlaces: [
-            { texto: "🧪 Semilleros de Investigación", ruta: "#" },
-            { texto: "📢 Próximas convocatorias", ruta: "#" },
+            { texto: "🧪 Semilleros de Investigación", ruta: "documentos/Semilleros_ECSAH_ZCAR.pdf" },
+            { texto: "📢 Próximas convocatorias", ruta: "https://noticias.unad.edu.co/index.php/noticias-unad/abierta-la-convocatoria-n-007-de-2026-para-la-conformacion-de-nuevos-semilleros-y-reactivacion-de-aquellos-que-hayan-perdido-su-aval-institucional-vigencia-2027" },
             { texto: "📋 Proyectos actuales", ruta: "#" },
             { texto: "📄 Resultados y publicaciones", ruta: "#" }
         ]
