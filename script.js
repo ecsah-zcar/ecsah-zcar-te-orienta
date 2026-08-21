@@ -2,7 +2,7 @@
 // ECSAH ZCAR Te Orienta - Micrositio
 // ============================================
 
-// 📚 CONTENIDO ESTUDIANTES (ordenado según esquema)
+// 📚 CONTENIDO ESTUDIANTES (actualizado)
 const contenidoEstudiantes = [
     // Fila 1: tres tarjetas
     {
@@ -34,6 +34,16 @@ const contenidoEstudiantes = [
         }
     },
     {
+        titulo: "🔬 Investigación",
+        descripcion: "Descubre los proyectos, semilleros y convocatorias de investigación de la ECSAH Zona Caribe.",
+        enlaces: [
+            { texto: "🧪 Semilleros de Investigación", ruta: "#" },
+            { texto: "📢 Próximas convocatorias", ruta: "#" },
+            { texto: "📋 Proyectos actuales", ruta: "#" },
+            { texto: "📄 Resultados y publicaciones", ruta: "#" }
+        ]
+    },
+    {
         titulo: "🎓 Opciones de grado y prácticas",
         descripcion: "Conoce las opciones para tu trabajo de grado y los requisitos para prácticas profesionales.",
         enlaces: [
@@ -44,15 +54,7 @@ const contenidoEstudiantes = [
             { texto: "🤝 Convenios activos", ruta: "#" }
         ]
     },
-    {
-        titulo: "📰 Noticias Saber Pro / TyT",
-        descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos.",
-        enlaces: [
-            { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
-            { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso-de-Inscripción-Pruebas-Saber-Primer-Semestre-2026.pdf" },
-            { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
-        ]
-    },
+    // Fila 2: tarjeta ancha (Programas)
     {
         titulo: "📚 Programas de la ECSAH",
         descripcion: "Conoce la oferta académica de pregrado de la Escuela de Ciencias Sociales, Artes y Humanidades.",
@@ -68,7 +70,7 @@ const contenidoEstudiantes = [
             { icono: "fa-hands-helping", nombre: "Trabajo Social", resolucion: "Res. 007068 - 2026", ruta: "https://estudios.unad.edu.co/trabajo-social" }
         ]
     },
-        // Fila 3: tres tarjetas
+    // Fila 3: tres tarjetas
     {
         titulo: "📋 Procesos académico-administrativos",
         descripcion: "Gestiona tus trámites académicos y administrativos: homologaciones, aplazamientos, FUS y más.",
@@ -83,23 +85,25 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "🎫 Eventos de fortalecimiento disciplinar",
-        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe.",
+        titulo: "🎪 Eventos de fortalecimiento disciplinar",
+        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
         enlaces: [
             { texto: "📅 Calendario de eventos", ruta: "#" },
             { texto: "📋 Próximos eventos", ruta: "#" },
             { texto: "📸 Galería de eventos pasados", ruta: "#" },
             { texto: "📝 Inscripción a eventos", ruta: "#" }
+        ],
+        botonesModal: [
+            { texto: "🎙️ Programas radiales", modalId: "modalRadiales" }
         ]
     },
     {
-        titulo: "🎙️ Programas radiales",
-        descripcion: "Espacios de diálogo, entrevistas y contenido académico producido por la ECSAH Zona Caribe.",
+        titulo: "📰 Noticias Saber Pro / TyT",
+        descripcion: "Información actualizada sobre las pruebas Saber Pro y TyT: fechas, novedades, resultados y recursos.",
         enlaces: [
-            { texto: "📻 Escuchar programas grabados", ruta: "#" },
-            { texto: "📅 Próximas transmisiones", ruta: "#" },
-            { texto: "🎧 Podcasts disponibles", ruta: "#" },
-            { texto: "📝 Participar como invitado", ruta: "#" }
+            { texto: "📰 Noticias oficiales Saber Pro", ruta: "https://noticias.unad.edu.co/index.php/saber-pro" },
+            { texto: "📋 Inscripción 2026-1", ruta: "documentos/Proceso-de-Inscripción-Pruebas-Saber-Primer-Semestre-2026.pdf" },
+            { texto: "❓ Preguntas frecuentes", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/pruebas-icfes" }
         ]
     }
 ];
@@ -117,8 +121,7 @@ const contenidoHomologaciones = [
     { texto: "📝 Convenio Filosofía - Seminarios y Comunidades Religiosas", ruta: "documentos/Convenio_Filosofía_planes_de_estudio_Seminarios_y_Comunidades.pdf" },
     { texto: "📖 Convenio Comunicación Social - INSTEL TLL", ruta: "documentos/Convenio_Comunicación_Social_Instel_TLL.pdf" },
     { texto: "📝 Convenio Comunicación Social - COMULDESA 2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" },
-    { texto: "📖 Homologación y Validación Psicología", ruta: "https://estudios.unad.edu.co/homologacion-y-validacion-psicologia?types[0]=1" },
-    { texto: "📝 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
+    { texto: "📖 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
 ];
 
 const contenidoAplazamientos = [
@@ -127,8 +130,15 @@ const contenidoAplazamientos = [
     { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Instructivo-Aplazamiento.pdf" }
 ];
 
+const contenidoRadiales = [
+    { texto: "📻 Escuchar programas grabados", ruta: "#" },
+    { texto: "📅 Próximas transmisiones", ruta: "#" },
+    { texto: "🎧 Podcasts disponibles", ruta: "#" },
+    { texto: "📝 Participar como invitado", ruta: "#" }
+];
+
 // ============================================
-// CONTENIDO DOCENTES
+// CONTENIDO DOCENTES (sin cambios)
 // ============================================
 
 const contenidoDocentes = [
@@ -197,7 +207,7 @@ function crearTarjeta(item) {
     desc.innerText = item.descripcion;
     body.appendChild(desc);
     
-    // 🔼 Botón "Planea tu matrícula" (AHORA VA PRIMERO)
+    // Botón "Planea tu matrícula" (solo para la tarjeta de Matrícula)
     if (item.desplegable) {
         const wrapper = document.createElement('div');
         wrapper.style.marginTop = '1rem';
@@ -214,7 +224,7 @@ function crearTarjeta(item) {
         body.appendChild(wrapper);
     }
     
-    // Enlaces normales (calendario, oferta, etc.) - AHORA VAN DESPUÉS
+    // Enlaces normales
     if (item.enlaces && item.enlaces.length > 0 && !item.horizontal) {
         const lista = document.createElement('ul');
         item.enlaces.forEach(enlace => {
@@ -230,15 +240,15 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
-    // Si es horizontal (Programas de la ECSAH) → grid de 4 columnas
+    // Si es horizontal (Programas de la ECSAH) → usa la estructura programas
     if (item.horizontal && item.programas) {
         const wrapper = document.createElement('div');
         wrapper.className = 'programas-grid';
-    
+        
         item.programas.forEach(prog => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'programa-item';
-        
+            
             const link = document.createElement('a');
             link.href = prog.ruta;
             link.target = "_blank";
@@ -247,13 +257,13 @@ function crearTarjeta(item) {
                 <span class="programa-nombre">${prog.nombre}</span>
                 <span class="programa-resolucion">${prog.resolucion}</span>
             `;
-        
+            
             itemDiv.appendChild(link);
             wrapper.appendChild(itemDiv);
         });
         body.appendChild(wrapper);
     }
-
+    
     // Botones para modales de procesos
     if (item.botonesModal && item.botonesModal.length > 0) {
         const wrapper = document.createElement('div');
@@ -269,7 +279,12 @@ function crearTarjeta(item) {
             btn.style.fontWeight = 'bold';
             btn.innerText = boton.texto;
             btn.addEventListener('click', () => {
-                abrirModalProceso(boton.modalId);
+                // Si es el modal de radiales, usamos un contenido especial
+                if (boton.modalId === 'modalRadiales') {
+                    abrirModal(contenidoRadiales, 'Programas radiales');
+                } else {
+                    abrirModalProceso(boton.modalId);
+                }
             });
             wrapper.appendChild(btn);
         });
@@ -484,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentTab = 'estudiantes';
     
     // ============================================
-    // EVENTOS PARA MODALES (UNIFICADOS)
+    // EVENTOS PARA MODALES
     // ============================================
     
     // Cierre con la X
