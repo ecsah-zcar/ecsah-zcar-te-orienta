@@ -121,7 +121,7 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "🎪 Eventos de fortalecimiento disciplinar",
+        titulo: "🏛️ Eventos de fortalecimiento disciplinar",
         descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
         enlaces: [
             { texto: "📅 Calendario de eventos", ruta: "#" },
