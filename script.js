@@ -435,8 +435,7 @@ function abrirModalGenerico(modalId) {
         if (grid && grid.children.length === 0) {
             contenidoRevistas.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'modal-item';
-                // Usamos el emoji del texto como ícono
+                div.className = 'modal-item';  // ← Clave: esta clase aplica los estilos
                 const icono = item.texto.match(/^[📘📰]/)?.[0] || '📄';
                 div.innerHTML = `
                     <span class="emoji">${icono}</span>
@@ -447,7 +446,6 @@ function abrirModalGenerico(modalId) {
             });
         }
     }
-}
 
 function cerrarModalGenerico(modalId) {
     const overlay = document.getElementById(modalId);
