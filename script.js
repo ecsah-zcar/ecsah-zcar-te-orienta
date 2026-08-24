@@ -49,7 +49,8 @@ const contenidoEstudiantes = [
         enlaces: [
             { texto: "📘 Opciones de Grado - Guía completa", ruta: "documentos/Opciones-de-Grado.pdf" },
             { texto: "📖 Información General Sobre Grado", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/grados" },
-            { texto: "📋 Protocolo de práctica profesional 3443", ruta: "documentos/Protocolo_Practicas_Psicología_Resolución_3443.pdf" },
+            { texto: "📋 Protocolo de práctica profesional Psicología Res.3443", ruta: "documentos/Protocolo_Practicas_Psicología_Resolución_3443.pdf" },
+            { texto: "📖 Protocolo de práctica profesional Comunicación Social Res.019845", ruta: "documentos/Protocolo_Práctica_Profesional_Comunicación_Social_Res.019845.pdf" },
             { texto: "📝 Requisitos de Practicas Profesionales", ruta: "documentos/Requisitos_Prácticas_Profesionales.pdf" },
             { texto: "🤝 Convenios activos", ruta: "#" }
         ]
