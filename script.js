@@ -336,6 +336,7 @@ function abrirModalGenerico(modalId) {
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     modalAbierto = true;
+   
     // Cargar contenido dinámico solo para homologaciones y aplazamientos
     if (modalId === 'modalHomologaciones') {
         const grid = document.getElementById('gridHomologaciones');
@@ -345,6 +346,19 @@ function abrirModalGenerico(modalId) {
                 div.className = 'modal-item';
                 div.innerHTML = `
                     <span class="emoji">📄</span>
+                    <a href="${item.ruta}" target="_blank">${item.texto}</a>
+                `;
+                grid.appendChild(div);
+            });
+        }
+    } else if (modalId === 'modalProtocolo') {
+        const grid = document.getElementById('gridProtocolo');
+        if (grid && grid.children.length === 0) {
+            contenidoProtocolo.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                div.innerHTML = `
+                    <span class="emoji">📋</span>
                     <a href="${item.ruta}" target="_blank">${item.texto}</a>
                 `;
                 grid.appendChild(div);
