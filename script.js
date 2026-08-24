@@ -11,11 +11,11 @@ function obtenerIcono(texto) {
     if (textoLower.includes('calendario') || textoLower.includes('fecha')) return '📅';
     if (textoLower.includes('historial') || textoLower.includes('académico')) return '📊';
     if (textoLower.includes('malla') || textoLower.includes('curso')) return '📋';
-    if (textoLower.includes('formaliza') || textoLower.includes('matrícula')) return '✅';
+    if (textoLower.includes('formaliza')) return '✅';
     if (textoLower.includes('periodo')) return '🗓️';
     if (textoLower.includes('trámite') || textoLower.includes('SAI')) return '🏛️';
-    if (textoLower.includes('pago') || textoLower.includes('factura')) return '💰';
-    if (textoLower.includes('descuento')) return '🎯';
+    if (textoLower.includes('pago')) return '💰';
+    if (textoLower.includes('descuento')) return '📉';
     if (textoLower.includes('legalizar')) return '📌';
     if (textoLower.includes('crédito')) return '📈';
     if (textoLower.includes('continuidad')) return '🔄';
