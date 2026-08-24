@@ -68,15 +68,18 @@ const contenidoEstudiantes = [
         }
     },
     {
-        titulo: "🔬 Investigación",
+       titulo: "🔬 Investigación",
         descripcion: "Descubre los proyectos, semilleros y convocatorias de investigación de la ECSAH Zona Caribe.",
         enlaces: [
             { texto: "🧪 Semilleros de Investigación", ruta: "documentos/Semilleros_ECSAH_ZCAR.pdf" },
             { texto: "📢 Próximas convocatorias", ruta: "https://noticias.unad.edu.co/index.php/noticias-unad/abierta-la-convocatoria-n-007-de-2026-para-la-conformacion-de-nuevos-semilleros-y-reactivacion-de-aquellos-que-hayan-perdido-su-aval-institucional-vigencia-2027" },
             { texto: "📋 Proyectos actuales", ruta: "#" },
             { texto: "📄 Resultados y publicaciones", ruta: "#" }
+        ],
+        botonesModal: [
+            { texto: "📚 Revistas ECSAH", modalId: "modalRevistas" }
         ]
-    },
+    }
     {
         titulo: "🎓 Opciones de grado y prácticas",
         descripcion: "Conoce las opciones para tu trabajo de grado y los requisitos para prácticas profesionales.",
@@ -428,6 +431,27 @@ function abrirModalGenerico(modalId) {
             });
         }
     }
+    function abrirModalGenerico(modalId) {
+    // ... (código existente)
+
+    } else if (modalId === 'modalRevistas') {
+        const grid = document.getElementById('gridRevistas');
+        if (grid && grid.children.length === 0) {
+            contenidoRevistas.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                // Usamos el emoji del texto como ícono
+                const icono = item.texto.match(/^[📘📰]/)?.[0] || '📄';
+                div.innerHTML = `
+                    <span class="emoji">${icono}</span>
+                    <a href="${item.ruta}" target="_blank" style="font-weight:600; margin-bottom:0.2rem;">${item.texto.replace(/^[📘📰]\s*/, '')}</a>
+                    <span style="font-size:0.75rem; color:#6c757d; display:block; margin-top:0.2rem;">${item.descripcion}</span>
+                `;
+                grid.appendChild(div);
+            });
+        }
+    }
+}
 }
 
 function cerrarModalGenerico(modalId) {
