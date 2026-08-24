@@ -49,10 +49,11 @@ const contenidoEstudiantes = [
         enlaces: [
             { texto: "📘 Opciones de Grado - Guía completa", ruta: "documentos/Opciones-de-Grado.pdf" },
             { texto: "📖 Información General Sobre Grado", ruta: "https://academia.unad.edu.co/pregrado-posgrado/proximos-a-graduarse/grados" },
-            { texto: "📋 Protocolo de práctica profesional Psicología Res.3443", ruta: "documentos/Protocolo_Practicas_Psicología_Resolución_3443.pdf" },
-            { texto: "📖 Protocolo de práctica profesional Comunicación Social Res.019845", ruta: "documentos/Protocolo_Práctica_Profesional_Comunicación_Social_Res.019845.pdf" },
             { texto: "📝 Requisitos de Practicas Profesionales", ruta: "documentos/Requisitos_Prácticas_Profesionales.pdf" },
             { texto: "🤝 Convenios activos", ruta: "#" }
+        ],
+        botonesModal: [
+            { texto: "📋 Protocolo de práctica profesional", modalId: "modalProtocolo"},
         ]
     },
     // Fila 2: tarjeta ancha (Programas)
@@ -123,6 +124,11 @@ const contenidoHomologaciones = [
     { texto: "📖 Convenio Comunicación Social - INSTEL TLL", ruta: "documentos/Convenio_Comunicación_Social_Instel_TLL.pdf" },
     { texto: "📝 Convenio Comunicación Social - COMULDESA 2017", ruta: "documentos/Convenio_Comunicacion_Social_COMULDESA_2017.pdf" },
     { texto: "📖 Homologaciones SENA", ruta: "documentos/Orientaciones SENA.pdf" }
+];
+
+const contenidoProtocolo = [
+    { texto: "📋 Protocolo de práctica profesional Psicología Res.3443", ruta: "documentos/Protocolo_Practicas_Psicología_Resolución_3443.pdf" },
+    { texto: "📖 Protocolo de práctica profesional Comunicación Social Res.019845", ruta: "documentos/Protocolo_Práctica_Profesional_Comunicación_Social_Res.019845.pdf" }
 ];
 
 const contenidoAplazamientos = [
