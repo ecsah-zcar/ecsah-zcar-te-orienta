@@ -178,6 +178,19 @@ const contenidoRadiales = [
     { texto: "🎤 Participar como invitado", ruta: "#" }
 ];
 
+const contenidoRevistas = [
+    { 
+        texto: "📘 Aires Vallenatos", 
+        descripcion: "Publicación anual que reúne academia, cultura e identidad vallenata. Editada por la ECSAH y el Sello Editorial UNAD, con apoyo de los programas de Música y Comunicación Social.",
+        ruta: "https://selloeditorial.unad.edu.co/produccion/boletines/aires-vallenatos" 
+    },
+    { 
+        texto: "📰 Desbordes", 
+        descripcion: "Revista semestral de la ECSAH que visibiliza procesos investigativos y sociales desde un enfoque abierto e innovador. e-ISSN: 2539-4150",
+        ruta: "https://hemeroteca.unad.edu.co/index.php/desbordes/issue/view/668" 
+    }
+];
+
 // ============================================
 // CONTENIDO DOCENTES (sin cambios)
 // ============================================
