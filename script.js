@@ -2,7 +2,41 @@
 // ECSAH ZCAR Te Orienta - Micrositio
 // ============================================
 
-// 📚 CONTENIDO ESTUDIANTES (actualizado)
+// ============================================
+// FUNCIÓN PARA ASIGNAR ÍCONOS SEGÚN EL TEXTO
+// ============================================
+
+function obtenerIcono(texto) {
+    const textoLower = texto.toLowerCase();
+    if (textoLower.includes('calendario') || textoLower.includes('fecha')) return '📅';
+    if (textoLower.includes('historial') || textoLower.includes('académico')) return '📊';
+    if (textoLower.includes('malla') || textoLower.includes('curso')) return '📋';
+    if (textoLower.includes('formaliza') || textoLower.includes('matrícula')) return '✅';
+    if (textoLower.includes('periodo')) return '🗓️';
+    if (textoLower.includes('trámite') || textoLower.includes('SAI')) return '🏛️';
+    if (textoLower.includes('pago') || textoLower.includes('factura')) return '💰';
+    if (textoLower.includes('descuento')) return '🎯';
+    if (textoLower.includes('legalizar')) return '📌';
+    if (textoLower.includes('crédito')) return '📈';
+    if (textoLower.includes('continuidad')) return '🔄';
+    if (textoLower.includes('mínimo')) return '📉';
+    if (textoLower.includes('escuchar') || textoLower.includes('grabado')) return '📻';
+    if (textoLower.includes('transmisión')) return '📡';
+    if (textoLower.includes('podcast')) return '🎧';
+    if (textoLower.includes('invitado')) return '🎤';
+    if (textoLower.includes('convenio') || textoLower.includes('homologación')) return '🤝';
+    if (textoLower.includes('SENA')) return '🏫';
+    if (textoLower.includes('filosofía')) return '🧠';
+    if (textoLower.includes('comunicación')) return '📢';
+    if (textoLower.includes('artes')) return '🎨';
+    if (textoLower.includes('protocolo') || textoLower.includes('práctica')) return '📋';
+    if (textoLower.includes('psicología')) return '🧠';
+    if (textoLower.includes('aplazamiento')) return '⏰';
+    if (textoLower.includes('instructivo')) return '📖';
+    return '📄';
+}
+
+// 📚 CONTENIDO ESTUDIANTES (ordenado según esquema)
 const contenidoEstudiantes = [
     // Fila 1: tres tarjetas
     {
@@ -15,21 +49,21 @@ const contenidoEstudiantes = [
         desplegable: {
             titulo: "Planea tu matrícula",
             enlaces: [
-                { texto: "Consulta tu malla", ruta: "documentos/Infografía-1-Consulta-tu-malla.pdf" },
-                { texto: "Descarga tu historial académico", ruta: "documentos/Infografía-2-Descarga-tu-historial-académico.pdf" },
-                { texto: "Define los cursos a matricular", ruta: "documentos/Infografía-3-Define-los-cursos-a-matricular.pdf" },
-                { texto: "Formaliza tu matrícula", ruta: "documentos/Infografía-4-Formaliza-tu-matricula.pdf" },
-                { texto: "Conoce los periodos académicos", ruta: "documentos/Infografía-5-Conoce-los-periodos-académicos.pdf" },
-                { texto: "No recibiste tu enlace para matricular", ruta: "documentos/Infografía-6-No-recibiste-tu-enlace-para-matricular.pdf" },
-                { texto: "Trámites SAI", ruta: "documentos/Infografía-7-Tramites-SAI.pdf" },
-                { texto: "Pago de matrícula", ruta: "documentos/Infografía-8-Pago-de-matricula.pdf" },
-                { texto: "Confirmación del pago", ruta: "documentos/Infografía-9-Confirmación-del-pago.pdf" },
-                { texto: "Solicitud de descuentos", ruta: "documentos/Infografía-10-Solicitud-de-descuentos.pdf" },
-                { texto: "Imprimir factura", ruta: "documentos/Infografía-11-Imprimir-factura.pdf" },
-                { texto: "Legalizar matrícula", ruta: "documentos/Infografía-12-Legalizar-matricula.pdf" },
-                { texto: "Créditos Adicionales", ruta: "documentos/Infografía-13-Creditos-Adicionales.pdf" },
-                { texto: "Continuidad Académica", ruta: "documentos/Infografía-14-Continuidad-Académica.pdf" },
-                { texto: "Mínimo de créditos", ruta: "documentos/Infografía-15-Minimo-de-creditos.pdf" }
+                { texto: "📄 Consulta tu malla", ruta: "documentos/Infografía-1-Consulta-tu-malla.pdf" },
+                { texto: "📊 Descarga tu historial académico", ruta: "documentos/Infografía-2-Descarga-tu-historial-académico.pdf" },
+                { texto: "📝 Define los cursos a matricular", ruta: "documentos/Infografía-3-Define-los-cursos-a-matricular.pdf" },
+                { texto: "✅ Formaliza tu matrícula", ruta: "documentos/Infografía-4-Formaliza-tu-matricula.pdf" },
+                { texto: "🗓️ Conoce los periodos académicos", ruta: "documentos/Infografía-5-Conoce-los-periodos-académicos.pdf" },
+                { texto: "🔗 No recibiste tu enlace para matricular", ruta: "documentos/Infografía-6-No-recibiste-tu-enlace-para-matricular.pdf" },
+                { texto: "🏛️ Trámites SAI", ruta: "documentos/Infografía-7-Tramites-SAI.pdf" },
+                { texto: "💰 Pago de matrícula", ruta: "documentos/Infografía-8-Pago-de-matricula.pdf" },
+                { texto: "✅ Confirmación del pago", ruta: "documentos/Infografía-9-Confirmación-del-pago.pdf" },
+                { texto: "🎯 Solicitud de descuentos", ruta: "documentos/Infografía-10-Solicitud-de-descuentos.pdf" },
+                { texto: "🧾 Imprimir factura", ruta: "documentos/Infografía-11-Imprimir-factura.pdf" },
+                { texto: "📌 Legalizar matrícula", ruta: "documentos/Infografía-12-Legalizar-matricula.pdf" },
+                { texto: "📈 Créditos Adicionales", ruta: "documentos/Infografía-13-Creditos-Adicionales.pdf" },
+                { texto: "🔄 Continuidad Académica", ruta: "documentos/Infografía-14-Continuidad-Académica.pdf" },
+                { texto: "📉 Mínimo de créditos", ruta: "documentos/Infografía-15-Minimo-de-creditos.pdf" }
             ]
         }
     },
@@ -53,7 +87,7 @@ const contenidoEstudiantes = [
             { texto: "🤝 Convenios activos", ruta: "#" }
         ],
         botonesModal: [
-            { texto: "📋 Protocolo de práctica profesional", modalId: "modalProtocolo"},
+            { texto: "📋 Protocolo de práctica profesional", modalId: "modalProtocolo" }
         ]
     },
     // Fila 2: tarjeta ancha (Programas)
@@ -139,9 +173,9 @@ const contenidoAplazamientos = [
 
 const contenidoRadiales = [
     { texto: "📻 Escuchar programas grabados", ruta: "#" },
-    { texto: "📅 Próximas transmisiones", ruta: "#" },
+    { texto: "📡 Próximas transmisiones", ruta: "#" },
     { texto: "🎧 Podcasts disponibles", ruta: "#" },
-    { texto: "📝 Participar como invitado", ruta: "#" }
+    { texto: "🎤 Participar como invitado", ruta: "#" }
 ];
 
 // ============================================
@@ -193,11 +227,7 @@ const contenidoDocentes = [
 function crearTarjeta(item) {
     const card = document.createElement('div');
     card.className = 'card';
-    
-    // Si es horizontal, añadir clase especial
-    if (item.horizontal) {
-        card.classList.add('card-programas');
-    }
+    if (item.horizontal) card.classList.add('card-programas');
     
     const header = document.createElement('div');
     header.className = 'card-header';
@@ -209,12 +239,11 @@ function crearTarjeta(item) {
     
     const body = document.createElement('div');
     body.className = 'card-body';
-    
     const desc = document.createElement('p');
     desc.innerText = item.descripcion;
     body.appendChild(desc);
     
-    // Botón "Planea tu matrícula" (solo para la tarjeta de Matrícula)
+    // Botón "Planea tu matrícula"
     if (item.desplegable) {
         const wrapper = document.createElement('div');
         wrapper.style.marginTop = '1rem';
@@ -247,15 +276,13 @@ function crearTarjeta(item) {
         body.appendChild(lista);
     }
     
-    // Si es horizontal (Programas de la ECSAH) → usa la estructura programas
+    // Programas de la ECSAH
     if (item.horizontal && item.programas) {
         const wrapper = document.createElement('div');
         wrapper.className = 'programas-grid';
-        
         item.programas.forEach(prog => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'programa-item';
-            
             const link = document.createElement('a');
             link.href = prog.ruta;
             link.target = "_blank";
@@ -264,7 +291,6 @@ function crearTarjeta(item) {
                 <span class="programa-nombre">${prog.nombre}</span>
                 <span class="programa-resolucion">${prog.resolucion}</span>
             `;
-            
             itemDiv.appendChild(link);
             wrapper.appendChild(itemDiv);
         });
@@ -286,12 +312,7 @@ function crearTarjeta(item) {
             btn.style.fontWeight = 'bold';
             btn.innerText = boton.texto;
             btn.addEventListener('click', () => {
-                // Si es el modal de radiales, usamos un contenido especial
-                if (boton.modalId === 'modalRadiales') {
-                    abrirModal(contenidoRadiales, 'Programas radiales');
-                } else {
-                    abrirModalProceso(boton.modalId);
-                }
+                abrirModalProceso(boton.modalId);
             });
             wrapper.appendChild(btn);
         });
@@ -336,16 +357,16 @@ function abrirModalGenerico(modalId) {
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     modalAbierto = true;
-   
-    // Cargar contenido dinámico solo para homologaciones y aplazamientos
+
     if (modalId === 'modalHomologaciones') {
         const grid = document.getElementById('gridHomologaciones');
         if (grid && grid.children.length === 0) {
             contenidoHomologaciones.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'modal-item';
+                const icono = obtenerIcono(item.texto);
                 div.innerHTML = `
-                    <span class="emoji">📄</span>
+                    <span class="emoji">${icono}</span>
                     <a href="${item.ruta}" target="_blank">${item.texto}</a>
                 `;
                 grid.appendChild(div);
@@ -357,8 +378,9 @@ function abrirModalGenerico(modalId) {
             contenidoProtocolo.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'modal-item';
+                const icono = obtenerIcono(item.texto);
                 div.innerHTML = `
-                    <span class="emoji">📋</span>
+                    <span class="emoji">${icono}</span>
                     <a href="${item.ruta}" target="_blank">${item.texto}</a>
                 `;
                 grid.appendChild(div);
@@ -370,8 +392,23 @@ function abrirModalGenerico(modalId) {
             contenidoAplazamientos.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'modal-item';
+                const icono = obtenerIcono(item.texto);
                 div.innerHTML = `
-                    <span class="emoji">📄</span>
+                    <span class="emoji">${icono}</span>
+                    <a href="${item.ruta}" target="_blank">${item.texto}</a>
+                `;
+                grid.appendChild(div);
+            });
+        }
+    } else if (modalId === 'modalRadiales') {
+        const grid = document.getElementById('gridRadiales');
+        if (grid && grid.children.length === 0) {
+            contenidoRadiales.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'modal-item';
+                const icono = obtenerIcono(item.texto);
+                div.innerHTML = `
+                    <span class="emoji">${icono}</span>
                     <a href="${item.ruta}" target="_blank">${item.texto}</a>
                 `;
                 grid.appendChild(div);
@@ -388,7 +425,7 @@ function cerrarModalGenerico(modalId) {
     modalAbierto = false;
 }
 
-// Funciones específicas para compatibilidad
+// Funciones específicas
 function abrirModal(enlaces, titulo) {
     const overlay = document.getElementById('modalInfografias');
     const grid = document.getElementById('modalGrid');
@@ -400,10 +437,10 @@ function abrirModal(enlaces, titulo) {
     enlaces.forEach(enlace => {
         const div = document.createElement('div');
         div.className = 'modal-item';
-        const textoLimpio = enlace.texto.replace(/^[📄📘📋📅📝📖📊📰📷🎓]\s*/, '').trim();
+        const icono = obtenerIcono(enlace.texto);
         div.innerHTML = `
-            <span class="emoji">📄</span>
-            <a href="${enlace.ruta}" target="_blank">${textoLimpio}</a>
+            <span class="emoji">${icono}</span>
+            <a href="${enlace.ruta}" target="_blank">${enlace.texto}</a>
         `;
         grid.appendChild(div);
     });
@@ -523,7 +560,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // EVENTOS PARA MODALES
     // ============================================
     
-    // Cierre con la X
     document.querySelectorAll('.modal-close').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -536,7 +572,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Cierre al hacer clic fuera del modal
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -550,7 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Cierre con tecla ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modalAbierto) {
             const abierto = document.querySelector('.modal-overlay[style*="display: flex"]');
@@ -565,7 +599,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Acordeón del FUS
     document.querySelectorAll('.fus-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             this.classList.toggle('active');
