@@ -79,7 +79,7 @@ const contenidoEstudiantes = [
         botonesModal: [
             { texto: "📚 Revistas ECSAH", modalId: "modalRevistas" }
         ]
-    }
+    },
     {
         titulo: "🎓 Opciones de grado y prácticas",
         descripcion: "Conoce las opciones para tu trabajo de grado y los requisitos para prácticas profesionales.",
@@ -430,10 +430,6 @@ function abrirModalGenerico(modalId) {
                 grid.appendChild(div);
             });
         }
-    }
-    function abrirModalGenerico(modalId) {
-    // ... (código existente)
-
     } else if (modalId === 'modalRevistas') {
         const grid = document.getElementById('gridRevistas');
         if (grid && grid.children.length === 0) {
@@ -451,7 +447,6 @@ function abrirModalGenerico(modalId) {
             });
         }
     }
-}
 }
 
 function cerrarModalGenerico(modalId) {
