@@ -169,7 +169,6 @@ const contenidoProtocolo = [
 ];
 
 const contenidoAplazamientos = [
-    { texto: "📋 Formato solicitud aplazamiento", ruta: "#" },
     { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Aplazamientos.pdf" }
 ];
 
