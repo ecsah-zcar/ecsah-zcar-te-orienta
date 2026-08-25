@@ -169,9 +169,8 @@ const contenidoProtocolo = [
 ];
 
 const contenidoAplazamientos = [
-    { texto: "📋 Formato solicitud aplazamiento", ruta: "documentos/Formato-Aplazamiento.pdf" },
-    { texto: "📅 Calendario de fechas límite", ruta: "documentos/Calendario-Aplazamientos.pdf" },
-    { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Instructivo-Aplazamiento.pdf" }
+    { texto: "📋 Formato solicitud aplazamiento", ruta: "#" },
+    { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Aplazamientos.pdf" }
 ];
 
 const contenidoRadiales = [
