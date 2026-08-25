@@ -124,7 +124,7 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "🏛️ Eventos de fortalecimiento disciplinar",
+        titulo: "🎪 Eventos de fortalecimiento disciplinar",
         descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
         enlaces: [
             { texto: "📅 Calendario de eventos", ruta: "#" },
@@ -435,7 +435,7 @@ function abrirModalGenerico(modalId) {
         if (grid && grid.children.length === 0) {
             contenidoRevistas.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'modal-item';  // ← Clave: esta clase aplica los estilos
+                div.className = 'modal-item';
                 const icono = item.texto.match(/^[📘📰]/)?.[0] || '📄';
                 div.innerHTML = `
                     <span class="emoji">${icono}</span>
@@ -446,6 +446,7 @@ function abrirModalGenerico(modalId) {
             });
         }
     }
+}  // <--- ESTA LLAVE CIERRA CORRECTAMENTE LA FUNCIÓN
 
 function cerrarModalGenerico(modalId) {
     const overlay = document.getElementById(modalId);
