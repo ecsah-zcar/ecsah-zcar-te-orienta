@@ -124,17 +124,17 @@ const contenidoEstudiantes = [
         ]
     },
     {
-        titulo: "🎪 Eventos de fortalecimiento disciplinar",
-        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
-        enlaces: [
-            { texto: "📅 Calendario de eventos", ruta: "#" },
-            { texto: "📋 Próximos eventos", ruta: "#" },
-            { texto: "📸 Galería de eventos pasados", ruta: "#" },
-            { texto: "📝 Inscripción a eventos", ruta: "#" }
-        ],
-        botonesModal: [
-            { texto: "🎙️ Programas radiales", modalId: "modalRadiales" }
-        ]
+    titulo: "🎪 Eventos de fortalecimiento disciplinar",
+    descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
+    enlaces: [
+        { texto: "📋 Próximos eventos", ruta: "#" },
+        { texto: "📸 Galería de eventos pasados", ruta: "#" },
+        { texto: "📝 Inscripción a eventos", ruta: "#" }
+    ],
+    botonesModal: [
+        { texto: "📅 Calendario de eventos", modalId: "modalEventos" },
+        { texto: "🎙️ Programas radiales", modalId: "modalRadiales" }
+    ]
     },
     {
         titulo: "📰 Noticias Saber Pro / TyT",
