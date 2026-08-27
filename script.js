@@ -468,6 +468,21 @@ function abrirModalGenerico(modalId) {
                 grid.appendChild(div);
             });
         }
+    } else if (modalId === 'modalEventos') {
+    const container = document.getElementById('listaEventos');
+    if (container && container.children.length === 0) {
+        contenidoEventos.forEach(evento => {
+            const div = document.createElement('div');
+            div.className = 'evento-item';
+            div.innerHTML = `
+                <div class="evento-fecha">${evento.fecha}</div>
+                <div class="evento-titulo">${evento.titulo}</div>
+                <div class="evento-descripcion">${evento.descripcion}</div>
+                <div class="evento-hora">🕐 ${evento.hora}</div>
+                ${evento.enlace !== '#' ? `<a href="${evento.enlace}" target="_blank" class="btn-enlace" style="margin-top:0.5rem;">🔗 Unirse</a>` : ''}
+            `;
+            container.appendChild(div);
+        });
     }
 }  // <--- ESTA LLAVE CIERRA CORRECTAMENTE LA FUNCIÓN
 
