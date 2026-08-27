@@ -124,17 +124,17 @@ const contenidoEstudiantes = [
         ]
     },
     {
-    titulo: "🎪 Eventos de fortalecimiento disciplinar",
-    descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
-    enlaces: [
-        { texto: "📋 Próximos eventos", ruta: "#" },
-        { texto: "📸 Galería de eventos pasados", ruta: "#" },
-        { texto: "📝 Inscripción a eventos", ruta: "#" }
-    ],
-    botonesModal: [
-        { texto: "📅 Calendario de eventos", modalId: "modalEventos" },
-        { texto: "🎙️ Programas radiales", modalId: "modalRadiales" }
-    ]
+        titulo: "🎪 Eventos de fortalecimiento disciplinar",
+        descripcion: "Socialización y divulgación de los eventos académicos de la ECSAH en la Zona Caribe. Incluye los programas radiales de la escuela.",
+        enlaces: [
+            { texto: "📋 Próximos eventos", ruta: "#" },
+            { texto: "📸 Galería de eventos pasados", ruta: "#" },
+            { texto: "📝 Inscripción a eventos", ruta: "#" }
+        ],
+        botonesModal: [
+            { texto: "📅 Calendario de eventos", modalId: "modalEventos" },
+            { texto: "🎙️ Programas radiales", modalId: "modalRadiales" }
+        ]
     },
     {
         titulo: "📰 Noticias Saber Pro / TyT",
@@ -169,7 +169,9 @@ const contenidoProtocolo = [
 ];
 
 const contenidoAplazamientos = [
-    { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Aplazamientos.pdf" }
+    { texto: "📋 Formato solicitud aplazamiento", ruta: "documentos/Formato-Aplazamiento.pdf" },
+    { texto: "📅 Calendario de fechas límite", ruta: "documentos/Calendario-Aplazamientos.pdf" },
+    { texto: "📝 Instructivo para aplazamiento", ruta: "documentos/Instructivo-Aplazamiento.pdf" }
 ];
 
 const contenidoRadiales = [
@@ -213,8 +215,7 @@ const contenidoEventos = [
         descripcion: "Reunión con los líderes de programa para revisar los indicadores de cumplimiento.",
         enlace: "#",
         hora: "2:00 p.m."
-    },
-    // Agrega más eventos aquí...
+    }
 ];
 
 // ============================================
@@ -469,22 +470,23 @@ function abrirModalGenerico(modalId) {
             });
         }
     } else if (modalId === 'modalEventos') {
-    const container = document.getElementById('listaEventos');
-    if (container && container.children.length === 0) {
-        contenidoEventos.forEach(evento => {
-            const div = document.createElement('div');
-            div.className = 'evento-item';
-            div.innerHTML = `
-                <div class="evento-fecha">${evento.fecha}</div>
-                <div class="evento-titulo">${evento.titulo}</div>
-                <div class="evento-descripcion">${evento.descripcion}</div>
-                <div class="evento-hora">🕐 ${evento.hora}</div>
-                ${evento.enlace !== '#' ? `<a href="${evento.enlace}" target="_blank" class="btn-enlace" style="margin-top:0.5rem;">🔗 Unirse</a>` : ''}
-            `;
-            container.appendChild(div);
-        });
+        const container = document.getElementById('listaEventos');
+        if (container && container.children.length === 0) {
+            contenidoEventos.forEach(evento => {
+                const div = document.createElement('div');
+                div.className = 'evento-item';
+                div.innerHTML = `
+                    <div class="evento-fecha">${evento.fecha}</div>
+                    <div class="evento-titulo">${evento.titulo}</div>
+                    <div class="evento-descripcion">${evento.descripcion}</div>
+                    <div class="evento-hora">🕐 ${evento.hora}</div>
+                    ${evento.enlace !== '#' ? `<a href="${evento.enlace}" target="_blank" class="btn-enlace" style="margin-top:0.5rem;">🔗 Unirse</a>` : ''}
+                `;
+                container.appendChild(div);
+            });
+        }
     }
-}  // <--- ESTA LLAVE CIERRA CORRECTAMENTE LA FUNCIÓN
+}
 
 function cerrarModalGenerico(modalId) {
     const overlay = document.getElementById(modalId);
