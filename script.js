@@ -192,6 +192,31 @@ const contenidoRevistas = [
     }
 ];
 
+const contenidoEventos = [
+    {
+        fecha: "27 de agosto de 2026",
+        titulo: "Acompañamiento psicosocial CAP UNAD",
+        descripcion: "Reunión de acompañamiento psicosocial para estudiantes de la ECSAH Zona Caribe.",
+        enlace: "#",
+        hora: "9:00 a.m."
+    },
+    {
+        fecha: "28 de agosto de 2026",
+        titulo: "WEBIN: Estrategias de fortalecimiento disciplinar",
+        descripcion: "Webinario sobre las nuevas estrategias para el fortalecimiento disciplinar en la ECSAH.",
+        enlace: "#",
+        hora: "10:00 a.m."
+    },
+    {
+        fecha: "3 de septiembre de 2026",
+        titulo: "Reunión de cumplimiento de la Vicerrectoría",
+        descripcion: "Reunión con los líderes de programa para revisar los indicadores de cumplimiento.",
+        enlace: "#",
+        hora: "2:00 p.m."
+    },
+    // Agrega más eventos aquí...
+];
+
 // ============================================
 // CONTENIDO DOCENTES (sin cambios)
 // ============================================
