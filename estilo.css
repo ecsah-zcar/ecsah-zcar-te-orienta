@@ -479,6 +479,48 @@ footer a:hover {
     color: #1a2c3e;
 }
 
+/* ===== EVENTOS ===== */
+.evento-item {
+    background: #FFF9E6;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    border-left: 6px solid #FFC107;
+    transition: 0.2s;
+}
+
+.evento-item:hover {
+    background: #FFF3D6;
+    transform: translateX(4px);
+}
+
+.evento-fecha {
+    font-weight: 700;
+    color: #5D4037;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.evento-titulo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1a2c3e;
+    margin: 0.2rem 0;
+}
+
+.evento-descripcion {
+    font-size: 0.9rem;
+    color: #3d3d3d;
+    margin-bottom: 0.3rem;
+}
+
+.evento-hora {
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-weight: 600;
+}
+
 /* ===== FUS específico ===== */
 .modal-fus .modal-box {
     max-width: 800px;
@@ -760,45 +802,4 @@ footer a:hover {
     .logo-titulo h1 {
         font-size: 1.1rem;
     }
-}
-/* ===== EVENTOS ===== */
-.evento-item {
-    background: #FFF9E6;
-    border-radius: 14px;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1rem;
-    border-left: 6px solid #FFC107;
-    transition: 0.2s;
-}
-
-.evento-item:hover {
-    background: #FFF3D6;
-    transform: translateX(4px);
-}
-
-.evento-fecha {
-    font-weight: 700;
-    color: #5D4037;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.evento-titulo {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #1a2c3e;
-    margin: 0.2rem 0;
-}
-
-.evento-descripcion {
-    font-size: 0.9rem;
-    color: #3d3d3d;
-    margin-bottom: 0.3rem;
-}
-
-.evento-hora {
-    font-size: 0.85rem;
-    color: #6c757d;
-    font-weight: 600;
 }
