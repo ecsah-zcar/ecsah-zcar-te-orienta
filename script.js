@@ -196,24 +196,18 @@ const contenidoRevistas = [
 
 const contenidoEventos = [
     {
-        fecha: "27 de agosto de 2026",
-        titulo: "Acompañamiento psicosocial CAP UNAD",
-        descripcion: "Reunión de acompañamiento psicosocial para estudiantes de la ECSAH Zona Caribe.",
-        enlace: "#",
-        hora: "9:00 a.m."
+        fecha: "31 de agosto de 2026",
+        titulo: "La ventaja humana: el motor de las Ciencias Sociales, las Artes y las Humanidades en el mundo de hoy",
+        descripcion: "Lección Inaugural 2026-2 de la Escuela de Ciencias Sociales, Artes y Humanidades – ECSAH.",
+        enlace: "Enlace directo: https://unad-edu-co.zoom.us/j/93956021740"
+                "YouTube – Escuela de Ciencias Sociales, Artes y Humanidades: https://www.youtube.com/@escueladecienciassocialesa6013/streams",
+        hora: "6:00 p.m. a 8:00 p.m."
     },
     {
-        fecha: "28 de agosto de 2026",
-        titulo: "WEBIN: Estrategias de fortalecimiento disciplinar",
-        descripcion: "Webinario sobre las nuevas estrategias para el fortalecimiento disciplinar en la ECSAH.",
-        enlace: "#",
-        hora: "10:00 a.m."
-    },
-    {
-        fecha: "3 de septiembre de 2026",
-        titulo: "Reunión de cumplimiento de la Vicerrectoría",
-        descripcion: "Reunión con los líderes de programa para revisar los indicadores de cumplimiento.",
-        enlace: "#",
+        fecha: "17 al 19 de noviembre de 2026",
+        titulo: "VII Festival Internacional Universitario de Musica Vallenata UNAD",
+        descripcion: "En homenaje a Poncho Zuleta y Cocha Molina",
+        enlace: "https://www.youtube.com/live/byfAZYULOE0?si=SUiFRBY9o-LQcP17",
         hora: "2:00 p.m."
     }
 ];
