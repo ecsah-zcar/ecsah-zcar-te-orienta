@@ -199,7 +199,7 @@ const contenidoEventos = [
         fecha: "31 de agosto de 2026",
         titulo: "La ventaja humana: el motor de las Ciencias Sociales, las Artes y las Humanidades en el mundo de hoy",
         descripcion: "Lección Inaugural 2026-2 de la Escuela de Ciencias Sociales, Artes y Humanidades – ECSAH.",
-        enlace: "https://www.youtube.com/@escueladecienciassocialesa6013/streams"
+        enlace: "https://www.youtube.com/@escueladecienciassocialesa6013/streams",
         hora: "6:00 p.m. a 8:00 p.m."
     },
     {
